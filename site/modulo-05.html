@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 05 — Prompt Engineering | Programação com Agentes de IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item active"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 05</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">05</div>
+        <h1>Prompt Engineering</h1>
+        <p class="module-desc">Técnicas fundamentais e avançadas para formular instruções eficazes: Zero-shot, Few-shot, Chain-of-Thought, Role Prompting e padrões específicos para código.</p>
+      </div>
+
+      <!-- 5.1 O que é Prompt Engineering? -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 5.1</span>
+        <h2>O que é Prompt Engineering?</h2>
+
+        <p><strong>Prompt Engineering</strong> é a disciplina de formular instruções e inputs para modelos de linguagem de forma a obter os melhores resultados possíveis. É a ponte entre a intenção humana e a compreensão da máquina.</p>
+
+        <p><strong>Enquanto a Engenharia de Contexto decide O QUE enviar ao modelo, Prompt Engineering decide COMO formular o que é enviado.</strong></p>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Fundamental</div>
+            <p>Anthropic. <em>"Prompt Engineering Guide"</em>. <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering" target="_blank">docs.anthropic.com/en/docs/build-with-claude/prompt-engineering</a> &mdash; Guia oficial da Anthropic, continuamente atualizado.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Adicional</div>
+            <p>OpenAI. <em>"Prompt Engineering Guide"</em>. <a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank">platform.openai.com/docs/guides/prompt-engineering</a> &mdash; Guia oficial da OpenAI.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Acadêmica</div>
+            <p>Wei, J. et al. (2022). <em>"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"</em>. Google Brain. arXiv:2201.11903. <a href="https://arxiv.org/abs/2201.11903" target="_blank">arxiv.org/abs/2201.11903</a> &mdash; Paper que formalizou Chain-of-Thought prompting.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 5.2 Técnicas Fundamentais -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 5.2</span>
+        <h2>Técnicas Fundamentais de Prompt Engineering</h2>
+
+        <!-- 5.2.1 Zero-Shot -->
+        <h3>5.2.1 Zero-Shot Prompting</h3>
+
+        <p>O modelo recebe apenas a instrução, sem exemplos:</p>
+
+        <pre><code><span class="code-label">Prompt</span>Prompt: "Escreva uma função Python que valida endereços de email."
+
+<span class="code-comment"># Útil quando a tarefa é bem definida e o modelo tem conhecimento suficiente</span></code></pre>
+
+        <!-- 5.2.2 Few-Shot -->
+        <h3>5.2.2 Few-Shot Prompting</h3>
+
+        <p>O modelo recebe exemplos do formato desejado antes da tarefa:</p>
+
+        <pre><code><span class="code-label">Prompt</span>Prompt: "Converta estas descrições em schemas SQL:
+
+Descrição: 'Tabela de usuários com nome, email e data de criação'
+SQL: <span class="code-keyword">CREATE TABLE</span> users (
+    id <span class="code-type">SERIAL</span> <span class="code-keyword">PRIMARY KEY</span>,
+    name <span class="code-type">VARCHAR</span>(<span class="code-number">255</span>) <span class="code-keyword">NOT NULL</span>,
+    email <span class="code-type">VARCHAR</span>(<span class="code-number">255</span>) <span class="code-keyword">UNIQUE NOT NULL</span>,
+    created_at <span class="code-type">TIMESTAMP</span> <span class="code-keyword">DEFAULT</span> CURRENT_TIMESTAMP
+);
+
+Descrição: 'Tabela de pedidos com valor total e status'
+SQL: <span class="code-keyword">CREATE TABLE</span> orders (
+    id <span class="code-type">SERIAL</span> <span class="code-keyword">PRIMARY KEY</span>,
+    total_amount <span class="code-type">DECIMAL</span>(<span class="code-number">10</span>,<span class="code-number">2</span>) <span class="code-keyword">NOT NULL</span>,
+    status <span class="code-type">VARCHAR</span>(<span class="code-number">50</span>) <span class="code-keyword">DEFAULT</span> <span class="code-string">'pending'</span>,
+    created_at <span class="code-type">TIMESTAMP</span> <span class="code-keyword">DEFAULT</span> CURRENT_TIMESTAMP
+);
+
+Descrição: 'Tabela de produtos com nome, preço e categoria'
+SQL:"</code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Brown, T. et al. (2020). <em>"Language Models are Few-Shot Learners"</em>. arXiv:2005.14165. <a href="https://arxiv.org/abs/2005.14165" target="_blank">arxiv.org/abs/2005.14165</a></p>
+          </div>
+        </div>
+
+        <!-- 5.2.3 Chain-of-Thought -->
+        <h3>5.2.3 Chain-of-Thought (CoT)</h3>
+
+        <p>Instruir o modelo a "pensar passo a passo" antes de dar a resposta final:</p>
+
+        <pre><code><span class="code-label">Prompt</span>Prompt: "Analise este código e identifique o bug.
+Pense passo a passo: primeiro entenda o que o código faz,
+depois trace a execução com dados de exemplo,
+e finalmente identifique onde o comportamento diverge do esperado.
+
+```python
+<span class="code-keyword">def</span> <span class="code-function">binary_search</span>(arr, target):
+    low, high = <span class="code-number">0</span>, <span class="code-function">len</span>(arr)
+    <span class="code-keyword">while</span> low &lt;= high:
+        mid = (low + high) // <span class="code-number">2</span>
+        <span class="code-keyword">if</span> arr[mid] == target:
+            <span class="code-keyword">return</span> mid
+        <span class="code-keyword">elif</span> arr[mid] &lt; target:
+            low = mid + <span class="code-number">1</span>
+        <span class="code-keyword">else</span>:
+            high = mid + <span class="code-number">1</span>  <span class="code-comment"># Bug aqui</span>
+    <span class="code-keyword">return</span> -<span class="code-number">1</span>
+```"</code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Wei, J. et al. (2022). <em>"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"</em>. arXiv:2201.11903.</p>
+          </div>
+        </div>
+
+        <!-- 5.2.4 Role Prompting -->
+        <h3>5.2.4 Role Prompting (Atribuição de Papel)</h3>
+
+        <p>Definir um papel específico para o modelo:</p>
+
+        <pre><code><span class="code-label">Prompt</span>Prompt: "Você é um engenheiro de software sênior especializado em
+segurança de aplicações web. Revise o seguinte código de autenticação
+e identifique vulnerabilidades OWASP Top 10. Para cada vulnerabilidade
+encontrada, explique o risco e forneça o código corrigido."</code></pre>
+
+        <!-- 5.2.5 Structured Output -->
+        <h3>5.2.5 Structured Output (Saída Estruturada)</h3>
+
+        <p>Solicitar resposta em formato específico:</p>
+
+        <pre><code><span class="code-label">Prompt</span>Prompt: "Analise este pull request e responda EXATAMENTE neste formato JSON:
+{
+  <span class="code-string">'aprovado'</span>: boolean,
+  <span class="code-string">'problemas'</span>: [
+    {
+      <span class="code-string">'arquivo'</span>: <span class="code-string">'caminho/do/arquivo'</span>,
+      <span class="code-string">'linha'</span>: número,
+      <span class="code-string">'severidade'</span>: <span class="code-string">'critical'</span> | <span class="code-string">'warning'</span> | <span class="code-string">'suggestion'</span>,
+      <span class="code-string">'descrição'</span>: <span class="code-string">'texto'</span>,
+      <span class="code-string">'correção_sugerida'</span>: <span class="code-string">'código'</span>
+    }
+  ],
+  <span class="code-string">'resumo'</span>: <span class="code-string">'texto'</span>
+}"</code></pre>
+      </section>
+
+      <hr>
+
+      <!-- 5.3 Técnicas Avançadas -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 5.3</span>
+        <h2>Técnicas Avançadas de Prompt Engineering</h2>
+
+        <!-- 5.3.1 System Prompts -->
+        <h3>5.3.1 System Prompts</h3>
+
+        <p>O <strong>system prompt</strong> é a instrução "invisível" que define o comportamento base do modelo. Ferramentas como Claude Code usam system prompts extensos:</p>
+
+        <pre><code><span class="code-label">System Prompt</span>System: "Você é Claude Code, o assistente de programação da Anthropic.
+Você opera no terminal do usuário e tem acesso a ferramentas para
+ler, editar e criar arquivos, executar comandos bash, e buscar
+no código.
+
+Regras:
+<span class="code-number">1.</span> Sempre leia um arquivo antes de editá-lo
+<span class="code-number">2.</span> Prefira editar arquivos existentes a criar novos
+<span class="code-number">3.</span> Não adicione funcionalidades além do solicitado
+<span class="code-number">4.</span> Não introduza vulnerabilidades de segurança
+..."</code></pre>
+
+        <!-- 5.3.2 Prompt Chaining -->
+        <h3>5.3.2 Prompt Chaining (Encadeamento de Prompts)</h3>
+
+        <p>Dividir tarefas complexas em etapas sequenciais onde a saída de um prompt alimenta o próximo:</p>
+
+        <pre><code><span class="code-label">Workflow</span>Etapa 1: "Analise os requisitos e liste as entidades do sistema"
+    &rarr; Saída: [User, Order, Product, Payment]
+
+Etapa 2: "Para cada entidade, defina o schema do banco de dados"
+    &rarr; Saída: SQL schemas
+
+Etapa 3: "Gere os modelos ORM a partir dos schemas"
+    &rarr; Saída: Código dos modelos
+
+Etapa 4: "Gere os endpoints REST CRUD para cada modelo"
+    &rarr; Saída: Código das rotas</code></pre>
+
+        <!-- 5.3.3 Self-Consistency -->
+        <h3>5.3.3 Self-Consistency</h3>
+
+        <p>Gerar múltiplas respostas e selecionar a mais consistente:</p>
+
+        <pre><code><span class="code-label">Prompt</span>Prompt: "Gere 3 abordagens diferentes para implementar cache
+nesta API. Para cada abordagem, liste prós e contras.
+Depois, recomende a melhor opção justificando sua escolha."</code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Wang, X. et al. (2022). <em>"Self-Consistency Improves Chain of Thought Reasoning in Language Models"</em>. Google Research. arXiv:2203.11171. <a href="https://arxiv.org/abs/2203.11171" target="_blank">arxiv.org/abs/2203.11171</a></p>
+          </div>
+        </div>
+
+        <!-- 5.3.4 Extended Thinking -->
+        <h3>5.3.4 Extended Thinking (Pensamento Estendido)</h3>
+
+        <p>Modelos como Claude oferecem um modo de "pensamento estendido" onde o modelo raciocina internamente antes de responder. Isso é especialmente útil para:</p>
+
+        <ul>
+          <li>Problemas de arquitetura complexos</li>
+          <li>Debugging de bugs sutis</li>
+          <li>Decisões de design com múltiplos trade-offs</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic. <em>"Extended Thinking"</em>. <a href="https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking" target="_blank">docs.anthropic.com/en/docs/build-with-claude/extended-thinking</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 5.4 Anti-Padrões -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 5.4</span>
+        <h2>Anti-Padrões de Prompt Engineering</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Anti-Padrão</th>
+                <th>Problema</th>
+                <th>Correção</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Prompt vago</strong></td>
+                <td>"Melhore este código"</td>
+                <td>"Refatore para separar a lógica de validação da lógica de negócio"</td>
+              </tr>
+              <tr>
+                <td><strong>Prompt contraditório</strong></td>
+                <td>"Seja conciso mas explique em detalhes"</td>
+                <td>Escolha um estilo e seja consistente</td>
+              </tr>
+              <tr>
+                <td><strong>Excesso de instruções</strong></td>
+                <td>50 regras no prompt</td>
+                <td>Priorize as 5-10 regras mais importantes</td>
+              </tr>
+              <tr>
+                <td><strong>Falta de formato</strong></td>
+                <td>"Gere testes"</td>
+                <td>"Gere testes usando pytest, com pelo menos um teste para o caminho feliz e um para cada caso de erro"</td>
+              </tr>
+              <tr>
+                <td><strong>Antropomorfização</strong></td>
+                <td>"Pense como um humano"</td>
+                <td>"Analise sistematicamente cada condição do if/else"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 5.5 Prompt Engineering Específico para Código -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 5.5</span>
+        <h2>Prompt Engineering Específico para Código</h2>
+
+        <p>Ao programar com IA, há padrões específicos que funcionam melhor:</p>
+
+        <!-- 1. Contexto do erro -->
+        <h3>1. Forneça o contexto do erro completo</h3>
+
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Ruim</div>
+            <pre><code>"O código não funciona"</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Bom</div>
+            <pre><code>"Ao executar `pytest test_auth.py`, recebo
+o seguinte erro:
+[cole o traceback completo]
+O erro ocorre na linha 45 de auth_service.py"</code></pre>
+          </div>
+        </div>
+
+        <!-- 2. Framework e versão -->
+        <h3>2. Especifique o framework e versão</h3>
+
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Ruim</div>
+            <pre><code>"Crie uma API REST"</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Bom</div>
+            <pre><code>"Crie um endpoint POST /api/users usando
+FastAPI 0.104+, com Pydantic v2 para validação
+e SQLAlchemy 2.0 para ORM"</code></pre>
+          </div>
+        </div>
+
+        <!-- 3. Convenções do projeto -->
+        <h3>3. Indique as convenções do projeto</h3>
+
+        <pre><code><span class="code-label">Prompt</span><span class="code-comment"># BOM:</span>
+"Este projeto usa:
+- Python <span class="code-number">3.12</span>, FastAPI, SQLAlchemy <span class="code-number">2.0</span>
+- Padrão Repository para acesso a dados
+- Testes com pytest e fixtures para DB
+- Nomes de variáveis em snake_case
+- Docstrings no formato Google"</code></pre>
+
+        <!-- 4. Escopo -->
+        <h3>4. Delimite o escopo claramente</h3>
+
+        <pre><code><span class="code-label">Prompt</span><span class="code-comment"># BOM:</span>
+"Adicione validação de CPF à função create_user em
+user_service.py. NÃO modifique outros arquivos.
+Use a biblioteca validate-docbr já instalada no projeto."</code></pre>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Dica</div>
+            <p>Quanto mais específico e contextualizado for o seu prompt ao programar com IA, menos iterações serão necessárias para obter o resultado desejado. Um bom prompt de código inclui: o que fazer, onde fazer, como fazer (convenções), e o que <strong>não</strong> fazer.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5.6 -->
+      <section class="fade-in" id="5.6">
+        <span class="section-badge">Seção 5.6</span>
+        <h2>Alucinações: Como Mitigar na Programação</h2>
+
+        <p>Como vimos no <a href="modulo-01.html#1.5">Módulo 1 &mdash; Seção 1.5</a>, alucinações são uma propriedade intrínseca de LLMs: não podem ser eliminadas, mas podem ser <strong>drasticamente reduzidas</strong> com as técnicas certas. Esta seção é um guia prático para minimizar alucinações ao programar com IA.</p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Princípio central</div>
+            <p>A melhor arma contra alucinação é <strong>não deixar o modelo adivinhar</strong>. Alimente-o com contexto verificável e force verificação automática do resultado. Qualquer decisão que dependa apenas do "conhecimento interno" do modelo é uma aposta.</p>
+          </div>
+        </div>
+
+        <!-- 5.6.1 -->
+        <h3>5.6.1 Estratégias de Grounding (Aterramento)</h3>
+
+        <p><strong>Grounding</strong> significa "ancorar" a resposta do modelo em material concreto fornecido no contexto. Em vez de deixar o modelo recuperar da memória (onde alucinações nascem), você entrega a verdade na bandeja.</p>
+
+        <ul>
+          <li><strong>Contexto concreto:</strong> sempre forneça o <em>código real</em> do arquivo em vez de descrever o que ele faz. "Aqui está <code>auth_service.py</code>, linhas 30-80" é muito melhor que "eu tenho um serviço de autenticação que usa JWT".</li>
+          <li><strong>Documentação inline:</strong> cole trechos da documentação oficial da biblioteca no prompt. Se você quer que o modelo use <code>httpx.AsyncClient</code> corretamente, cole os 20 linhas da doc dos métodos relevantes antes de fazer a pergunta.</li>
+          <li><strong>Esquemas e tipos:</strong> forneça schemas Pydantic, interfaces TypeScript, protobuf, JSON Schema, OpenAPI spec, DDL SQL. Tipos são contratos verificáveis — o modelo fica forçado a respeitá-los.</li>
+          <li><strong>Exemplos de entrada/saída:</strong> 2-3 exemplos concretos de I/O fazem mais pelo grounding do que um parágrafo de descrição.</li>
+        </ul>
+
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Ruim (sem grounding)</div>
+            <pre><code>"Crie uma função que chama a API
+do Stripe para criar um pagamento"</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Bom (com grounding)</div>
+            <pre><code>"Usando stripe-python 8.x, crie uma função
+create_payment(amount_cents: int, currency: str,
+customer_id: str) -> stripe.PaymentIntent.
+
+Doc oficial relevante:
+[cole o trecho de stripe.PaymentIntent.create]
+
+Nosso schema interno:
+[cole o Pydantic model PaymentRequest]"</code></pre>
+          </div>
+        </div>
+
+        <!-- 5.6.2 -->
+        <h3>5.6.2 Verificação Ativa (Verification Loops)</h3>
+
+        <p>Nunca confie, sempre verifique. A LLM produz; uma <strong>ferramenta determinística</strong> valida. Esse loop é a diferença entre "IA gerando código" e "IA entregando código funcional".</p>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot"></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">1. Gerar</div>
+              <div class="v-pipeline-card-desc">LLM produz o código candidato.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-connector"></div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot"></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">2. Compilar / Type-check</div>
+              <div class="v-pipeline-card-desc">tsc, mypy, pyright, cargo check — detecta APIs fantasma e erros sintáticos.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-connector"></div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot"></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">3. Lint</div>
+              <div class="v-pipeline-card-desc">eslint, pylint, ruff — detecta imports fantasmas e padrões suspeitos.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-connector"></div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot"></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">4. Executar testes</div>
+              <div class="v-pipeline-card-desc">pytest, vitest, go test — detecta alucinações semânticas.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-connector"></div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot"></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">5. Feedback &rarr; 1</div>
+              <div class="v-pipeline-card-desc">Se falhar, devolva o erro ao modelo para regenerar.</div>
+            </div>
+          </div>
+        </div>
+
+        <ul>
+          <li><strong>Execute o código:</strong> não confie, rode. Claude Code faz isso nativamente via ferramenta <code>Bash</code>, executando scripts e capturando stdout/stderr para autocorreção.</li>
+          <li><strong>Rode os testes:</strong> configure o agente para rodar a suíte de testes automaticamente após gerar código e iterar até passar.</li>
+          <li><strong>Type checker no loop:</strong> <code>mypy --strict</code>, <code>tsc --noEmit</code>, <code>pyright</code>. Esses ferramentas detectam 80% das APIs fantasma antes do código sequer rodar.</li>
+          <li><strong>Linters como guardrails:</strong> <code>ruff</code>, <code>eslint</code>, <code>pylint</code>. Catálogos curados de anti-padrões — incluindo imports de módulos inexistentes.</li>
+        </ul>
+
+        <!-- 5.6.3 -->
+        <h3>5.6.3 RAG e Busca na Documentação</h3>
+
+        <p><strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>) injeta no contexto do modelo trechos relevantes recuperados de uma fonte de verdade antes da geração. É um grounding automatizado.</p>
+
+        <ul>
+          <li><strong>Documentação em tempo real:</strong> forneça trechos específicos da documentação oficial no contexto em vez de confiar na memória do modelo.</li>
+          <li><strong>MCP servers de documentação:</strong> ferramentas como <strong>Context7 MCP</strong>, <strong>DeepWiki MCP</strong> e <strong>Ref MCP</strong> buscam documentação atualizada de bibliotecas em tempo real e injetam no contexto do agente (veja Módulo 12).</li>
+          <li><strong>Indexe o seu próprio código:</strong> RAG sobre o repositório garante que o modelo use suas <em>próprias</em> utilidades em vez de inventar novas.</li>
+          <li><strong>Cuidado com o training cutoff:</strong> qualquer biblioteca que evoluiu após a data de corte do modelo é território fértil para API desatualizada — RAG é obrigatório nesses casos.</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;&#65039;</span>
+          <div class="callout-content">
+            <div class="callout-title">Training cutoff &ne; conhecimento atualizado</div>
+            <p>Um modelo treinado até outubro/2024 não sabe que o Next.js 15 lançou <code>unstable_after()</code>, ou que o SQLAlchemy 2.1 mudou o comportamento de <code>Session.merge()</code>. Sem RAG ou fetch de documentação, ele vai <em>inventar</em> com confiança algo baseado em versões antigas.</p>
+          </div>
+        </div>
+
+        <!-- 5.6.4 -->
+        <h3>5.6.4 Extended Thinking e Self-Critique</h3>
+
+        <p>Modelos modernos (Claude Opus/Sonnet com <em>extended thinking</em>, o1/o3 da OpenAI, Gemini com <em>thinking</em>) podem gastar tokens extras <em>raciocinando</em> antes de responder. Esse "rascunho interno" reduz substancialmente alucinações — o modelo tem oportunidade de checar consistência, questionar hipóteses e considerar alternativas.</p>
+
+        <ul>
+          <li><strong>Ative extended thinking</strong> para tarefas críticas (refatoração, bugs sutis, segurança).</li>
+          <li><strong>Peça self-critique explícito:</strong> "Revise sua resposta e procure erros", "Liste 3 coisas que podem estar erradas na sua solução".</li>
+          <li><strong>Force verificação de premissas:</strong> "Antes de responder, verifique se <em>cada</em> função que você usa existe na API atual da biblioteca. Para cada import, cite de onde vem."</li>
+          <li><strong>Chain-of-verification (CoVe):</strong> peça ao modelo (a) gerar a resposta, (b) gerar perguntas de verificação, (c) respondê-las, (d) refinar a resposta.</li>
+        </ul>
+
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Sem self-critique</div>
+            <pre><code>"Escreva uma função que valida
+um JWT usando PyJWT."</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Com self-critique</div>
+            <pre><code>"Escreva uma função que valida um JWT
+usando PyJWT 2.8+.
+
+Depois de escrever:
+1. Liste cada import e confirme que
+   existe no PyJWT 2.8+.
+2. Liste cada parâmetro de jwt.decode
+   e confirme a assinatura atual.
+3. Identifique 3 erros comuns que
+   sua implementação poderia ter.
+4. Corrija se encontrar algum."</code></pre>
+          </div>
+        </div>
+
+        <!-- 5.6.5 -->
+        <h3>5.6.5 Human-in-the-Loop</h3>
+
+        <p>Nenhuma técnica anterior substitui revisão humana. A IA acelera, mas a <strong>responsabilidade pelo código continua sua</strong>.</p>
+
+        <ul>
+          <li><strong>Nunca aceite cegamente:</strong> nem o código "óbvio" de uma linha. Alucinações semânticas costumam se esconder exatamente no trivial.</li>
+          <li><strong>Code review obrigatório:</strong> trate PRs gerados por IA com o mesmo (ou maior) rigor de PRs humanos.</li>
+          <li><strong>Testes de aceitação:</strong> valide comportamento real, não só happy path. Teste casos limite que o modelo não pensaria em cobrir.</li>
+          <li><strong>Granularidade:</strong> prefira gerar mudanças pequenas e revisáveis a patches gigantes.</li>
+          <li><strong>Pair com a IA, não delegue:</strong> use IA como colega de <em>pair programming</em> (você dirige, ela sugere), não como subordinado (você aceita, ela decide).</li>
+        </ul>
+
+        <!-- 5.6.6 -->
+        <h3>5.6.6 Técnicas Específicas por Tipo de Alucinação</h3>
+
+        <h4>Prevenção de API fantasma</h4>
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Ruim</div>
+            <pre><code>"Use pandas para ler um arquivo
+Excel grande com streaming"</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Bom</div>
+            <pre><code>"Usando pandas 2.2, leia um Excel
+grande. Use APENAS APIs documentadas
+em https://pandas.pydata.org/docs/reference/
+— não invente métodos.
+Se a funcionalidade de streaming não
+existir nativamente, diga isso
+explicitamente e proponha alternativa
+com openpyxl em modo read_only."</code></pre>
+          </div>
+        </div>
+
+        <h4>Prevenção de API depreciada</h4>
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Ruim</div>
+            <pre><code>"Concatene dois DataFrames"</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Bom</div>
+            <pre><code>"Usando pandas 2.2 (DataFrame.append
+foi REMOVIDO na 2.0), concatene
+dois DataFrames. Use pd.concat.
+Confirme a versão antes de sugerir."</code></pre>
+          </div>
+        </div>
+
+        <h4>Verificação de correção semântica</h4>
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Ruim</div>
+            <pre><code>"Implemente busca binária
+em uma lista ordenada"</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Bom</div>
+            <pre><code>"Implemente busca binária em lista
+ordenada. Requisitos:
+- O(log n) comprovadamente
+- Retorne -1 se não encontrado
+- Inclua testes com: lista vazia,
+  1 elemento, elemento no início/fim/
+  meio, elemento ausente
+- Rode os testes e mostre a saída"</code></pre>
+          </div>
+        </div>
+
+        <!-- 5.6.7 -->
+        <h3>5.6.7 Ferramentas Anti-Alucinação</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>Mecanismos anti-alucinação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Claude Code</strong></td>
+                <td>Extended thinking nativo, verification loops via <code>Bash</code> (roda testes, type check, lint), integração MCP para RAG de docs em tempo real, agentes especializados (subagents) para revisão.</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Copilot</strong></td>
+                <td>Sugestões inline <em>grounded</em> no contexto do repositório (symbols, arquivos vizinhos, histórico git). Chat com workspace-aware retrieval reduz APIs fantasma.</td>
+              </tr>
+              <tr>
+                <td><strong>Cursor</strong></td>
+                <td>Chamada de ferramentas MCP para verificação, indexação RAG do repositório, modo Agent que executa comandos e lê output para se autocorrigir.</td>
+              </tr>
+              <tr>
+                <td><strong>Type checkers</strong></td>
+                <td><code>mypy</code>, <code>pyright</code>, <code>tsc</code>, <code>flow</code>. Detectam APIs inexistentes estaticamente — seu primeiro filtro anti-alucinação.</td>
+              </tr>
+              <tr>
+                <td><strong>Linters</strong></td>
+                <td><code>ruff</code>, <code>pylint</code>, <code>eslint</code>, <code>biome</code>. Detectam imports suspeitos, uso de APIs depreciadas, padrões de código improváveis.</td>
+              </tr>
+              <tr>
+                <td><strong>MCP de docs</strong></td>
+                <td>Context7, DeepWiki, Ref. Injetam doc atualizada no contexto do agente antes da geração — neutraliza training cutoff.</td>
+              </tr>
+              <tr>
+                <td><strong>Frameworks de teste</strong></td>
+                <td><code>pytest</code>, <code>vitest</code>, <code>jest</code>. Execução rápida em loop detecta alucinações semânticas. Property-based testing (hypothesis, fast-check) expõe casos que o modelo não anteviu.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 5.6.8 -->
+        <h3>5.6.8 Checklist Anti-Alucinação</h3>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#9989;</span>
+          <div class="callout-content">
+            <div class="callout-title">Antes de aceitar qualquer código gerado por IA</div>
+            <ol>
+              <li><strong>Versões confirmadas:</strong> o prompt especificou as versões exatas das bibliotecas usadas?</li>
+              <li><strong>Imports verificados:</strong> todos os <code>import</code> / <code>require</code> apontam para símbolos que realmente existem nessas versões?</li>
+              <li><strong>APIs existem:</strong> cada função, método ou classe usada está na documentação oficial atual? (sem confiar só na memória do modelo)</li>
+              <li><strong>Type check passa:</strong> <code>mypy</code>, <code>tsc</code>, <code>pyright</code> ou equivalente rodou sem erros?</li>
+              <li><strong>Lint limpo:</strong> <code>ruff</code>, <code>eslint</code> ou equivalente sem warnings relevantes?</li>
+              <li><strong>Testes rodam e passam:</strong> a suíte completa (não só o happy path) foi executada?</li>
+              <li><strong>Casos limite cobertos:</strong> lista vazia, null, valores negativos, unicode, concorrência — o que a LLM <em>poderia</em> ter ignorado?</li>
+              <li><strong>Segurança revisada:</strong> sem SQL injection, sem secrets hardcoded, sem deserialização insegura, sem <code>eval</code>?</li>
+              <li><strong>Revisão humana explícita:</strong> um humano leu, entendeu e aprovou — não apenas "LGTM"?</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">&#127919; Exercício prático</div>
+          <p>Pegue um trecho de código que uma IA gerou recentemente para você. Aplique o checklist da Seção 5.6.8 item por item. Para cada item que falhar, identifique <em>qual tipo</em> de alucinação da taxonomia da Seção 1.5 estava em jogo. Quantas alucinações você encontraria sem o checklist?</p>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <p>Ji, Z. et al. (2023). <em>"Survey of Hallucination in Natural Language Generation"</em>. ACM Computing Surveys. arXiv:2202.03629. Disponível em: <a href="https://arxiv.org/abs/2202.03629" target="_blank" rel="noopener">https://arxiv.org/abs/2202.03629</a>.</p>
+            <p>Anthropic. <em>"Reduce hallucinations"</em> &mdash; guia oficial de técnicas para mitigar alucinações com Claude. Disponível em: <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations</a>.</p>
+            <p>OpenAI. <em>"Grounding guide"</em> &mdash; boas práticas para aterramento de respostas em fontes verificáveis. Disponível em: <a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener">https://platform.openai.com/docs/guides/prompt-engineering</a>.</p>
+            <p>Dhuliawala, S. et al. (2023). <em>"Chain-of-Verification Reduces Hallucination in Large Language Models"</em>. arXiv:2309.11495. Disponível em: <a href="https://arxiv.org/abs/2309.11495" target="_blank" rel="noopener">https://arxiv.org/abs/2309.11495</a>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-04.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">04 &mdash; Engenharia de Contexto</span>
+        </a>
+        <a href="modulo-06.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">06 &mdash; Spec-Driven Design</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

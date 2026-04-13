@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 06 — Spec-Driven Design | Programação com Agentes de IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item active"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 06</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">06</div>
+        <h1>Spec-Driven Design</h1>
+        <p class="module-desc">Metodologia de especificação antes da implementação: templates, workflows e exemplos reais para maximizar a eficácia dos agentes de IA.</p>
+      </div>
+
+      <!-- 6.1 O que é Spec-Driven Design? -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 6.1</span>
+        <h2>O que é Spec-Driven Design?</h2>
+
+        <p><strong>Spec-Driven Design</strong> (Design Orientado a Especificação) é uma metodologia de desenvolvimento onde você escreve uma <strong>especificação detalhada</strong> antes de pedir ao agente de IA para implementar o código. Em vez de descrever o que quer em linguagem informal, você cria um documento estruturado que serve como "contrato" entre você e o agente.</p>
+
+        <p><strong>Por que isso importa:</strong> Agentes de IA como Claude Code são poderosos, mas <strong>só podem ser tão bons quanto as instruções que recebem</strong>. Uma especificação clara e completa é a diferença entre:</p>
+
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Sem Spec</div>
+            <p>Múltiplas iterações de "não era isso que eu queria"</p>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Com Spec</div>
+            <p>Implementação correta na primeira tentativa</p>
+          </div>
+        </div>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Spec-Driven Design para IA é como um <strong>blueprint arquitetônico</strong> para uma construtora. Você não diz ao engenheiro "construa uma casa legal" &mdash; você entrega plantas detalhadas com medidas, materiais e especificações técnicas.</p>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 6.2 Anatomia de uma Especificação para IA -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 6.2</span>
+        <h2>Anatomia de uma Especificação para IA</h2>
+
+        <p>Uma boa especificação para um agente de IA contém:</p>
+
+        <pre><code><span class="code-label">Markdown</span><span class="code-comment"># Especificação: [Nome da Feature]</span>
+
+<span class="code-comment">## 1. Objetivo</span>
+O que esta feature faz e por que ela existe.
+
+<span class="code-comment">## 2. Contexto</span>
+- Onde ela se encaixa no sistema
+- Decisões de design já tomadas
+- Restrições conhecidas
+
+<span class="code-comment">## 3. Requisitos Funcionais</span>
+- [ ] RF01: O sistema deve...
+- [ ] RF02: Quando o usuário..., o sistema deve...
+- [ ] RF03: ...
+
+<span class="code-comment">## 4. Requisitos Não-Funcionais</span>
+- Performance: resposta em &lt; 200ms
+- Segurança: validação de input em todas as entradas
+- Compatibilidade: manter API backwards-compatible
+
+<span class="code-comment">## 5. Interface / API</span>
+POST /api/resource
+Content-Type: application/json
+
+Request:
+{
+  <span class="code-string">"field1"</span>: <span class="code-string">"string (required, max 255 chars)"</span>,
+  <span class="code-string">"field2"</span>: <span class="code-string">"integer (optional, default: 0)"</span>
+}
+
+Response <span class="code-number">201</span>:
+{
+  <span class="code-string">"id"</span>: <span class="code-string">"uuid"</span>,
+  <span class="code-string">"field1"</span>: <span class="code-string">"string"</span>,
+  <span class="code-string">"created_at"</span>: <span class="code-string">"ISO 8601"</span>
+}
+
+Response <span class="code-number">400</span>:
+{
+  <span class="code-string">"error"</span>: <span class="code-string">"validation_error"</span>,
+  <span class="code-string">"details"</span>: [...]
+}
+
+<span class="code-comment">## 6. Modelos de Dados</span>
+Schemas, tabelas, relacionamentos.
+
+<span class="code-comment">## 7. Regras de Negócio</span>
+Lógica que deve ser implementada.
+
+<span class="code-comment">## 8. Casos de Teste Esperados</span>
+- Cenário feliz: ...
+- Cenário de erro: ...
+- Cenário de borda: ...
+
+<span class="code-comment">## 9. Arquivos a Serem Modificados/Criados</span>
+Lista explícita de onde o código deve ir.
+
+<span class="code-comment">## 10. O que NÃO fazer</span>
+Limites claros do escopo.</code></pre>
+      </section>
+
+      <hr>
+
+      <!-- 6.3 Spec-Driven Design na Prática -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 6.3</span>
+        <h2>Spec-Driven Design na Prática</h2>
+
+        <h3>Workflow completo</h3>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">1. Análise</div>
+              <div class="v-pipeline-card-desc">Entenda o problema e o contexto</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">2. Especificação</div>
+              <div class="v-pipeline-card-desc">Escreva a spec detalhada (pode usar a IA para ajudar!)</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">3. Revisão da Spec</div>
+              <div class="v-pipeline-card-desc">Valide a spec com stakeholders/equipe</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">4. Implementação com IA</div>
+              <div class="v-pipeline-card-desc">Entregue a spec ao agente de IA</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">5. Review do Código</div>
+              <div class="v-pipeline-card-desc">Verifique se a implementação atende a spec</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">6. Iteração</div>
+              <div class="v-pipeline-card-desc">Se necessário, refine a spec e repita</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Exemplo real &mdash; Usando Claude Code com Spec-Driven Design</h3>
+
+        <pre><code><span class="code-label">Bash</span><span class="code-comment"># 1. Crie o arquivo de spec</span>
+$ cat &gt; specs/user-registration.md &lt;&lt; <span class="code-string">'EOF'</span>
+<span class="code-comment"># Spec: Registro de Usuário</span>
+
+<span class="code-comment">## Objetivo</span>
+Implementar endpoint de registro com validação completa.
+
+<span class="code-comment">## Stack</span>
+- FastAPI <span class="code-number">0.104</span>+, Python <span class="code-number">3.12</span>
+- SQLAlchemy <span class="code-number">2.0</span> (async), PostgreSQL
+- Pydantic v2 para validação
+- bcrypt para hashing de senha
+
+<span class="code-comment">## Endpoint</span>
+POST /api/v1/auth/register
+
+<span class="code-comment">## Request Body</span>
+{
+  <span class="code-string">"email"</span>: <span class="code-string">"string, required, valid email format"</span>,
+  <span class="code-string">"password"</span>: <span class="code-string">"string, required, min 8 chars, 1 uppercase, 1 number"</span>,
+  <span class="code-string">"name"</span>: <span class="code-string">"string, required, 2-100 chars"</span>
+}
+
+<span class="code-comment">## Regras de Negócio</span>
+<span class="code-number">1.</span> Email deve ser único (<span class="code-number">409</span> se já existir)
+<span class="code-number">2.</span> Senha deve ser hasheada com bcrypt (rounds=<span class="code-number">12</span>)
+<span class="code-number">3.</span> Criar registro na tabela `users`
+<span class="code-number">4.</span> Retornar user sem campo password
+
+<span class="code-comment">## Testes Esperados</span>
+- test_register_success
+- test_register_duplicate_email
+- test_register_weak_password
+- test_register_invalid_email
+
+<span class="code-comment">## Arquivos</span>
+- app/routers/auth.py (criar)
+- app/schemas/auth.py (criar)
+- app/services/auth_service.py (criar)
+- tests/test_auth.py (criar)
+
+<span class="code-comment">## NÃO fazer</span>
+- Não implementar login (será outra spec)
+- Não enviar email de verificação (será outra spec)
+- Não adicionar rate limiting (será config global)
+EOF
+
+<span class="code-comment"># 2. Use Claude Code com a spec</span>
+$ claude <span class="code-string">"Implemente exatamente o que está descrito em specs/user-registration.md.
+         Siga a spec à risca, sem adicionar funcionalidades extras."</span></code></pre>
+      </section>
+
+      <hr>
+
+      <!-- 6.4 Vantagens do Spec-Driven Design -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 6.4</span>
+        <h2>Vantagens do Spec-Driven Design</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Vantagem</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Determinismo</strong></td>
+                <td>Especificações claras produzem resultados consistentes entre diferentes sessões</td>
+              </tr>
+              <tr>
+                <td><strong>Reviewabilidade</strong></td>
+                <td>Fácil comparar implementação vs. spec e identificar desvios</td>
+              </tr>
+              <tr>
+                <td><strong>Paralelização</strong></td>
+                <td>Múltiplas specs podem ser implementadas em paralelo por diferentes agentes</td>
+              </tr>
+              <tr>
+                <td><strong>Documentação automática</strong></td>
+                <td>A spec já serve como documentação da feature</td>
+              </tr>
+              <tr>
+                <td><strong>Redução de iterações</strong></td>
+                <td>Menos "não era isso" &rarr; menos tokens gastos &rarr; menor custo</td>
+              </tr>
+              <tr>
+                <td><strong>Onboarding</strong></td>
+                <td>Novos membros da equipe entendem o "porquê" lendo specs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 6.5 Templates de Spec por Tipo de Tarefa -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 6.5</span>
+        <h2>Templates de Spec por Tipo de Tarefa</h2>
+
+        <h3>Para Bug Fix</h3>
+
+        <pre><code><span class="code-label">Markdown</span><span class="code-comment"># Bug Fix: [Título]</span>
+
+<span class="code-comment">## Comportamento Atual (Bug)</span>
+O que acontece e como reproduzir.
+
+<span class="code-comment">## Comportamento Esperado</span>
+O que deveria acontecer.
+
+<span class="code-comment">## Causa Raiz (se conhecida)</span>
+Análise preliminar.
+
+<span class="code-comment">## Correção Proposta</span>
+Abordagem sugerida.
+
+<span class="code-comment">## Testes de Regressão</span>
+Testes que devem ser adicionados.</code></pre>
+
+        <h3>Para Refactoring</h3>
+
+        <pre><code><span class="code-label">Markdown</span><span class="code-comment"># Refactoring: [Título]</span>
+
+<span class="code-comment">## Motivação</span>
+Por que refatorar.
+
+<span class="code-comment">## Estado Atual</span>
+Estrutura atual do código.
+
+<span class="code-comment">## Estado Desejado</span>
+Estrutura após refatoração.
+
+<span class="code-comment">## Invariantes</span>
+O que NÃO deve mudar (APIs públicas, comportamento).
+
+<span class="code-comment">## Estratégia de Migração</span>
+Passos incrementais.</code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Principal</div>
+            <p>Martin Fowler (2025). <em>"Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl"</em>. <a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html" target="_blank">martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html</a> &mdash; Análise autoritativa de Martin Fowler sobre ferramentas e padrões de SDD, uma das vozes mais respeitadas em engenharia de software.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Oficial</div>
+            <p>GitHub Blog (2025). <em>"Spec-driven development with AI: Get started with a new open source toolkit"</em>. <a href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/" target="_blank">github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit</a> &mdash; Introdução do spec-kit, toolkit open-source para workflows de SDD.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Toolkit</div>
+            <p>GitHub spec-kit. <a href="https://github.com/github/spec-kit" target="_blank">github.com/github/spec-kit</a> &mdash; Toolkit open-source para spec-driven development com GitHub Copilot, Claude Code e Gemini CLI.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Adicional</div>
+            <p>Thoughtworks (2025). <em>"Spec-driven development: Unpacking one of 2025's key new AI-assisted engineering practices"</em>. <a href="https://www.thoughtworks.com/en-us/insights/blog/agile-engineering-practices/spec-driven-development-unpacking-2025-new-engineering-practices" target="_blank">thoughtworks.com/en-us/insights/blog/agile-engineering-practices/spec-driven-development-unpacking-2025-new-engineering-practices</a></p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Adicional</div>
+            <p>InfoQ. <em>"Spec Driven Development: When Architecture Becomes Executable"</em>. <a href="https://www.infoq.com/articles/spec-driven-development/" target="_blank">infoq.com/articles/spec-driven-development</a></p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Adicional</div>
+            <p>Anthropic. <em>"Claude Code Best Practices"</em>. <a href="https://docs.anthropic.com/en/docs/claude-code/best-practices" target="_blank">docs.anthropic.com/en/docs/claude-code/best-practices</a> &mdash; Inclui recomendações sobre uso de specs com Claude Code.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-05.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">05 &mdash; Prompt Engineering</span>
+        </a>
+        <a href="modulo-07.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">07 &mdash; Ferramentas de IA</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

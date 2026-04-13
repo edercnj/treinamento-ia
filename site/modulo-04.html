@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 04 — Engenharia de Contexto | Programação com Agentes de IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item active"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 04</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">04</div>
+        <h1>Engenharia de Contexto</h1>
+        <p class="module-desc">Os 4 pilares para preencher a janela de contexto da forma mais eficaz possível: seleção, organização, compressão e atualização dinâmica.</p>
+      </div>
+
+      <!-- 4.1 O que é Engenharia de Contexto? -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 4.1</span>
+        <h2>O que é Engenharia de Contexto?</h2>
+
+        <p>Se a Janela de Contexto é o <strong>espaço</strong> disponível, a <strong>Engenharia de Contexto</strong> (Context Engineering) é a <strong>arte e ciência de preencher esse espaço da forma mais eficaz possível</strong>.</p>
+
+        <p><strong>Definição formal:</strong> Engenharia de Contexto é o conjunto de técnicas, estratégias e decisões arquiteturais para selecionar, organizar, comprimir e gerenciar as informações que são enviadas a um modelo de linguagem, maximizando a qualidade das respostas dentro dos limites da janela de contexto.</p>
+
+        <p><strong>Enquanto Prompt Engineering</strong> foca em <strong>como formular</strong> a pergunta, <strong>Engenharia de Contexto</strong> foca em <strong>o que incluir</strong> junto com a pergunta.</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Se você está consultando um advogado (a LLM):</p>
+          <ul>
+            <li><strong>Prompt Engineering</strong> = como formular sua pergunta ao advogado</li>
+            <li><strong>Engenharia de Contexto</strong> = quais documentos, contratos e evidências levar à reunião</li>
+          </ul>
+          <p>Levar documentos errados ou irrelevantes é tão prejudicial quanto não levar documentos suficientes.</p>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Fundamental</div>
+            <p>Anthropic Engineering (2025). <em>"Effective Context Engineering for AI Agents"</em>. <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">anthropic.com/engineering/effective-context-engineering-for-ai-agents</a> &mdash; Post autoritativo da equipe de engenharia da Anthropic sobre estratégias de curadoria e gerenciamento do conjunto ótimo de tokens durante a inferência de LLMs. Cobre o conceito de "context rot", "attention budget", e padrões práticos para gerenciamento de contexto em agentes.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Adicional</div>
+            <p>CIO.com (2025). <em>"Context Engineering: Improving AI by Moving Beyond the Prompt"</em>. <a href="https://www.cio.com/article/4080592/context-engineering-improving-ai-by-moving-beyond-the-prompt.html" target="_blank">cio.com/article/4080592/context-engineering-improving-ai-by-moving-beyond-the-prompt</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 4.2 Os Quatro Pilares da Engenharia de Contexto -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 4.2</span>
+        <h2>Os Quatro Pilares da Engenharia de Contexto</h2>
+
+        <!-- Pilar 1 -->
+        <h3>Pilar 1 &mdash; Seleção de Contexto</h3>
+
+        <p>Decidir <strong>o que incluir</strong> na janela de contexto é a decisão mais impactante:</p>
+
+        <h4>Técnicas de seleção</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Técnica</th>
+                <th>Descrição</th>
+                <th>Quando usar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Seleção manual</strong></td>
+                <td>O programador decide quais arquivos incluir</td>
+                <td>Debugging focado, quando você sabe exatamente onde o problema está</td>
+              </tr>
+              <tr>
+                <td><strong>Seleção por relevância semântica (RAG)</strong></td>
+                <td>Busca vetorial encontra trechos relevantes automaticamente</td>
+                <td>Bases de código grandes, documentação extensa</td>
+              </tr>
+              <tr>
+                <td><strong>Seleção por grafo de dependências</strong></td>
+                <td>Análise estática do código para incluir imports e dependências</td>
+                <td>Entender efeitos colaterais de mudanças</td>
+              </tr>
+              <tr>
+                <td><strong>Seleção por recência</strong></td>
+                <td>Priorizar arquivos modificados recentemente</td>
+                <td>Bug em código novo, code review</td>
+              </tr>
+              <tr>
+                <td><strong>Seleção heurística</strong></td>
+                <td>Regras como "sempre incluir o README, testes e schema"</td>
+                <td>Setup inicial de contexto para qualquer tarefa</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Exemplo prático em Claude Code</h4>
+
+        <pre><code><span class="code-label">Bash</span><span class="code-comment"># Claude Code faz seleção inteligente automaticamente:</span>
+<span class="code-comment"># 1. Lê o CLAUDE.md do projeto (regras e contexto)</span>
+<span class="code-comment"># 2. Usa ferramentas (Glob, Grep) para encontrar arquivos relevantes</span>
+<span class="code-comment"># 3. Lê apenas as partes necessárias de cada arquivo</span>
+<span class="code-comment"># 4. Mantém o histórico da conversa comprimido</span></code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Lewis, P. et al. (2020). <em>"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks"</em>. Facebook AI/UCL. arXiv:2005.11401. <a href="https://arxiv.org/abs/2005.11401" target="_blank">arxiv.org/abs/2005.11401</a> &mdash; Paper fundacional sobre RAG (Retrieval-Augmented Generation).</p>
+          </div>
+        </div>
+
+        <!-- Pilar 2 -->
+        <h3>Pilar 2 &mdash; Organização do Contexto</h3>
+
+        <p>A <strong>ordem</strong> e <strong>estrutura</strong> das informações no contexto impactam diretamente a qualidade da resposta:</p>
+
+        <h4>Princípios de organização</h4>
+
+        <ol>
+          <li><strong>Informações mais importantes primeiro ou por último</strong> (evitar o "Lost in the Middle")</li>
+          <li><strong>Separação clara entre tipos de informação</strong> &mdash; use delimitadores:</li>
+        </ol>
+
+        <pre><code><span class="code-label">XML</span><span class="code-tag">&lt;system_instructions&gt;</span>
+Você é um assistente de código especializado em Python.
+<span class="code-tag">&lt;/system_instructions&gt;</span>
+
+<span class="code-tag">&lt;project_context&gt;</span>
+<span class="code-comment">&lt;!-- Arquitetura do projeto, convenções, stack --&gt;</span>
+<span class="code-tag">&lt;/project_context&gt;</span>
+
+<span class="code-tag">&lt;relevant_code&gt;</span>
+<span class="code-comment">&lt;!-- Arquivos de código relevantes para a tarefa --&gt;</span>
+<span class="code-tag">&lt;/relevant_code&gt;</span>
+
+<span class="code-tag">&lt;user_request&gt;</span>
+Corrija o bug na função de autenticação.
+<span class="code-tag">&lt;/user_request&gt;</span></code></pre>
+
+        <ol start="3">
+          <li><strong>Hierarquia de informação</strong> &mdash; do geral para o específico</li>
+          <li><strong>Metadados explícitos</strong> &mdash; nomes de arquivo, números de linha, caminhos</li>
+        </ol>
+
+        <!-- Pilar 3 -->
+        <h3>Pilar 3 &mdash; Compressão de Contexto</h3>
+
+        <p>Quando há mais informação relevante do que espaço disponível:</p>
+
+        <h4>Técnicas de compressão</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Técnica</th>
+                <th>Descrição</th>
+                <th>Trade-off</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resumo automático</strong></td>
+                <td>LLM resume mensagens antigas da conversa</td>
+                <td>Perde detalhes mas mantém essência</td>
+              </tr>
+              <tr>
+                <td><strong>Truncamento inteligente</strong></td>
+                <td>Remove partes menos relevantes de arquivos longos</td>
+                <td>Risco de perder contexto crucial</td>
+              </tr>
+              <tr>
+                <td><strong>Chunking</strong></td>
+                <td>Divide documentos grandes em pedaços menores e seleciona os mais relevantes</td>
+                <td>Pode perder visão do todo</td>
+              </tr>
+              <tr>
+                <td><strong>Extração de esqueleto</strong></td>
+                <td>Extrai apenas assinaturas de funções, tipos e interfaces de arquivos grandes</td>
+                <td>Perde implementação mas mantém estrutura</td>
+              </tr>
+              <tr>
+                <td><strong>Deduplicação</strong></td>
+                <td>Remove informação repetida entre múltiplas fontes</td>
+                <td>Pode perder nuances de diferentes contextos</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Exemplo de compressão em Claude Code</h4>
+
+        <p>Claude Code implementa compressão automática de contexto quando a conversa fica longa. O sistema:</p>
+        <ol>
+          <li>Identifica mensagens antigas que podem ser resumidas</li>
+          <li>Mantém intactas as mensagens recentes e as mais relevantes</li>
+          <li>Resume o restante preservando decisões-chave e contexto essencial</li>
+          <li>Libera espaço para novas interações e código</li>
+        </ol>
+
+        <!-- Pilar 4 -->
+        <h3>Pilar 4 &mdash; Atualização Dinâmica do Contexto</h3>
+
+        <p>O contexto não é estático &mdash; ele deve evoluir conforme a tarefa progride:</p>
+
+        <h4>Exemplos de atualização dinâmica</h4>
+
+        <ul>
+          <li><strong>Ferramentas de busca:</strong> Claude Code usa <code>Grep</code> e <code>Glob</code> para buscar informação sob demanda, em vez de carregar tudo antecipadamente</li>
+          <li><strong>Resultados de execução:</strong> Resultados de testes, logs de erro e output de comandos são adicionados ao contexto em tempo real</li>
+          <li><strong>Refinamento iterativo:</strong> A cada turno da conversa, o contexto é refinado com base no que foi aprendido</li>
+        </ul>
+      </section>
+
+      <hr>
+
+      <!-- 4.3 Engenharia de Contexto vs. RAG -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 4.3</span>
+        <h2>Engenharia de Contexto vs. RAG</h2>
+
+        <p><strong>RAG (Retrieval-Augmented Generation)</strong> é uma técnica <strong>dentro</strong> da Engenharia de Contexto, não um sinônimo:</p>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-folder depth-0">
+            <div class="v-tree-icon">&#128194;</div>
+            <span class="v-tree-label">Engenharia de Contexto</span>
+            <span class="v-tree-hint">disciplina ampla</span>
+          </div>
+          <div class="v-tree-item tree-folder depth-1">
+            <div class="v-tree-icon">&#128194;</div>
+            <span class="v-tree-label">Seleção de Contexto</span>
+          </div>
+          <div class="v-tree-item tree-file depth-2">
+            <div class="v-tree-icon">&#128269;</div>
+            <span class="v-tree-label">RAG (busca semântica)</span>
+            <span class="v-tree-hint">RAG é apenas uma técnica</span>
+          </div>
+          <div class="v-tree-item tree-file depth-2">
+            <div class="v-tree-icon">&#128279;</div>
+            <span class="v-tree-label">Seleção por grafo de dependências</span>
+          </div>
+          <div class="v-tree-item tree-file depth-2">
+            <div class="v-tree-icon">&#9998;</div>
+            <span class="v-tree-label">Seleção manual</span>
+          </div>
+          <div class="v-tree-item tree-file depth-2">
+            <div class="v-tree-icon">&#9881;</div>
+            <span class="v-tree-label">Seleção heurística</span>
+          </div>
+          <div class="v-tree-item tree-folder depth-1">
+            <div class="v-tree-icon">&#128194;</div>
+            <span class="v-tree-label">Organização do Contexto</span>
+          </div>
+          <div class="v-tree-item tree-folder depth-1">
+            <div class="v-tree-icon">&#128194;</div>
+            <span class="v-tree-label">Compressão de Contexto</span>
+          </div>
+          <div class="v-tree-item tree-folder depth-1">
+            <div class="v-tree-icon">&#128194;</div>
+            <span class="v-tree-label">Atualização Dinâmica</span>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência sobre RAG</div>
+            <p>Gao, Y. et al. (2024). <em>"Retrieval-Augmented Generation for Large Language Models: A Survey"</em>. arXiv:2312.10997. <a href="https://arxiv.org/abs/2312.10997" target="_blank">arxiv.org/abs/2312.10997</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 4.4 Engenharia de Contexto na Prática -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 4.4</span>
+        <h2>Engenharia de Contexto na Prática</h2>
+
+        <p><strong>Cenário: Você quer que Claude Code corrija um bug em uma API REST</strong></p>
+
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Abordagem Ruim (sem engenharia de contexto)</div>
+            <pre><code>"Corrige o bug na API"
+&rarr; Modelo não tem contexto suficiente
+&rarr; Precisa fazer muitas perguntas
+&rarr; Respostas genéricas</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Abordagem Boa (com engenharia de contexto)</div>
+            <pre><code>Contexto fornecido ao modelo:
+1. CLAUDE.md com arquitetura do projeto
+2. O arquivo da rota com bug
+3. O modelo de dados relevante
+4. O teste que está falhando (com output do erro)
+5. Dependências diretas (services, repositories)
+
+Prompt: "O teste test_create_user está falhando
+com 'IntegrityError'. O erro está na rota
+POST /users. Corrija mantendo a convenção
+do projeto de usar repository pattern."
+
+&rarr; Modelo tem tudo que precisa
+&rarr; Resposta precisa e contextualizada
+&rarr; Segue as convenções do projeto</code></pre>
+          </div>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Dica Prática</div>
+            <p>A diferença entre uma resposta genérica e uma resposta precisa quase sempre está na qualidade do contexto fornecido, não na qualidade do prompt. Invista tempo na engenharia de contexto antes de refinar o prompt.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 4.5 Otimização de Tokens e Janela de Contexto -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 4.5</span>
+        <h2>Otimização de Tokens e Janela de Contexto</h2>
+
+        <p>Dominar os quatro pilares é essencial, mas o trabalho do engenheiro de contexto não termina ali. Em produção, cada token importa: <strong>tokens custam dinheiro, aumentam a latência e degradam a qualidade</strong> quando usados em excesso. Esta seção traz um arsenal prático de técnicas para reduzir consumo sem perder qualidade de resposta.</p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#128712;</span>
+          <div class="callout-content">
+            <div class="callout-title">Problemas que Otimização Resolve</div>
+            <ul>
+              <li><strong>Custos altos em produção</strong> &mdash; LLM-as-a-service cobra por token; contextos inflados escalam a conta linearmente.</li>
+              <li><strong>Latência elevada</strong> &mdash; mais tokens de entrada significam TTFT (Time to First Token) maior e respostas mais lentas.</li>
+              <li><strong>"Lost in the Middle"</strong> (Módulo 3) &mdash; modelos perdem informação quando o contexto fica gigante, degradando a precisão.</li>
+              <li><strong>Context exhaustion</strong> &mdash; conversas longas estouram a janela e forçam truncamentos abruptos.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="analogy">
+          <div class="analogy-title">A Regra de Ouro</div>
+          <p>O melhor contexto não é o <em>maior</em> contexto &mdash; é o <strong>mínimo contexto suficiente</strong> para a tarefa. Cada token extra é ruído que compete pela atenção do modelo.</p>
+        </div>
+
+        <hr>
+
+        <!-- 4.5.1 Prompt Caching -->
+        <h3>4.5.1 &mdash; Prompt Caching (Cache de Prompt)</h3>
+
+        <p>Modelos modernos como <strong>Claude</strong>, <strong>Gemini</strong> e <strong>GPT-4o</strong> suportam <strong>cache de prefixo</strong>: partes estáticas e repetidas do prompt ficam cacheadas no servidor, e requisições subsequentes pagam apenas uma fração do preço por elas.</p>
+
+        <h4>Como funciona</h4>
+        <ul>
+          <li>Você marca partes do prompt como <code>cache_control</code> (Anthropic) ou usa prefixos idênticos (OpenAI).</li>
+          <li>O servidor gera um <strong>hash do prefixo</strong> e armazena as representações KV internas.</li>
+          <li>A próxima requisição com o mesmo prefixo reutiliza o cache &mdash; sem recomputar.</li>
+          <li>Economia típica: <strong>até 90% de desconto</strong> nos tokens cacheados (Anthropic) e <strong>50%</strong> (OpenAI).</li>
+          <li>TTL do cache: 5 minutos (Anthropic, padrão); 1 hora com tier estendido.</li>
+        </ul>
+
+        <h4>O que cachear</h4>
+        <ul>
+          <li><strong>System prompts longos</strong> &mdash; instruções, persona, guidelines.</li>
+          <li><strong>Arquivos de regras</strong> &mdash; CLAUDE.md, .cursorrules, documentação estática.</li>
+          <li><strong>Documentação de referência</strong> &mdash; API docs, schemas, specs que raramente mudam.</li>
+          <li><strong>Exemplos few-shot</strong> &mdash; demonstrações que se repetem entre chamadas.</li>
+        </ul>
+
+        <h4>Ordenação do prompt importa</h4>
+        <p>Organize <strong>do mais estático ao mais dinâmico</strong>. Tudo antes do ponto de cache é reutilizado; tudo depois é recomputado.</p>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot">1</div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">System Prompt</div>
+              <div class="v-pipeline-card-desc">Instruções gerais, persona &mdash; raramente muda</div>
+              <div class="v-pipeline-card-sub">CACHEÁVEL</div>
+            </div>
+          </div>
+          <div class="v-pipeline-connector"></div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot">2</div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Regras do Projeto</div>
+              <div class="v-pipeline-card-desc">CLAUDE.md, convenções, schemas</div>
+              <div class="v-pipeline-card-sub">CACHEÁVEL</div>
+            </div>
+          </div>
+          <div class="v-pipeline-connector"></div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot">3</div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Documentação/Few-shots</div>
+              <div class="v-pipeline-card-desc">Docs de API, exemplos</div>
+              <div class="v-pipeline-card-sub">CACHEÁVEL (ponto de corte)</div>
+            </div>
+          </div>
+          <div class="v-pipeline-connector"></div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot">4</div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Histórico da Conversa</div>
+              <div class="v-pipeline-card-desc">Mensagens anteriores</div>
+              <div class="v-pipeline-card-sub">DINÂMICO</div>
+            </div>
+          </div>
+          <div class="v-pipeline-connector"></div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-dot">5</div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Mensagem Atual do Usuário</div>
+              <div class="v-pipeline-card-desc">Entrada atual</div>
+              <div class="v-pipeline-card-sub">DINÂMICO</div>
+            </div>
+          </div>
+        </div>
+
+        <h4>Template com Anthropic API (Python SDK)</h4>
+
+        <pre><code><span class="code-label">Python</span><span class="code-keyword">import</span> anthropic
+
+client = anthropic.Anthropic()
+
+response = client.messages.create(
+    model=<span class="code-string">"claude-sonnet-4-5"</span>,
+    max_tokens=1024,
+    system=[
+        {
+            <span class="code-string">"type"</span>: <span class="code-string">"text"</span>,
+            <span class="code-string">"text"</span>: <span class="code-string">"Você é um assistente de código especializado em Python."</span>,
+        },
+        {
+            <span class="code-string">"type"</span>: <span class="code-string">"text"</span>,
+            <span class="code-string">"text"</span>: documentacao_extensa_do_projeto,  <span class="code-comment"># 50k tokens de docs</span>
+            <span class="code-string">"cache_control"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"ephemeral"</span>}  <span class="code-comment"># &larr; ponto de cache</span>
+        }
+    ],
+    messages=[
+        {<span class="code-string">"role"</span>: <span class="code-string">"user"</span>, <span class="code-string">"content"</span>: <span class="code-string">"Corrija o bug na função authenticate()"</span>}
+    ]
+)
+
+<span class="code-comment"># Primeira chamada: paga 100% dos 50k tokens da documentação</span>
+<span class="code-comment"># Chamadas seguintes (em até 5 min): paga apenas 10% desses 50k</span>
+<span class="code-keyword">print</span>(response.usage)
+<span class="code-comment"># cache_creation_input_tokens: 50000  (primeira vez)</span>
+<span class="code-comment"># cache_read_input_tokens:    50000  (chamadas seguintes, com desconto)</span></code></pre>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Dica &mdash; Ponto de Cache</div>
+            <p>Você pode definir até 4 pontos de cache (breakpoints) por requisição. Posicione-os de forma que o máximo possível do prompt seja reutilizado. Em aplicações com agentes que fazem muitas chamadas curtas, o caching pode derrubar o custo em 70-85%.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic (2024). <em>"Prompt Caching"</em>. <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">docs.anthropic.com/en/docs/build-with-claude/prompt-caching</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 4.5.2 Compactação e Resumo -->
+        <h3>4.5.2 &mdash; Compactação e Resumo do Histórico</h3>
+
+        <p>Conversas longas esgotam rapidamente a janela de contexto. <strong>Claude Code</strong> (e outros agentes modernos) faz <strong>compactação automática</strong> quando o histórico cresce demais.</p>
+
+        <h4>O mecanismo</h4>
+        <ol>
+          <li>O agente monitora o consumo da janela de contexto.</li>
+          <li>Ao ultrapassar um threshold (ex.: 80% da janela), o agente dispara uma chamada de <em>summary</em> sobre mensagens antigas.</li>
+          <li>Um resumo estruturado substitui aquelas mensagens no histórico.</li>
+          <li>Mensagens recentes e críticas (últimos N turns) permanecem intactas.</li>
+        </ol>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>O que é preservado</th>
+                <th>O que é descartado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Decisões-chave tomadas</td>
+                <td>Detalhes de tool calls antigas (output bruto)</td>
+              </tr>
+              <tr>
+                <td>Arquivos tocados e caminhos</td>
+                <td>Conteúdos intermediários de arquivos já processados</td>
+              </tr>
+              <tr>
+                <td>Erros encontrados e soluções aplicadas</td>
+                <td>Logs verbosos e stack traces extensos</td>
+              </tr>
+              <tr>
+                <td>Estado atual da tarefa</td>
+                <td>Tentativas descartadas</td>
+              </tr>
+              <tr>
+                <td>Requisitos do usuário (original e refinado)</td>
+                <td>Diálogo coloquial de confirmação</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;</span>
+          <div class="callout-content">
+            <div class="callout-title">Cuidado</div>
+            <p>A compactação tem custo: é uma chamada extra à LLM que cobra input+output. Em Claude Code, use <code>/compact</code> manualmente apenas quando estiver próximo do limite; deixe o auto-compact cuidar do resto.</p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 4.5.3 Seleção Cirúrgica -->
+        <h3>4.5.3 &mdash; Seleção Cirúrgica de Arquivos</h3>
+
+        <p>Um dos maiores desperdícios de tokens é carregar arquivos inteiros quando apenas uma função ou bloco é relevante.</p>
+
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">NÃO faça</div>
+            <pre><code>"Leia todos os arquivos do projeto
+e me diga onde está o bug."
+
+&rarr; Lê 200 arquivos, 150k tokens
+&rarr; Modelo perde foco
+&rarr; Lost in the middle
+&rarr; Custo alto, resposta ruim</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">FAÇA</div>
+            <pre><code>1. Grep "IntegrityError" em src/
+   &rarr; aponta 3 arquivos
+
+2. Read auth.py offset=45 limit=30
+   &rarr; só a função relevante
+
+3. Read models/user.py offset=12 limit=20
+   &rarr; só o schema User
+
+Total: ~800 tokens &mdash; 188&times; menos</code></pre>
+          </div>
+        </div>
+
+        <h4>Táticas em Claude Code</h4>
+        <ul>
+          <li><strong>Grep primeiro, Read depois</strong> &mdash; use <code>Grep</code> para localizar, <code>Read</code> apenas para a vizinhança.</li>
+          <li><strong><code>Read</code> com <code>offset</code> e <code>limit</code></strong> &mdash; para arquivos &gt; 500 linhas, leia janelas de 50-100 linhas em torno da região de interesse.</li>
+          <li><strong><code>Glob</code> ao invés de <code>ls</code> recursivo</strong> &mdash; padrões de nome filtram antes de listar.</li>
+          <li><strong>Evite leituras especulativas</strong> &mdash; cada <code>Read</code> custa tokens mesmo que o conteúdo não ajude.</li>
+        </ul>
+
+        <div class="before-after">
+          <div class="before-after-card card-before">
+            <div class="before-after-title">Antes &mdash; Ler tudo</div>
+            <div class="before-after-line"><span class="line-from">auth.py (inteiro)</span><span class="line-arrow">&rarr;</span><span class="line-to">8.400 tok</span></div>
+            <div class="before-after-line"><span class="line-from">models.py (inteiro)</span><span class="line-arrow">&rarr;</span><span class="line-to">6.200 tok</span></div>
+            <div class="before-after-line"><span class="line-from">repositories.py</span><span class="line-arrow">&rarr;</span><span class="line-to">5.900 tok</span></div>
+            <div class="before-after-line"><span class="line-from">tests/*.py (3 arqs)</span><span class="line-arrow">&rarr;</span><span class="line-to">12.500 tok</span></div>
+            <div class="before-after-total">Total: ~33.000 tokens</div>
+          </div>
+          <div class="before-after-card card-after">
+            <div class="before-after-title">Depois &mdash; Cirúrgico</div>
+            <div class="before-after-line"><span class="line-from">auth.py L45-75</span><span class="line-arrow">&rarr;</span><span class="line-to">420 tok</span></div>
+            <div class="before-after-line"><span class="line-from">models/user.py L12-32</span><span class="line-arrow">&rarr;</span><span class="line-to">280 tok</span></div>
+            <div class="before-after-line"><span class="line-from">test_auth.py L88-110</span><span class="line-arrow">&rarr;</span><span class="line-to">340 tok</span></div>
+            <div class="before-after-line"><span class="line-from">(output de Grep)</span><span class="line-arrow">&rarr;</span><span class="line-to">180 tok</span></div>
+            <div class="before-after-total">Total: ~1.220 tokens (27&times; menos)</div>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 4.5.4 Delegação para Subagentes -->
+        <h3>4.5.4 &mdash; Delegação para Subagentes</h3>
+
+        <p>Pesquisa exploratória consome uma quantidade enorme de tokens: buscar, ler, descartar, buscar de novo. O contexto principal fica poluído com material que não será usado na resposta final.</p>
+
+        <p>A solução arquitetural é delegar essas tarefas a <strong>subagentes</strong> (ver Módulo 13). Cada subagente trabalha em seu <strong>próprio contexto isolado</strong>, e devolve ao agente principal apenas um resumo conciso do que encontrou.</p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#128712;</span>
+          <div class="callout-content">
+            <div class="callout-title">Padrão de Delegação</div>
+            <ol>
+              <li>Agente principal identifica tarefa exploratória (busca, análise ampla).</li>
+              <li>Dispara um subagente com instruções específicas.</li>
+              <li>Subagente explora, lê, filtra &mdash; gastando tokens no seu próprio contexto.</li>
+              <li>Subagente retorna um <strong>resumo estruturado</strong> (300-800 tokens) ao agente principal.</li>
+              <li>O contexto principal recebe só o essencial &mdash; permanece enxuto.</li>
+            </ol>
+          </div>
+        </div>
+
+        <p><strong>Candidatos ideais para delegar:</strong></p>
+        <ul>
+          <li>"Encontre todos os lugares onde usamos o padrão X"</li>
+          <li>"Analise esta lib de terceiro e me diga a API pública"</li>
+          <li>"Procure padrões similares em outras partes do monorepo"</li>
+          <li>"Classifique este CSV de 10k linhas e me dê um sumário"</li>
+        </ul>
+
+        <hr>
+
+        <!-- 4.5.5 Técnicas de redução -->
+        <h3>4.5.5 &mdash; Técnicas de Redução de Tokens em Prompts</h3>
+
+        <p>Mesmo prompts bem estruturados podem ser comprimidos sem perda de qualidade. A tabela abaixo lista técnicas concretas com economia estimada.</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Técnica</th>
+                <th>Exemplo</th>
+                <th>Economia aprox.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Remover formatação redundante</strong></td>
+                <td>Eliminar headers decorativos, separadores <code>===</code>, emojis supérfluos</td>
+                <td>5-15%</td>
+              </tr>
+              <tr>
+                <td><strong>Abreviações consistentes</strong></td>
+                <td><code>fn</code> vs <code>function</code>; <code>req/res</code> vs <code>request/response</code></td>
+                <td>3-8%</td>
+              </tr>
+              <tr>
+                <td><strong>Cortar cortesias</strong></td>
+                <td>Remover "por favor", "obrigado", "se possível"</td>
+                <td>2-5%</td>
+              </tr>
+              <tr>
+                <td><strong>Tabelas ao invés de prosa</strong></td>
+                <td>"X tem Y e Z, A tem B e C..." &rarr; tabela Markdown</td>
+                <td>20-40% (dados tabulares)</td>
+              </tr>
+              <tr>
+                <td><strong>YAML ao invés de JSON</strong></td>
+                <td>YAML omite aspas e vírgulas; menos tokens que JSON equivalente</td>
+                <td>10-30%</td>
+              </tr>
+              <tr>
+                <td><strong>Inglês em prompts técnicos</strong></td>
+                <td>Tokenizers (BPE) são otimizados para inglês; português quebra mais</td>
+                <td>15-25%</td>
+              </tr>
+              <tr>
+                <td><strong>Comprimir exemplos</strong></td>
+                <td>Em vez de 5 few-shots, use 2 representativos</td>
+                <td>30-60% (few-shot heavy)</td>
+              </tr>
+              <tr>
+                <td><strong>Stripping de comentários</strong></td>
+                <td>Remover comentários não essenciais antes de enviar código</td>
+                <td>5-20% (código comentado)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;</span>
+          <div class="callout-content">
+            <div class="callout-title">Não Abreviação Demais</div>
+            <p>Abreviar o prompt a ponto de ficar ambíguo gera <strong>clarifying questions</strong> ou respostas incorretas &mdash; mais tokens gastos no round-trip. A regra é: comprima o que o modelo claramente infere; preserve o que é semanticamente necessário.</p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 4.5.6 Output Token Management -->
+        <h3>4.5.6 &mdash; Gerenciamento de Tokens de Saída</h3>
+
+        <p>Lembre do Módulo 2: <strong>tokens de output custam 3-5&times; mais que tokens de input</strong>. Controlar a verborragia da resposta é dos lugares com maior ROI de otimização.</p>
+
+        <h4>Diretrizes explícitas</h4>
+        <ul>
+          <li><strong>Limite de parágrafos/linhas:</strong> "Responda em no máximo 3 parágrafos" / "Resposta em até 5 linhas".</li>
+          <li><strong>Apenas o essencial:</strong> "Apenas o código, sem explicação." / "Responda apenas com o JSON, sem prosa."</li>
+          <li><strong>Formato fixo:</strong> "Retorne no formato: {decisão}: {justificativa em 1 frase}".</li>
+          <li><strong>Negativos explícitos:</strong> "Não repita o código original na resposta" / "Não inclua disclaimers".</li>
+        </ul>
+
+        <h4>Structured Output</h4>
+        <p>JSON schemas (OpenAI <code>response_format</code>, Anthropic <code>tools</code>) restringem a resposta a campos pré-definidos &mdash; eliminando prosa introdutória e conclusiva típica dos modelos.</p>
+
+        <pre><code><span class="code-label">Python</span><span class="code-comment"># Structured output via tool use (Anthropic)</span>
+tools = [{
+    <span class="code-string">"name"</span>: <span class="code-string">"submit_fix"</span>,
+    <span class="code-string">"description"</span>: <span class="code-string">"Submete a correção do bug"</span>,
+    <span class="code-string">"input_schema"</span>: {
+        <span class="code-string">"type"</span>: <span class="code-string">"object"</span>,
+        <span class="code-string">"properties"</span>: {
+            <span class="code-string">"file"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"string"</span>},
+            <span class="code-string">"line"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"integer"</span>},
+            <span class="code-string">"patch"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"string"</span>}
+        },
+        <span class="code-string">"required"</span>: [<span class="code-string">"file"</span>, <span class="code-string">"line"</span>, <span class="code-string">"patch"</span>]
+    }
+}]
+<span class="code-comment"># Modelo é forçado a responder apenas com o objeto &mdash; nada de "Aqui está...".</span></code></pre>
+
+        <h4>Streaming</h4>
+        <p>Ative <code>stream=True</code> para ver a resposta sendo gerada em tempo real. Isso permite <strong>cancelar</strong> a chamada assim que perceber que o modelo está divagando &mdash; evitando pagar pelo output completo.</p>
+
+        <hr>
+
+        <!-- 4.5.7 Monitoramento -->
+        <h3>4.5.7 &mdash; Monitoramento de Uso</h3>
+
+        <p>Você não otimiza o que não mede. Estabeleça visibilidade sobre consumo de tokens desde o dia 1.</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>Escopo</th>
+                <th>Recurso chave</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Anthropic Console</strong></td>
+                <td>Conta Anthropic</td>
+                <td>Usage por API key, modelo, data &mdash; <a href="https://console.anthropic.com/settings/usage" target="_blank" rel="noopener">console.anthropic.com/settings/usage</a></td>
+              </tr>
+              <tr>
+                <td><strong>OpenAI Usage Dashboard</strong></td>
+                <td>Conta OpenAI</td>
+                <td>Gráficos de tokens, custos, rate limits &mdash; <a href="https://platform.openai.com/usage" target="_blank" rel="noopener">platform.openai.com/usage</a></td>
+              </tr>
+              <tr>
+                <td><strong>LangSmith</strong></td>
+                <td>Aplicações LangChain/custom</td>
+                <td>Tracing completo de runs com tokens por passo</td>
+              </tr>
+              <tr>
+                <td><strong>Helicone</strong></td>
+                <td>Proxy de observabilidade</td>
+                <td>Intercepta chamadas OpenAI/Anthropic e gera métricas</td>
+              </tr>
+              <tr>
+                <td><strong>LangFuse</strong></td>
+                <td>Open-source self-hosted</td>
+                <td>Tracing, avaliações e custos agregados por usuário/sessão</td>
+              </tr>
+              <tr>
+                <td><strong>Claude Code <code>/status</code></strong></td>
+                <td>Sessão local</td>
+                <td>Mostra tokens consumidos na sessão atual e janela restante</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Instrumente no SDK</div>
+            <p>Todos os SDKs retornam um objeto <code>usage</code> com <code>input_tokens</code>, <code>output_tokens</code>, <code>cache_creation_input_tokens</code> e <code>cache_read_input_tokens</code>. Emita esses valores para seu sistema de métricas (Prometheus, Datadog) a cada chamada &mdash; em produção isso é inegociável.</p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 4.5.8 Budget de Tokens -->
+        <h3>4.5.8 &mdash; Budget de Tokens por Tarefa</h3>
+
+        <p>Estabeleça orçamentos de tokens por tipo de tarefa. Serve de baseline para detectar anomalias e guiar decisões de arquitetura.</p>
+
+        <div class="stats-card">
+          <div>
+            <div class="stats-group-title">Tarefa Simples (ex.: bug fix pontual)</div>
+            <div class="stat-row"><span class="stat-label">Input (prompt + contexto)</span><span class="stat-value">~5.000 tok</span></div>
+            <div class="stat-row"><span class="stat-label">Output (patch + explicação curta)</span><span class="stat-value">~2.000 tok</span></div>
+            <div class="stat-row"><span class="stat-label">Tool calls estimadas</span><span class="stat-value">3-6</span></div>
+            <div class="stat-row"><span class="stat-label">Latência alvo</span><span class="stat-value">&lt; 15s</span></div>
+            <div class="stat-row"><span class="stat-label">Custo estimado (Sonnet)</span><span class="stat-value"><span class="stat-highlight">~US$ 0,04</span></span></div>
+          </div>
+          <div>
+            <div class="stats-group-title">Tarefa Complexa (ex.: feature nova)</div>
+            <div class="stat-row"><span class="stat-label">Input (prompt + múltiplos arqs)</span><span class="stat-value">~50.000 tok</span></div>
+            <div class="stat-row"><span class="stat-label">Output (código + testes + docs)</span><span class="stat-value">~10.000 tok</span></div>
+            <div class="stat-row"><span class="stat-label">Tool calls estimadas</span><span class="stat-value">20-50</span></div>
+            <div class="stat-row"><span class="stat-label">Latência alvo</span><span class="stat-value">2-10min</span></div>
+            <div class="stat-row"><span class="stat-label">Custo estimado (Sonnet)</span><span class="stat-value"><span class="stat-highlight">~US$ 0,45</span></span></div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#128712;</span>
+          <div class="callout-content">
+            <div class="callout-title">Recomendação</div>
+            <p>Se uma tarefa simples está consumindo &gt; 20k tokens de input, algo está errado: provavelmente seleção de arquivos excessiva ou histórico não compactado. Trate como alerta e investigue.</p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 4.5.9 Checklist -->
+        <h3>4.5.9 &mdash; Checklist de Otimização</h3>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#9989;</span>
+          <div class="callout-content">
+            <div class="callout-title">Antes de Enviar o Prompt</div>
+            <ul>
+              <li>Os arquivos selecionados são <strong>realmente relevantes</strong> para esta tarefa específica?</li>
+              <li>Estou usando <code>offset</code>/<code>limit</code> em <code>Read</code> para arquivos grandes (&gt; 300 linhas)?</li>
+              <li>O system prompt é <strong>estático e cacheável</strong>? Posiciono-o antes do conteúdo dinâmico?</li>
+              <li>Delego tarefas exploratórias a <strong>subagentes</strong> para preservar o contexto principal?</li>
+              <li>Limito o <strong>tamanho da resposta esperada</strong> com diretrizes explícitas?</li>
+              <li>Uso <strong>structured output</strong> (tools/JSON schema) quando a saída deve ser parseável?</li>
+              <li>Removi <strong>cortesias, emojis decorativos e prosa redundante</strong> do prompt?</li>
+              <li>Prefiro <strong>tabelas e YAML</strong> a listas-em-prosa e JSON quando possível?</li>
+              <li>Estou <strong>medindo tokens</strong> (console, LangSmith, Helicone) para detectar regressões?</li>
+              <li>O histórico está sendo <strong>compactado</strong> quando ultrapassa 70-80% da janela?</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <ul>
+              <li>Anthropic (2024). <em>"Prompt Caching"</em>. <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">docs.anthropic.com/en/docs/build-with-claude/prompt-caching</a></li>
+              <li>Anthropic Engineering (2025). <em>"Effective Context Engineering for AI Agents"</em>. <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">anthropic.com/engineering/effective-context-engineering-for-ai-agents</a></li>
+              <li>OpenAI. <em>"Production Best Practices &mdash; Cost Optimization"</em>. <a href="https://platform.openai.com/docs/guides/production-best-practices" target="_blank" rel="noopener">platform.openai.com/docs/guides/production-best-practices</a></li>
+              <li>Liu, N. F. et al. (2023). <em>"Lost in the Middle: How Language Models Use Long Contexts"</em>. arXiv:2307.03172. <a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener">arxiv.org/abs/2307.03172</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-03.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">03 &mdash; Janela de Contexto</span>
+        </a>
+        <a href="modulo-05.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">05 &mdash; Prompt Engineering</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

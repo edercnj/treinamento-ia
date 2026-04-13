@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programação com Agentes de IA — Treinamento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <span>Treinamento IA</span>
+        <span>/</span>
+        <span>Início</span>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge"><span class="dot"></span> Treinamento Interativo 2026</div>
+        <h1>Programação com<br>Agentes de IA</h1>
+        <p class="subtitle">Domine os fundamentos de LLMs, tokens, engenharia de contexto e as ferramentas que estão transformando o desenvolvimento de software.</p>
+        <p style="color: var(--color-text-muted); font-size: var(--font-size-sm);">13 módulos &middot; Exercícios práticos &middot; 60+ referências acadêmicas</p>
+      </div>
+    </section>
+
+    <div class="content-body">
+
+      <!-- Árvore de Dependências -->
+      <section class="fade-in">
+        <h2>Árvore de Dependências</h2>
+        <p>Cada módulo constrói sobre os anteriores. A árvore abaixo mostra a progressão lógica do treinamento — do fundamento teórico aos agentes autônomos.</p>
+
+        <div class="dep-tree">
+          <div class="dep-level">
+            <span class="dep-level-label" style="color: #6366f1;">Nível 0</span>
+            <a href="modulo-01.html" class="dep-node" style="border-color: rgba(99,102,241,0.4);">01 &mdash; Como uma LLM Funciona</a>
+          </div>
+          <div class="dep-connector"></div>
+          <div class="dep-level">
+            <span class="dep-level-label" style="color: #818cf8;">Nível 1</span>
+            <a href="modulo-02.html" class="dep-node" style="border-color: rgba(129,140,248,0.4);">02 &mdash; Tokens</a>
+          </div>
+          <div class="dep-connector"></div>
+          <div class="dep-level">
+            <span class="dep-level-label" style="color: #22d3ee;">Nível 2</span>
+            <a href="modulo-03.html" class="dep-node" style="border-color: rgba(34,211,238,0.4);">03 &mdash; Janela de Contexto</a>
+          </div>
+          <div class="dep-connector"></div>
+          <div class="dep-level">
+            <span class="dep-level-label" style="color: #34d399;">Nível 3</span>
+            <a href="modulo-04.html" class="dep-node" style="border-color: rgba(52,211,153,0.4);">04 &mdash; Eng. de Contexto</a>
+            <a href="modulo-05.html" class="dep-node" style="border-color: rgba(52,211,153,0.4);">05 &mdash; Prompt Engineering</a>
+            <a href="modulo-06.html" class="dep-node" style="border-color: rgba(52,211,153,0.4);">06 &mdash; Spec-Driven Design</a>
+          </div>
+          <div class="dep-connector"></div>
+          <div class="dep-level">
+            <span class="dep-level-label" style="color: #fbbf24;">Nível 4</span>
+            <a href="modulo-07.html" class="dep-node" style="border-color: rgba(251,191,36,0.4);">07 &mdash; Ferramentas</a>
+            <a href="modulo-08.html" class="dep-node" style="border-color: rgba(251,191,36,0.4);">08 &mdash; Rules</a>
+            <a href="modulo-configuracoes.html" class="dep-node" style="border-color: rgba(251,191,36,0.4);">09 &mdash; Configurações</a>
+            <a href="modulo-09.html" class="dep-node" style="border-color: rgba(251,191,36,0.4);">10 &mdash; Skills</a>
+            <a href="modulo-hooks.html" class="dep-node" style="border-color: rgba(251,191,36,0.4);">11 &mdash; Hooks</a>
+          </div>
+          <div class="dep-connector"></div>
+          <div class="dep-level">
+            <span class="dep-level-label" style="color: #f97316;">Nível 5</span>
+            <a href="modulo-10.html" class="dep-node" style="border-color: rgba(249,115,22,0.4);">12 &mdash; MCP</a>
+          </div>
+          <div class="dep-connector"></div>
+          <div class="dep-level">
+            <span class="dep-level-label" style="color: #f87171;">Nível 6</span>
+            <a href="modulo-11.html" class="dep-node" style="border-color: rgba(248,113,113,0.4);">13 &mdash; Agentes Autônomos</a>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Módulos Cards -->
+      <section class="fade-in">
+        <h2>Módulos</h2>
+
+        <div class="modules-grid">
+
+          <a href="modulo-01.html" class="module-card" data-level="0">
+            <span class="card-number">01</span>
+            <div class="card-level">Nível 0 &mdash; Fundação</div>
+            <div class="card-title">Como uma LLM Funciona</div>
+            <div class="card-desc">Arquitetura Transformer, mecanismo de atenção, treinamento (pre-training, SFT, RLHF) e inferência autorregressiva.</div>
+            <div class="card-tags">
+              <span class="tag">Transformer</span>
+              <span class="tag">Atenção</span>
+              <span class="tag">RLHF</span>
+            </div>
+          </a>
+
+          <a href="modulo-02.html" class="module-card" data-level="1">
+            <span class="card-number">02</span>
+            <div class="card-level">Nível 1 &mdash; Mecânica</div>
+            <div class="card-title">Tokens: A Unidade Fundamental</div>
+            <div class="card-desc">O que são tokens, Byte Pair Encoding, vocabulários, custos e ferramentas de contagem.</div>
+            <div class="card-tags">
+              <span class="tag">BPE</span>
+              <span class="tag">Tokenização</span>
+              <span class="tag">Custos</span>
+            </div>
+          </a>
+
+          <a href="modulo-03.html" class="module-card" data-level="2">
+            <span class="card-number">03</span>
+            <div class="card-level">Nível 2 &mdash; Espaço de Trabalho</div>
+            <div class="card-title">Janela de Contexto</div>
+            <div class="card-desc">Limites de processamento, evolução histórica de 1K a 1M tokens, e o fenômeno "Lost in the Middle".</div>
+            <div class="card-tags">
+              <span class="tag">Context Window</span>
+              <span class="tag">Lost in the Middle</span>
+            </div>
+          </a>
+
+          <a href="modulo-04.html" class="module-card" data-level="3">
+            <span class="card-number">04</span>
+            <div class="card-level">Nível 3 &mdash; Otimização</div>
+            <div class="card-title">Engenharia de Contexto</div>
+            <div class="card-desc">Os 4 pilares: seleção, organização, compressão e atualização dinâmica do contexto.</div>
+            <div class="card-tags">
+              <span class="tag">RAG</span>
+              <span class="tag">Seleção</span>
+              <span class="tag">Compressão</span>
+            </div>
+          </a>
+
+          <a href="modulo-05.html" class="module-card" data-level="3">
+            <span class="card-number">05</span>
+            <div class="card-level">Nível 3 &mdash; Otimização</div>
+            <div class="card-title">Prompt Engineering</div>
+            <div class="card-desc">Zero-shot, Few-shot, Chain-of-Thought, Role Prompting, e técnicas específicas para código.</div>
+            <div class="card-tags">
+              <span class="tag">CoT</span>
+              <span class="tag">Few-Shot</span>
+              <span class="tag">System Prompt</span>
+            </div>
+          </a>
+
+          <a href="modulo-06.html" class="module-card" data-level="3">
+            <span class="card-number">06</span>
+            <div class="card-level">Nível 3 &mdash; Otimização</div>
+            <div class="card-title">Spec-Driven Design</div>
+            <div class="card-desc">Metodologia de especificação antes da implementação. Templates, workflows e exemplos reais.</div>
+            <div class="card-tags">
+              <span class="tag">Specs</span>
+              <span class="tag">Templates</span>
+              <span class="tag">Workflow</span>
+            </div>
+          </a>
+
+          <a href="modulo-07.html" class="module-card" data-level="4">
+            <span class="card-number">07</span>
+            <div class="card-level">Nível 4 &mdash; Ecossistema</div>
+            <div class="card-title">Ferramentas de Programação com IA</div>
+            <div class="card-desc">Comparativo completo: Claude Code, GitHub Copilot, Codex, Cursor, Windsurf e Amazon Q.</div>
+            <div class="card-tags">
+              <span class="tag">Claude Code</span>
+              <span class="tag">Copilot</span>
+              <span class="tag">Cursor</span>
+            </div>
+          </a>
+
+          <a href="modulo-08.html" class="module-card" data-level="4">
+            <span class="card-number">08</span>
+            <div class="card-level">Nível 4 &mdash; Ecossistema</div>
+            <div class="card-title">Rules</div>
+            <div class="card-desc">CLAUDE.md, agents.md, .cursorrules, copilot-instructions.md — como personalizar a IA para seu projeto.</div>
+            <div class="card-tags">
+              <span class="tag">CLAUDE.md</span>
+              <span class="tag">.cursorrules</span>
+              <span class="tag">agents.md</span>
+            </div>
+          </a>
+
+          <a href="modulo-09.html" class="module-card" data-level="4">
+            <span class="card-number">10</span>
+            <div class="card-level">Nível 4 &mdash; Ecossistema</div>
+            <div class="card-title">Skills</div>
+            <div class="card-desc">Comandos especializados e automações baseadas em eventos para ferramentas de IA.</div>
+            <div class="card-tags">
+              <span class="tag">Skills</span>
+              <span class="tag">Hooks</span>
+              <span class="tag">Automação</span>
+            </div>
+          </a>
+
+          <a href="modulo-configuracoes.html" class="module-card" data-level="4">
+            <span class="card-number">09</span>
+            <div class="card-level">Nível 4 &mdash; Ecossistema</div>
+            <div class="card-title">Configurações</div>
+            <div class="card-desc">settings.json, MCP config, permissões, integrações com IDEs e variáveis de ambiente.</div>
+            <div class="card-tags">
+              <span class="tag">settings.json</span>
+              <span class="tag">MCP Config</span>
+              <span class="tag">Permissões</span>
+            </div>
+          </a>
+
+          <a href="modulo-hooks.html" class="module-card" data-level="4">
+            <span class="card-number">11</span>
+            <div class="card-level">Nível 4 &mdash; Ecossistema</div>
+            <div class="card-title">Hooks</div>
+            <div class="card-desc">Automação baseada em eventos: formatação automática, guardrails, auditoria, integrações CI/CD.</div>
+            <div class="card-tags">
+              <span class="tag">PreToolUse</span>
+              <span class="tag">PostToolUse</span>
+              <span class="tag">Automação</span>
+            </div>
+          </a>
+
+          <a href="modulo-10.html" class="module-card" data-level="5">
+            <span class="card-number">12</span>
+            <div class="card-level">Nível 5 &mdash; Protocolo</div>
+            <div class="card-title">MCP (Model Context Protocol)</div>
+            <div class="card-desc">O "USB-C da IA": protocolo aberto para conectar modelos a ferramentas e dados externos.</div>
+            <div class="card-tags">
+              <span class="tag">Protocolo</span>
+              <span class="tag">Servidores</span>
+              <span class="tag">JSON-RPC</span>
+            </div>
+          </a>
+
+          <a href="modulo-11.html" class="module-card" data-level="6">
+            <span class="card-number">13</span>
+            <div class="card-level">Nível 6 &mdash; Agentes</div>
+            <div class="card-title">Agentes Autônomos</div>
+            <div class="card-desc">O loop ReAct, padrões multi-agentes, benchmarks SWE-bench e o futuro do desenvolvimento com IA.</div>
+            <div class="card-tags">
+              <span class="tag">ReAct</span>
+              <span class="tag">Multi-Agent</span>
+              <span class="tag">SWE-bench</span>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Apêndices -->
+      <section class="fade-in">
+        <h2>Apêndices</h2>
+        <div class="modules-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+          <a href="ferramentas.html" class="module-card">
+            <div class="card-title">Ferramentas Práticas</div>
+            <div class="card-desc">Simuladores de tokens, playgrounds de LLMs, ferramentas de desenvolvimento e exercícios práticos.</div>
+          </a>
+          <a href="referencias.html" class="module-card">
+            <div class="card-title">Referências Bibliográficas</div>
+            <div class="card-desc">62+ referências: papers acadêmicos, documentação oficial, livros e cursos.</div>
+          </a>
+          <a href="glossario.html" class="module-card">
+            <div class="card-title">Glossário</div>
+            <div class="card-desc">30+ termos técnicos definidos: de "Attention" a "Zero-Shot".</div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

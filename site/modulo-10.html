@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 12 — MCP (Model Context Protocol) — Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 12</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header">
+        <div class="module-number">12</div>
+        <h1>MCP (Model Context Protocol)</h1>
+        <p class="module-desc">O "USB-C da IA": protocolo aberto para conectar modelos a ferramentas e dados externos. Arquitetura, servidores, casos de uso e como criar seus próprios servidores MCP.</p>
+      </div>
+
+      <!-- 10.1 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 12.1</span>
+        <h2>O que é o MCP?</h2>
+
+        <p>O <strong>Model Context Protocol (MCP)</strong> é um protocolo aberto criado pela Anthropic que padroniza como aplicações de IA se conectam a <strong>fontes de dados</strong> e <strong>ferramentas externas</strong>. Pense nele como um <strong>"USB-C para IA"</strong> &mdash; uma interface universal que permite que qualquer modelo se conecte a qualquer serviço.</p>
+
+        <h3>O problema que o MCP resolve</h3>
+
+        <p>Antes do MCP, cada ferramenta de IA precisava implementar integrações customizadas para cada serviço:</p>
+
+        <div class="before-after">
+          <div class="before-after-card card-before">
+            <div class="before-after-title">Antes do MCP (N &times; M integrações)</div>
+            <div class="before-after-line"><span class="line-from">Claude Code</span> <span class="line-arrow">&rarr;</span> <span class="line-to">integração custom &rarr; GitHub</span></div>
+            <div class="before-after-line"><span class="line-from">Claude Code</span> <span class="line-arrow">&rarr;</span> <span class="line-to">integração custom &rarr; Jira</span></div>
+            <div class="before-after-line"><span class="line-from">Claude Code</span> <span class="line-arrow">&rarr;</span> <span class="line-to">integração custom &rarr; PostgreSQL</span></div>
+            <div class="before-after-line"><span class="line-from">Cursor</span> <span class="line-arrow">&rarr;</span> <span class="line-to">integração custom &rarr; GitHub</span></div>
+            <div class="before-after-line"><span class="line-from">Cursor</span> <span class="line-arrow">&rarr;</span> <span class="line-to">integração custom &rarr; Jira</span></div>
+            <div class="before-after-line"><span class="line-from">Cursor</span> <span class="line-arrow">&rarr;</span> <span class="line-to">integração custom &rarr; PostgreSQL</span></div>
+            <div class="before-after-total">6 integrações diferentes</div>
+          </div>
+          <div class="before-after-card card-after">
+            <div class="before-after-title">Com MCP (N + M integrações)</div>
+            <div class="before-after-line"><span class="line-from">Claude Code</span> <span class="line-arrow">&rarr;</span> <span class="line-to">Protocolo MCP</span></div>
+            <div class="before-after-line"><span class="line-from">Cursor</span> <span class="line-arrow">&rarr;</span> <span class="line-to">Protocolo MCP</span></div>
+            <div class="before-after-line"><span class="line-from">Protocolo MCP</span> <span class="line-arrow">&rarr;</span> <span class="line-to">GitHub Server</span></div>
+            <div class="before-after-line"><span class="line-from">Protocolo MCP</span> <span class="line-arrow">&rarr;</span> <span class="line-to">Jira Server</span></div>
+            <div class="before-after-line"><span class="line-from">Protocolo MCP</span> <span class="line-arrow">&rarr;</span> <span class="line-to">PostgreSQL Server</span></div>
+            <div class="before-after-total">5 componentes, todos interoperáveis</div>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">📚</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências Oficiais</div>
+            <ul>
+              <li><strong>Site oficial:</strong> <a href="https://modelcontextprotocol.io" target="_blank">modelcontextprotocol.io</a></li>
+              <li><strong>Especificação:</strong> <a href="https://spec.modelcontextprotocol.io" target="_blank">spec.modelcontextprotocol.io</a></li>
+              <li><strong>Anúncio:</strong> <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank">Introducing the Model Context Protocol</a></li>
+              <li><strong>Curso oficial (gratuito):</strong> <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank">Introduction to Model Context Protocol</a></li>
+              <li><strong>Engineering Blog:</strong> <a href="https://www.anthropic.com/engineering/code-execution-with-mcp" target="_blank">Code execution with MCP</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 10.2 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 12.2</span>
+        <h2>Arquitetura do MCP</h2>
+
+        <p>O MCP segue uma arquitetura <strong>cliente-servidor</strong>:</p>
+
+        <div class="v-arch">
+          <div class="v-arch-layer layer-host">
+            <div class="v-arch-layer-title">Host Application</div>
+            <div class="v-arch-nodes">
+              <div class="v-arch-node"><div class="v-arch-node-label">Claude Code</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Cursor</div></div>
+            </div>
+          </div>
+          <div class="v-arch-connector">&darr; JSON-RPC &darr;</div>
+          <div class="v-arch-layer layer-protocol">
+            <div class="v-arch-layer-title">Protocolo MCP</div>
+            <div class="v-arch-nodes">
+              <div class="v-arch-node"><div class="v-arch-node-label">JSON-RPC sobre stdio ou HTTP+SSE</div></div>
+            </div>
+          </div>
+          <div class="v-arch-connector">&darr;</div>
+          <div class="v-arch-layer layer-server">
+            <div class="v-arch-layer-title">MCP Servers</div>
+            <div class="v-arch-nodes">
+              <div class="v-arch-node"><div class="v-arch-node-label">GitHub</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">PostgreSQL</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Slack</div></div>
+            </div>
+          </div>
+          <div class="v-arch-connector">&darr;</div>
+          <div class="v-arch-layer layer-service">
+            <div class="v-arch-layer-title">Serviços Externos</div>
+            <div class="v-arch-nodes">
+              <div class="v-arch-node"><div class="v-arch-node-label">GitHub API</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">PostgreSQL DB</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Slack API</div></div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Componentes</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Componente</th>
+                <th>Papel</th>
+                <th>Exemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Host</strong></td>
+                <td>Aplicação que hospeda o cliente MCP</td>
+                <td>Claude Code, Cursor</td>
+              </tr>
+              <tr>
+                <td><strong>Client</strong></td>
+                <td>Conecta-se a um servidor MCP específico</td>
+                <td>Cliente embutido no Claude Code</td>
+              </tr>
+              <tr>
+                <td><strong>Server</strong></td>
+                <td>Expõe ferramentas e dados via protocolo MCP</td>
+                <td>Servidor MCP de GitHub, PostgreSQL, etc.</td>
+              </tr>
+              <tr>
+                <td><strong>Transport</strong></td>
+                <td>Camada de comunicação</td>
+                <td>stdio (local) ou HTTP+SSE (remoto)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 10.3 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 12.3</span>
+        <h2>O que um MCP Server Expõe?</h2>
+
+        <p>Um servidor MCP pode expor três tipos de capacidades:</p>
+
+        <h3>10.3.1 Tools (Ferramentas)</h3>
+
+        <p>Ações que o modelo pode executar:</p>
+
+        <pre><code><span class="code-label">JSON</span>{
+  <span class="code-string">"name"</span>: <span class="code-string">"github_create_issue"</span>,
+  <span class="code-string">"description"</span>: <span class="code-string">"Cria uma nova issue no GitHub"</span>,
+  <span class="code-string">"inputSchema"</span>: {
+    <span class="code-string">"type"</span>: <span class="code-string">"object"</span>,
+    <span class="code-string">"properties"</span>: {
+      <span class="code-string">"repo"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"string"</span>, <span class="code-string">"description"</span>: <span class="code-string">"owner/repo"</span>},
+      <span class="code-string">"title"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"string"</span>},
+      <span class="code-string">"body"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"string"</span>},
+      <span class="code-string">"labels"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"array"</span>, <span class="code-string">"items"</span>: {<span class="code-string">"type"</span>: <span class="code-string">"string"</span>}}
+    },
+    <span class="code-string">"required"</span>: [<span class="code-string">"repo"</span>, <span class="code-string">"title"</span>]
+  }
+}</code></pre>
+
+        <h3>10.3.2 Resources (Recursos)</h3>
+
+        <p>Dados que o modelo pode ler:</p>
+
+        <pre><code><span class="code-label">JSON</span>{
+  <span class="code-string">"uri"</span>: <span class="code-string">"github://repos/anthropics/claude-code/issues"</span>,
+  <span class="code-string">"name"</span>: <span class="code-string">"Issues do repositório"</span>,
+  <span class="code-string">"description"</span>: <span class="code-string">"Lista de issues abertas no repositório"</span>,
+  <span class="code-string">"mimeType"</span>: <span class="code-string">"application/json"</span>
+}</code></pre>
+
+        <h3>10.3.3 Prompts (Templates de Prompt)</h3>
+
+        <p>Templates reutilizáveis de prompts:</p>
+
+        <pre><code><span class="code-label">JSON</span>{
+  <span class="code-string">"name"</span>: <span class="code-string">"code_review"</span>,
+  <span class="code-string">"description"</span>: <span class="code-string">"Template para revisão de código"</span>,
+  <span class="code-string">"arguments"</span>: [
+    {<span class="code-string">"name"</span>: <span class="code-string">"pr_url"</span>, <span class="code-string">"description"</span>: <span class="code-string">"URL do Pull Request"</span>, <span class="code-string">"required"</span>: <span class="code-keyword">true</span>}
+  ]
+}</code></pre>
+      </section>
+
+      <hr>
+
+      <!-- 10.4 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 12.4</span>
+        <h2>Configurando MCP no Claude Code</h2>
+
+        <p>Arquivo de configuração (<code>.claude/mcp.json</code> ou no settings do projeto):</p>
+
+        <pre><code><span class="code-label">JSON</span>{
+  <span class="code-string">"mcpServers"</span>: {
+    <span class="code-string">"github"</span>: {
+      <span class="code-string">"command"</span>: <span class="code-string">"npx"</span>,
+      <span class="code-string">"args"</span>: [<span class="code-string">"-y"</span>, <span class="code-string">"@modelcontextprotocol/server-github"</span>],
+      <span class="code-string">"env"</span>: {
+        <span class="code-string">"GITHUB_TOKEN"</span>: <span class="code-string">"ghp_xxxxx"</span>
+      }
+    },
+    <span class="code-string">"postgres"</span>: {
+      <span class="code-string">"command"</span>: <span class="code-string">"npx"</span>,
+      <span class="code-string">"args"</span>: [<span class="code-string">"-y"</span>, <span class="code-string">"@modelcontextprotocol/server-postgres"</span>],
+      <span class="code-string">"env"</span>: {
+        <span class="code-string">"DATABASE_URL"</span>: <span class="code-string">"postgresql://user:pass@localhost:5432/mydb"</span>
+      }
+    },
+    <span class="code-string">"filesystem"</span>: {
+      <span class="code-string">"command"</span>: <span class="code-string">"npx"</span>,
+      <span class="code-string">"args"</span>: [<span class="code-string">"-y"</span>, <span class="code-string">"@modelcontextprotocol/server-filesystem"</span>, <span class="code-string">"/path/to/allowed/dir"</span>]
+    }
+  }
+}</code></pre>
+      </section>
+
+      <hr>
+
+      <!-- 10.5 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 12.5</span>
+        <h2>Servidores MCP Populares</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Servidor</th>
+                <th>O que faz</th>
+                <th>Repositório</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>GitHub</strong></td>
+                <td>Issues, PRs, repos, code search</td>
+                <td>@modelcontextprotocol/server-github</td>
+              </tr>
+              <tr>
+                <td><strong>PostgreSQL</strong></td>
+                <td>Queries, schema inspection</td>
+                <td>@modelcontextprotocol/server-postgres</td>
+              </tr>
+              <tr>
+                <td><strong>Filesystem</strong></td>
+                <td>Acesso controlado a diretórios</td>
+                <td>@modelcontextprotocol/server-filesystem</td>
+              </tr>
+              <tr>
+                <td><strong>Slack</strong></td>
+                <td>Mensagens, canais, busca</td>
+                <td>@modelcontextprotocol/server-slack</td>
+              </tr>
+              <tr>
+                <td><strong>Google Drive</strong></td>
+                <td>Documentos, planilhas</td>
+                <td>@modelcontextprotocol/server-gdrive</td>
+              </tr>
+              <tr>
+                <td><strong>Puppeteer</strong></td>
+                <td>Browser automation, screenshots</td>
+                <td>@modelcontextprotocol/server-puppeteer</td>
+              </tr>
+              <tr>
+                <td><strong>SQLite</strong></td>
+                <td>Banco de dados local</td>
+                <td>@modelcontextprotocol/server-sqlite</td>
+              </tr>
+              <tr>
+                <td><strong>Memory</strong></td>
+                <td>Persistência de memória para agentes</td>
+                <td>@modelcontextprotocol/server-memory</td>
+              </tr>
+              <tr>
+                <td><strong>Brave Search</strong></td>
+                <td>Busca na web</td>
+                <td>@modelcontextprotocol/server-brave-search</td>
+              </tr>
+              <tr>
+                <td><strong>Firecrawl</strong></td>
+                <td>Web scraping inteligente</td>
+                <td>@anthropic/firecrawl-mcp</td>
+              </tr>
+              <tr>
+                <td><strong>Atlassian</strong></td>
+                <td>Jira + Confluence</td>
+                <td>Plugin Atlassian</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">📚</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>MCP Servers Directory. Disponível em: <a href="https://github.com/modelcontextprotocol/servers" target="_blank">github.com/modelcontextprotocol/servers</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 10.6 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 12.6</span>
+        <h2>Criando um MCP Server Customizado</h2>
+
+        <p>Para cenários onde não existe um servidor pronto, é possível criar o seu.</p>
+
+        <h3>Exemplo simplificado em TypeScript</h3>
+
+        <pre><code><span class="code-label">TypeScript</span><span class="code-keyword">import</span> { Server } <span class="code-keyword">from</span> <span class="code-string">"@modelcontextprotocol/sdk/server"</span>;
+<span class="code-keyword">import</span> { StdioServerTransport } <span class="code-keyword">from</span> <span class="code-string">"@modelcontextprotocol/sdk/server/stdio"</span>;
+
+<span class="code-keyword">const</span> server = <span class="code-keyword">new</span> <span class="code-type">Server</span>({
+  name: <span class="code-string">"meu-servidor-custom"</span>,
+  version: <span class="code-string">"1.0.0"</span>,
+});
+
+<span class="code-comment">// Registrar uma ferramenta</span>
+server.<span class="code-function">setRequestHandler</span>(<span class="code-string">"tools/list"</span>, <span class="code-keyword">async</span> () =&gt; ({
+  tools: [
+    {
+      name: <span class="code-string">"buscar_cliente"</span>,
+      description: <span class="code-string">"Busca informações de um cliente pelo CPF"</span>,
+      inputSchema: {
+        type: <span class="code-string">"object"</span>,
+        properties: {
+          cpf: { type: <span class="code-string">"string"</span>, description: <span class="code-string">"CPF do cliente"</span> },
+        },
+        required: [<span class="code-string">"cpf"</span>],
+      },
+    },
+  ],
+}));
+
+<span class="code-comment">// Implementar a ferramenta</span>
+server.<span class="code-function">setRequestHandler</span>(<span class="code-string">"tools/call"</span>, <span class="code-keyword">async</span> (request) =&gt; {
+  <span class="code-keyword">if</span> (request.params.name === <span class="code-string">"buscar_cliente"</span>) {
+    <span class="code-keyword">const</span> cpf = request.params.arguments.cpf;
+    <span class="code-comment">// ... lógica de busca no sistema interno ...</span>
+    <span class="code-keyword">return</span> {
+      content: [
+        {
+          type: <span class="code-string">"text"</span>,
+          text: <span class="code-type">JSON</span>.<span class="code-function">stringify</span>({ nome: <span class="code-string">"João"</span>, plano: <span class="code-string">"Premium"</span> }),
+        },
+      ],
+    };
+  }
+});
+
+<span class="code-comment">// Iniciar servidor</span>
+<span class="code-keyword">const</span> transport = <span class="code-keyword">new</span> <span class="code-type">StdioServerTransport</span>();
+<span class="code-keyword">await</span> server.<span class="code-function">connect</span>(transport);</code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">📚</span>
+          <div class="callout-content">
+            <div class="callout-title">SDKs Oficiais</div>
+            <ul>
+              <li><strong>TypeScript SDK:</strong> <a href="https://github.com/modelcontextprotocol/typescript-sdk" target="_blank">github.com/modelcontextprotocol/typescript-sdk</a></li>
+              <li><strong>Python SDK:</strong> <a href="https://github.com/modelcontextprotocol/python-sdk" target="_blank">github.com/modelcontextprotocol/python-sdk</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 10.7 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 12.7</span>
+        <h2>MCP vs. Outras Abordagens</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Aspecto</th>
+                <th>Plugins (ex: ChatGPT Plugins)</th>
+                <th>Function Calling</th>
+                <th>MCP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Padrão</strong></td>
+                <td>Proprietário (OpenAI)</td>
+                <td>Proprietário (por modelo)</td>
+                <td>Aberto</td>
+              </tr>
+              <tr>
+                <td><strong>Interoperabilidade</strong></td>
+                <td>Apenas ChatGPT</td>
+                <td>Apenas o modelo específico</td>
+                <td>Qualquer host/modelo</td>
+              </tr>
+              <tr>
+                <td><strong>Transport</strong></td>
+                <td>HTTP</td>
+                <td>Via API do modelo</td>
+                <td>stdio, HTTP+SSE</td>
+              </tr>
+              <tr>
+                <td><strong>Descoberta</strong></td>
+                <td>App Store</td>
+                <td>Definido no prompt</td>
+                <td>Protocolo de handshake</td>
+              </tr>
+              <tr>
+                <td><strong>Segurança</strong></td>
+                <td>Sandbox do plugin</td>
+                <td>Controlada pelo dev</td>
+                <td>Permissões granulares</td>
+              </tr>
+              <tr>
+                <td><strong>Estado</strong></td>
+                <td>Stateless</td>
+                <td>Stateless</td>
+                <td>Pode ser stateful</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Se <strong>Function Calling</strong> é como um telefone fixo (funciona, mas só dentro de casa), e <strong>Plugins</strong> são como um celular numa rede proprietária (funciona, mas só com a operadora certa), o <strong>MCP</strong> é como o <strong>USB-C</strong>: um padrão aberto que funciona com qualquer dispositivo, qualquer fabricante, qualquer cenário.</p>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-hooks.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 11 &mdash; Hooks</span>
+        </a>
+        <a href="modulo-11.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 13 &mdash; Agentes Autônomos</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

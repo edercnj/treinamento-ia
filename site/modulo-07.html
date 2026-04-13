@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 07 — Ferramentas de Programação com IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 07</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">07</div>
+        <h1>Panorama das Ferramentas de Programação com IA</h1>
+        <p class="module-desc">Comparativo completo das principais ferramentas de codificação assistida por IA: Claude Code, GitHub Copilot, Codex CLI, Cursor, Windsurf e Amazon Q Developer.</p>
+      </div>
+
+      <!-- 7.1 A Evolução das Ferramentas -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 7.1</span>
+        <h2>A Evolução das Ferramentas</h2>
+
+        <p>A programação assistida por IA evoluiu em três ondas:</p>
+
+        <div class="v-timeline">
+          <div class="v-timeline-era">
+            <div class="v-timeline-dot" style="background: var(--color-primary);">1</div>
+            <div class="v-timeline-era-title">Autocompletação Inteligente</div>
+            <div class="v-timeline-era-period">2021 – 2022</div>
+            <div class="v-timeline-items">
+              <span class="v-timeline-chip">GitHub Copilot</span>
+              <span class="v-timeline-chip">Tabnine</span>
+              <span class="v-timeline-chip">Amazon CodeWhisperer</span>
+            </div>
+          </div>
+          <div class="v-timeline-era">
+            <div class="v-timeline-dot" style="background: var(--color-accent-purple);">2</div>
+            <div class="v-timeline-era-title">Chat + Edição</div>
+            <div class="v-timeline-era-period">2023 – 2024</div>
+            <div class="v-timeline-items">
+              <span class="v-timeline-chip">ChatGPT / GPT-4</span>
+              <span class="v-timeline-chip">Cursor IDE</span>
+              <span class="v-timeline-chip">Copilot Chat</span>
+              <span class="v-timeline-chip">Codeium / Windsurf</span>
+            </div>
+          </div>
+          <div class="v-timeline-era">
+            <div class="v-timeline-dot" style="background: var(--color-accent-red);">3</div>
+            <div class="v-timeline-era-title">Agentes Autônomos</div>
+            <div class="v-timeline-era-period">2024 – 2025</div>
+            <div class="v-timeline-items">
+              <span class="v-timeline-chip">Claude Code</span>
+              <span class="v-timeline-chip">OpenAI Codex CLI</span>
+              <span class="v-timeline-chip">Copilot Workspace</span>
+              <span class="v-timeline-chip">Devin</span>
+              <span class="v-timeline-chip">Cursor Agent Mode</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-visual">
+          <span class="callout-icon">&#128202;</span>
+          <div class="callout-content">
+            <div class="callout-title">Visualização</div>
+            <p>Timeline horizontal mostrando as três ondas, com logos das ferramentas e marcos importantes. Cada onda representa um salto de paradigma: de sugestões passivas a agentes que executam tarefas de forma autônoma.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 7.2 Comparativo das Principais Ferramentas -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 7.2</span>
+        <h2>Comparativo das Principais Ferramentas</h2>
+
+        <!-- 7.2.1 Claude Code -->
+        <h3>7.2.1 Claude Code</h3>
+
+        <p><strong>O que é:</strong> Ferramenta CLI (Command Line Interface) agentic da Anthropic que opera diretamente no terminal do desenvolvedor.</p>
+
+        <h4>Como funciona:</h4>
+        <ul>
+          <li>Roda como agente autônomo no terminal</li>
+          <li>Tem acesso a ferramentas: leitura/escrita de arquivos, execução de comandos bash, busca no código</li>
+          <li>Usa Claude (Sonnet/Opus) como modelo base</li>
+          <li>Mantém contexto da conversa e do projeto</li>
+          <li>Suporta MCP (Model Context Protocol) para extensões</li>
+        </ul>
+
+        <h4>Diferenciais:</h4>
+        <ul>
+          <li>Operação agentic real (não apenas chat)</li>
+          <li>Acesso direto ao filesystem e terminal</li>
+          <li>Sistema de rules (<code>CLAUDE.md</code>) para personalização</li>
+          <li>Skills e Hooks para automação</li>
+          <li>Suporte a MCP servers para integrações externas</li>
+          <li>Extended Thinking para problemas complexos</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic. <em>"Claude Code Documentation"</em>. Disponível em: <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/claude-code</a></p>
+          </div>
+        </div>
+
+        <!-- 7.2.2 GitHub Copilot -->
+        <h3>7.2.2 GitHub Copilot</h3>
+
+        <p><strong>O que é:</strong> Assistente de IA integrado a IDEs (VS Code, JetBrains, Neovim) que oferece sugestões de código inline.</p>
+
+        <h4>Como funciona:</h4>
+        <ul>
+          <li>Extensão de IDE que intercepta o contexto do editor</li>
+          <li>Envia código circundante ao modelo (Codex/GPT-4)</li>
+          <li>Retorna sugestões inline que aparecem em cinza</li>
+          <li>Copilot Chat permite conversas sobre código</li>
+        </ul>
+
+        <h4>Diferenciais:</h4>
+        <ul>
+          <li>Integração profunda com o editor</li>
+          <li>Sugestões em tempo real enquanto digita</li>
+          <li>Acesso ao ecossistema GitHub (issues, PRs, Actions)</li>
+          <li>Copilot Workspace para desenvolvimento agent-based</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>GitHub. <em>"GitHub Copilot Documentation"</em>. Disponível em: <a href="https://docs.github.com/en/copilot" target="_blank" rel="noopener">https://docs.github.com/en/copilot</a></p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Acadêmica</div>
+            <p>Peng, S. et al. (2023). <em>"The Impact of AI on Developer Productivity: Evidence from GitHub Copilot"</em>. MIT/Microsoft. arXiv:2302.06590. Disponível em: <a href="https://arxiv.org/abs/2302.06590" target="_blank" rel="noopener">https://arxiv.org/abs/2302.06590</a> &mdash; Estudo mostrando que Copilot aumenta produtividade em 55% para certas tarefas.</p>
+          </div>
+        </div>
+
+        <!-- 7.2.3 OpenAI Codex CLI -->
+        <h3>7.2.3 OpenAI Codex (CLI)</h3>
+
+        <p><strong>O que é:</strong> Ferramenta CLI open-source da OpenAI para codificação agentic, similar ao Claude Code.</p>
+
+        <h4>Como funciona:</h4>
+        <ul>
+          <li>Opera no terminal como agente autônomo</li>
+          <li>Usa modelos OpenAI (GPT-4o, o3)</li>
+          <li>Acesso a ferramentas de filesystem e terminal</li>
+          <li>Sandboxing para segurança</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>OpenAI. <em>"Codex CLI"</em>. Disponível em: <a href="https://github.com/openai/codex" target="_blank" rel="noopener">https://github.com/openai/codex</a></p>
+          </div>
+        </div>
+
+        <!-- 7.2.4 Cursor -->
+        <h3>7.2.4 Cursor</h3>
+
+        <p><strong>O que é:</strong> IDE baseado em VS Code com IA profundamente integrada.</p>
+
+        <h4>Como funciona:</h4>
+        <ul>
+          <li>Fork do VS Code com recursos de IA nativos</li>
+          <li>Suporta múltiplos modelos (Claude, GPT-4, etc.)</li>
+          <li><code>Cmd+K</code> para edição inline</li>
+          <li>Chat para conversas multi-arquivo</li>
+          <li>Agent Mode para tarefas autônomas</li>
+          <li><code>.cursorrules</code> para personalização</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Cursor. <em>"Cursor Documentation"</em>. Disponível em: <a href="https://docs.cursor.com" target="_blank" rel="noopener">https://docs.cursor.com</a></p>
+          </div>
+        </div>
+
+        <!-- 7.2.5 Windsurf -->
+        <h3>7.2.5 Windsurf (Codeium)</h3>
+
+        <p><strong>O que é:</strong> IDE AI-native da Codeium com modelo proprietário "Cascade".</p>
+
+        <h4>Como funciona:</h4>
+        <ul>
+          <li>IDE independente com IA integrada</li>
+          <li>"Cascade" &mdash; sistema agentic que executa múltiplas ações</li>
+          <li>"Supercomplete" &mdash; autocompletação com contexto profundo</li>
+          <li>Suporta regras customizadas</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Windsurf. Disponível em: <a href="https://windsurf.com" target="_blank" rel="noopener">https://windsurf.com</a></p>
+          </div>
+        </div>
+
+        <!-- 7.2.6 Amazon Q Developer -->
+        <h3>7.2.6 Amazon Q Developer</h3>
+
+        <p><strong>O que é:</strong> Assistente de IA da AWS para desenvolvimento, anteriormente conhecido como CodeWhisperer.</p>
+
+        <h4>Como funciona:</h4>
+        <ul>
+          <li>Integração com VS Code e JetBrains</li>
+          <li>Sugestões de código inline</li>
+          <li>Chat para perguntas sobre código e AWS</li>
+          <li>Transformação automática (ex: upgrade de Java)</li>
+          <li>Scanning de segurança</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>AWS. <em>"Amazon Q Developer"</em>. Disponível em: <a href="https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 7.3 Tabela Comparativa -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 7.3</span>
+        <h2>Tabela Comparativa</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Característica</th>
+                <th>Claude Code</th>
+                <th>Copilot</th>
+                <th>Codex CLI</th>
+                <th>Cursor</th>
+                <th>Windsurf</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tipo</strong></td>
+                <td>CLI Agent</td>
+                <td>IDE Extension</td>
+                <td>CLI Agent</td>
+                <td>IDE</td>
+                <td>IDE</td>
+              </tr>
+              <tr>
+                <td><strong>Modelo base</strong></td>
+                <td>Claude</td>
+                <td>GPT-4/Codex</td>
+                <td>GPT-4o/o3</td>
+                <td>Multi-modelo</td>
+                <td>Proprietário</td>
+              </tr>
+              <tr>
+                <td><strong>Autocompletação</strong></td>
+                <td>&mdash;</td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+              </tr>
+              <tr>
+                <td><strong>Chat</strong></td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+              </tr>
+              <tr>
+                <td><strong>Agent Mode</strong></td>
+                <td>&#10003; (nativo)</td>
+                <td>&#10003; (Workspace)</td>
+                <td>&#10003; (nativo)</td>
+                <td>&#10003;</td>
+                <td>&#10003; (Cascade)</td>
+              </tr>
+              <tr>
+                <td><strong>Acesso terminal</strong></td>
+                <td>&#10003;</td>
+                <td>Limitado</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+              </tr>
+              <tr>
+                <td><strong>Acesso filesystem</strong></td>
+                <td>&#10003;</td>
+                <td>Limitado</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+              </tr>
+              <tr>
+                <td><strong>Rules/Config</strong></td>
+                <td>CLAUDE.md</td>
+                <td>.github/copilot-instructions.md</td>
+                <td>&mdash;</td>
+                <td>.cursorrules</td>
+                <td>Rules</td>
+              </tr>
+              <tr>
+                <td><strong>MCP</strong></td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+                <td>&mdash;</td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+              </tr>
+              <tr>
+                <td><strong>Hooks</strong></td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+                <td>&mdash;</td>
+                <td>&mdash;</td>
+                <td>&mdash;</td>
+              </tr>
+              <tr>
+                <td><strong>Skills</strong></td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+                <td>&mdash;</td>
+                <td>&mdash;</td>
+                <td>&mdash;</td>
+              </tr>
+              <tr>
+                <td><strong>Open source</strong></td>
+                <td>Parcial</td>
+                <td>&#10007;</td>
+                <td>&#10003;</td>
+                <td>&#10007;</td>
+                <td>&#10007;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Dica</div>
+            <p>Use esta tabela como referência rápida ao escolher uma ferramenta para seu projeto. Considere o tipo de fluxo de trabalho (CLI vs IDE), os modelos disponíveis e os recursos de personalização (Rules, MCP, Hooks).</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 7.4 Quando Usar Cada Ferramenta -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 7.4</span>
+        <h2>Quando Usar Cada Ferramenta</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Cenário</th>
+                <th>Ferramenta Recomendada</th>
+                <th>Por que</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Escrevendo código novo, quer sugestões enquanto digita</td>
+                <td><strong>Copilot</strong> ou <strong>Cursor</strong></td>
+                <td>Autocompletação em tempo real</td>
+              </tr>
+              <tr>
+                <td>Refatoração de múltiplos arquivos</td>
+                <td><strong>Claude Code</strong> ou <strong>Cursor Agent</strong></td>
+                <td>Agentes podem navegar e editar múltiplos arquivos</td>
+              </tr>
+              <tr>
+                <td>Debug complexo com investigação</td>
+                <td><strong>Claude Code</strong></td>
+                <td>Acesso pleno ao terminal para rodar testes, ler logs</td>
+              </tr>
+              <tr>
+                <td>Prototipação rápida</td>
+                <td><strong>Cursor</strong></td>
+                <td>IDE com chat e edição rápida</td>
+              </tr>
+              <tr>
+                <td>CI/CD e automação</td>
+                <td><strong>Claude Code</strong></td>
+                <td>Opera em CLI, pode ser integrado a pipelines</td>
+              </tr>
+              <tr>
+                <td>Projetos AWS</td>
+                <td><strong>Amazon Q</strong></td>
+                <td>Conhecimento específico do ecossistema AWS</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-06.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 06 &mdash; Spec-Driven Design</span>
+        </a>
+        <a href="modulo-08.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 08 &mdash; Rules</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

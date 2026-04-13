@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 13 — Agentes Autônomos e Sistemas Multi-Agentes — Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 13</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header">
+        <div class="module-number">13</div>
+        <h1>Agentes Autônomos e Sistemas Multi-Agentes</h1>
+        <p class="module-desc">O loop ReAct, padrões arquiteturais multi-agentes, benchmarks SWE-bench e o futuro do desenvolvimento com IA.</p>
+      </div>
+
+      <!-- 11.1 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 13.1</span>
+        <h2>O que é um Agente de IA?</h2>
+
+        <p>Um <strong>agente de IA</strong> é um sistema que usa um LLM como "cérebro" para <strong>planejar, executar ações e observar resultados</strong> de forma autônoma, iterando até completar uma tarefa.</p>
+
+        <h3>Diferença fundamental</h3>
+
+        <div class="before-after">
+          <div class="before-after-card card-before">
+            <div class="before-after-title">Chatbot (sem agência)</div>
+            <div class="before-after-line"><span class="line-from">Usuário pergunta</span> <span class="line-arrow">&rarr;</span> <span class="line-to">Modelo responde &rarr; Fim</span></div>
+            <div class="before-after-total">Interação única, sem autonomia</div>
+          </div>
+          <div class="before-after-card card-after">
+            <div class="before-after-title">Agente (com agência)</div>
+            <div class="before-after-line"><span class="line-from">Usuário dá tarefa</span> <span class="line-arrow">&rarr;</span> <span class="line-to">Modelo PLANEJA</span></div>
+            <div class="before-after-line"><span class="line-from">Modelo EXECUTA</span> <span class="line-arrow">&rarr;</span> <span class="line-to">Modelo OBSERVA resultado</span></div>
+            <div class="before-after-line"><span class="line-from">Modelo decide</span> <span class="line-arrow">&rarr;</span> <span class="line-to">PRÓXIMA AÇÃO</span></div>
+            <div class="before-after-line"><span class="line-from">... loop</span> <span class="line-arrow">&rarr;</span> <span class="line-to">Resultado final</span></div>
+            <div class="before-after-total">Loop autônomo até completar a tarefa</div>
+          </div>
+        </div>
+
+        <h3>O loop do agente (ReAct pattern)</h3>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step active">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">RACIOCÍNIO (Reasoning)</div>
+              <div class="v-pipeline-card-desc">"Preciso primeiro ler o arquivo para entender o bug"</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">AÇÃO (Action)</div>
+              <div class="v-pipeline-card-desc">Read("src/auth.py")</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step active">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">OBSERVAÇÃO (Observation)</div>
+              <div class="v-pipeline-card-desc">"O arquivo contém uma condição incorreta na linha 45"</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">RACIOCÍNIO (Reasoning)</div>
+              <div class="v-pipeline-card-desc">"Agora vou corrigir a condição e rodar os testes"</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step active">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">... (loop continua)</div>
+              <div class="v-pipeline-card-desc">loop continua até a tarefa ser concluída</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">📚</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <ul>
+              <li>Yao, S. et al. (2023). <em>"ReAct: Synergizing Reasoning and Acting in Language Models"</em>. Princeton/Google. <a href="https://arxiv.org/abs/2210.03629" target="_blank">arXiv:2210.03629</a> &mdash; Paper fundacional que formalizou o padrão Reasoning + Acting.</li>
+              <li>Anthropic. <em>"Building effective agents"</em>. <a href="https://www.anthropic.com/research/building-effective-agents" target="_blank">anthropic.com/research/building-effective-agents</a> &mdash; Guia prático da Anthropic sobre como construir agentes eficazes.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 11.2 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 13.2</span>
+        <h2>Anatomia de um Agente de Codificação</h2>
+
+        <p>Ferramentas como Claude Code são agentes de codificação completos. Aqui está como eles funcionam internamente:</p>
+
+        <div class="v-arch">
+          <div class="v-arch-layer layer-host">
+            <div class="v-arch-layer-title">LLM (Cérebro)</div>
+            <div class="v-arch-nodes">
+              <div class="v-arch-node">
+                <div class="v-arch-node-label">Entende a tarefa</div>
+              </div>
+              <div class="v-arch-node">
+                <div class="v-arch-node-label">Planeja a abordagem</div>
+              </div>
+              <div class="v-arch-node">
+                <div class="v-arch-node-label">Decide a ferramenta</div>
+              </div>
+              <div class="v-arch-node">
+                <div class="v-arch-node-label">Interpreta resultados</div>
+              </div>
+              <div class="v-arch-node">
+                <div class="v-arch-node-label">Itera até conclusão</div>
+              </div>
+            </div>
+          </div>
+          <div class="v-arch-connector">&darr;</div>
+          <div class="v-arch-layer layer-server">
+            <div class="v-arch-layer-title">Ferramentas (Tools)</div>
+            <div class="v-arch-nodes">
+              <div class="v-arch-node"><div class="v-arch-node-label">Read</div><div class="v-arch-node-sub">Ler arquivos</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Edit</div><div class="v-arch-node-sub">Editar arquivos</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Write</div><div class="v-arch-node-sub">Criar arquivos</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Grep</div><div class="v-arch-node-sub">Buscar no código</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Glob</div><div class="v-arch-node-sub">Encontrar arquivos</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Bash</div><div class="v-arch-node-sub">Executar comandos</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">MCP</div><div class="v-arch-node-sub">Ferramentas externas</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Agent</div><div class="v-arch-node-sub">Sub-agentes</div></div>
+            </div>
+          </div>
+          <div class="v-arch-connector">&darr;</div>
+          <div class="v-arch-layer layer-protocol">
+            <div class="v-arch-layer-title">Memória / Contexto</div>
+            <div class="v-arch-nodes">
+              <div class="v-arch-node"><div class="v-arch-node-label">System Prompt</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">CLAUDE.md</div><div class="v-arch-node-sub">Rules do projeto</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Histórico</div><div class="v-arch-node-sub">Conversa</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Resultados</div><div class="v-arch-node-sub">De ferramentas</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Memória</div><div class="v-arch-node-sub">Persistente</div></div>
+            </div>
+          </div>
+          <div class="v-arch-connector">&darr;</div>
+          <div class="v-arch-layer layer-service">
+            <div class="v-arch-layer-title">Controles de Segurança</div>
+            <div class="v-arch-nodes">
+              <div class="v-arch-node"><div class="v-arch-node-label">Permissões</div><div class="v-arch-node-sub">Por ferramenta</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Hooks</div><div class="v-arch-node-sub">Validação</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Sandbox</div><div class="v-arch-node-sub">Para comandos</div></div>
+              <div class="v-arch-node"><div class="v-arch-node-label">Confirmação</div><div class="v-arch-node-sub">Ações destrutivas</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 11.3 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 13.3</span>
+        <h2>Padrões Arquiteturais de Agentes</h2>
+
+        <h3>11.3.1 Agente Único (Single Agent)</h3>
+
+        <p>O padrão mais simples &mdash; um único agente com acesso a ferramentas:</p>
+
+        <div class="agent-pattern">
+          <div class="agent-flow">
+            <div class="agent-flow-node node-user">Usuário</div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-node node-agent">Agente + Ferramentas</div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-node node-result">Resultado</div>
+          </div>
+        </div>
+
+        <p><strong>Exemplo:</strong> Claude Code no modo padrão. Um único agente lê, edita, busca e executa.</p>
+
+        <p><strong>Quando usar:</strong> Tarefas focadas que um único "desenvolvedor" poderia resolver.</p>
+
+        <h3>11.3.2 Multi-Agentes em Paralelo</h3>
+
+        <p>Múltiplos agentes trabalham simultaneamente em subtarefas independentes:</p>
+
+        <div class="agent-pattern">
+          <div class="agent-flow">
+            <div class="agent-flow-node node-user">Usuário</div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-node node-orchestrator">Orquestrador</div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-group">
+              <div class="agent-flow-node node-agent">Agente 1: Frontend</div>
+              <div class="agent-flow-node node-agent">Agente 2: Backend</div>
+              <div class="agent-flow-node node-agent">Agente 3: Testes</div>
+            </div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-node node-result">Resultado combinado</div>
+          </div>
+        </div>
+
+        <p><strong>Exemplo:</strong> Claude Code com sub-agentes (Agent tool). O agente principal delega:</p>
+        <ul>
+          <li>Um sub-agente pesquisa a codebase</li>
+          <li>Outro sub-agente roda em um worktree separado</li>
+          <li>Resultados são combinados pelo agente principal</li>
+        </ul>
+
+        <p><strong>Quando usar:</strong> Tarefas que podem ser decompostas em partes independentes.</p>
+
+        <h3>11.3.3 Pipeline de Agentes</h3>
+
+        <p>Agentes encadeados onde a saída de um alimenta o próximo:</p>
+
+        <div class="agent-pattern">
+          <div class="agent-flow">
+            <div class="agent-flow-node node-agent">Análise</div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-node node-agent">Implementação</div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-node node-agent">Review</div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-node node-agent">Teste</div>
+          </div>
+        </div>
+
+        <p><strong>Quando usar:</strong> Workflows com etapas naturalmente sequenciais.</p>
+
+        <h3>11.3.4 Agente Supervisor</h3>
+
+        <p>Um agente coordenador que distribui e supervisiona trabalho:</p>
+
+        <div class="agent-pattern">
+          <div class="agent-flow">
+            <div class="agent-flow-node node-orchestrator">Supervisor</div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-group">
+              <div class="agent-flow-node node-agent">Worker 1</div>
+              <div class="agent-flow-node node-agent">Worker 2</div>
+              <div class="agent-flow-node node-agent">Worker 3</div>
+            </div>
+            <div class="agent-flow-arrow">&rarr;</div>
+            <div class="agent-flow-node node-result">Supervisor valida</div>
+          </div>
+        </div>
+
+        <p><strong>Quando usar:</strong> Tarefas complexas que precisam de coordenação e validação.</p>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">📚</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Wang, L. et al. (2024). <em>"A Survey on Large Language Model based Autonomous Agents"</em>. Renmin University. <a href="https://arxiv.org/abs/2308.11432" target="_blank">arXiv:2308.11432</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 11.4 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 13.4</span>
+        <h2>Subagentes: Delegação Inteligente de Tarefas</h2>
+
+        <p><strong>Subagentes</strong> são agentes de IA especializados que são <strong>invocados por um agente principal</strong> para executar subtarefas específicas. Cada subagente opera com sua <strong>própria janela de contexto isolada</strong>, recebe um prompt customizado, tem acesso a ferramentas específicas e retorna apenas um resumo ao agente pai.</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Imagine um <strong>gerente de projeto</strong> (agente principal) que, em vez de fazer tudo sozinho, delega tarefas para membros especializados da equipe (subagentes). O gerente diz "pesquise como funciona a autenticação" para o analista, "refatore o módulo de pagamentos" para o desenvolvedor sênior, e "escreva testes para a API" para o QA. Cada membro trabalha <strong>independentemente</strong>, em sua própria mesa (contexto), e reporta apenas o resultado final.</p>
+        </div>
+
+        <h3>Por que Subagentes existem?</h3>
+
+        <p>O problema fundamental que subagentes resolvem é a <strong>limitação da janela de contexto</strong> (Módulo 3). Sem subagentes:</p>
+
+        <div class="before-after">
+          <div class="before-after-card card-before">
+            <div class="before-after-title">Sem Subagentes</div>
+            <div class="before-after-line">Toda pesquisa polui o contexto principal</div>
+            <div class="before-after-line">Resultados intermediários consomem tokens</div>
+            <div class="before-after-line">Tarefas sequenciais (uma por vez)</div>
+            <div class="before-after-line">Contexto esgota rapidamente</div>
+            <div class="before-after-total">Capacidade limitada, custo alto</div>
+          </div>
+          <div class="before-after-card card-after">
+            <div class="before-after-title">Com Subagentes</div>
+            <div class="before-after-line">Cada subagente tem contexto próprio</div>
+            <div class="before-after-line">Apenas resumos voltam ao pai</div>
+            <div class="before-after-line">Tarefas em paralelo (simultâneas)</div>
+            <div class="before-after-line">Contexto principal permanece limpo</div>
+            <div class="before-after-total">Capacidade multiplicada, custo otimizado</div>
+          </div>
+        </div>
+
+        <h3>Como Subagentes Funcionam</h3>
+
+        <p>O ciclo de vida de um subagente segue este fluxo:</p>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">1. Agente principal identifica subtarefa</div>
+              <div class="v-pipeline-card-desc">"Preciso pesquisar como a autenticação funciona antes de corrigir o bug"</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">2. Cria subagente com prompt específico</div>
+              <div class="v-pipeline-card-desc">Define: tipo, prompt, ferramentas permitidas, modelo, modo de isolamento</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">3. Subagente trabalha em contexto isolado</div>
+              <div class="v-pipeline-card-desc">Usa sua própria janela de contexto &mdash; lê arquivos, executa comandos, analisa código</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">4. Retorna apenas o resumo ao agente pai</div>
+              <div class="v-pipeline-card-desc">Resultados intermediários (tool calls, arquivos lidos) NÃO voltam &mdash; apenas a conclusão</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">5. Agente principal continua com contexto limpo</div>
+              <div class="v-pipeline-card-desc">Incorpora o resumo e prossegue com o contexto principal intacto</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Isolamento de Janela de Contexto</h3>
+
+        <p>A propriedade mais importante de um sistema de subagentes bem projetado é o <strong>isolamento de escopo</strong>. Cada subagente opera em sua própria janela de contexto, completamente separada do agente pai e de outros subagentes paralelos.</p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#128270;</span>
+          <div class="callout-content">
+            <div class="callout-title">Conceito-Chave: Isolamento de Contexto</div>
+            <p>Quando um subagente é criado, ele recebe <strong>apenas o prompt</strong> do agente pai &mdash; nada mais. Ele não herda o histórico da conversa, nem os arquivos já lidos. Isso significa que o subagente começa "do zero" com um contexto limpo, e o agente pai não é poluído com os resultados intermediários do subagente.</p>
+          </div>
+        </div>
+
+        <h4>Quais ferramentas suportam subagentes com contexto isolado?</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>Isolamento de Contexto</th>
+                <th>Paralelo</th>
+                <th>Aninhamento</th>
+                <th>Detalhes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Claude Code</strong></td>
+                <td style="color: var(--color-accent-green);">Completo</td>
+                <td>Sim</td>
+                <td>Não (1 nível)</td>
+                <td>Cada subagente tem janela própria. Pai recebe apenas resumo.</td>
+              </tr>
+              <tr>
+                <td><strong>Cursor</strong></td>
+                <td style="color: var(--color-accent-green);">Completo</td>
+                <td>Sim (até 8 background)</td>
+                <td>Sim (desde v2.5)</td>
+                <td>Subagentes e Background Agents com contexto isolado.</td>
+              </tr>
+              <tr>
+                <td><strong>OpenAI Codex</strong></td>
+                <td style="color: var(--color-accent-green);">Completo</td>
+                <td>Sim (até 6 threads)</td>
+                <td>Profundidade 1 (padrão)</td>
+                <td>Contexto independente por thread. Inter-agent messaging v2.</td>
+              </tr>
+              <tr>
+                <td><strong>Devin</strong></td>
+                <td style="color: var(--color-accent-green);">Completo</td>
+                <td>Sim (múltiplos Devins)</td>
+                <td>N/A</td>
+                <td>Cada Devin roda em VM cloud separada com IDE própria.</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Copilot</strong></td>
+                <td style="color: var(--color-accent-amber);">Parcial</td>
+                <td>Sim</td>
+                <td>N/A</td>
+                <td>Agents paralelos (Explore, Task, Code-review) desde 2026.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Tipos de Subagentes no Claude Code</h3>
+
+        <p>O Claude Code oferece subagentes <strong>built-in</strong> e suporta <strong>subagentes customizados</strong>:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Subagente</th>
+                <th>Modelo</th>
+                <th>Ferramentas</th>
+                <th>Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Explore</strong></td>
+                <td>Haiku (rápido)</td>
+                <td>Somente leitura (Read, Grep, Glob)</td>
+                <td>Busca e análise rápida na codebase</td>
+              </tr>
+              <tr>
+                <td><strong>Plan</strong></td>
+                <td>Herda do pai</td>
+                <td>Somente leitura</td>
+                <td>Coleta contexto para planejar implementação</td>
+              </tr>
+              <tr>
+                <td><strong>General-purpose</strong></td>
+                <td>Herda do pai</td>
+                <td>Todas</td>
+                <td>Tarefas complexas multi-passo</td>
+              </tr>
+              <tr>
+                <td><strong>Customizado</strong></td>
+                <td>Configurável</td>
+                <td>Configurável</td>
+                <td>Definido via <code>.claude/agents/*.md</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Criando Subagentes Customizados</h3>
+
+        <p>Subagentes customizados são definidos como arquivos Markdown com frontmatter YAML em <code>.claude/agents/</code>:</p>
+
+        <pre><code><span class="code-label">.claude/agents/security-reviewer.md</span><span class="code-comment">---</span>
+<span class="code-attr">name</span>: Security Reviewer
+<span class="code-attr">description</span>: Revisa código focando em vulnerabilidades OWASP Top 10
+<span class="code-attr">model</span>: sonnet
+<span class="code-attr">tools</span>:
+  - Read
+  - Grep
+  - Glob
+<span class="code-attr">maxTurns</span>: 15
+<span class="code-comment">---</span>
+
+<span class="code-comment"># Instruções</span>
+
+Você é um revisor de segurança especializado. Ao receber código:
+
+1. Busque por vulnerabilidades OWASP Top 10
+2. Verifique: SQL injection, XSS, CSRF, auth bypass
+3. Analise dependências por CVEs conhecidas
+4. Produza relatório com severidade e correções
+
+<span class="code-keyword">Nunca</span> modifique arquivos &mdash; apenas analise e reporte.</code></pre>
+
+        <h3>Exemplo Prático: Múltiplos Subagentes em Paralelo</h3>
+
+        <pre><code><span class="code-label">Claude Code</span><span class="code-comment"># O agente principal pode lançar vários subagentes simultaneamente:</span>
+
+Tarefa: <span class="code-string">"Implemente o sistema de notificações"</span>
+
+Agente Principal decide paralelizar:
+├─ Agent(<span class="code-attr">type</span>=<span class="code-string">"Explore"</span>)    <span class="code-comment"># Pesquisa: como o sistema de eventos funciona</span>
+├─ Agent(<span class="code-attr">type</span>=<span class="code-string">"Explore"</span>)    <span class="code-comment"># Pesquisa: quais notificações já existem</span>
+└─ Agent(<span class="code-attr">type</span>=<span class="code-string">"Plan"</span>)       <span class="code-comment"># Planeja: arquitetura da feature</span>
+
+<span class="code-comment"># Cada um trabalha em paralelo com contexto próprio</span>
+<span class="code-comment"># Pai recebe 3 resumos concisos</span>
+<span class="code-comment"># Então implementa com base nos resumos combinados</span></code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <p><strong>Anthropic</strong> &mdash; <em>"Create custom subagents"</em>. Disponível em: <a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">code.claude.com/docs/en/sub-agents</a></p>
+            <p><strong>Anthropic</strong> &mdash; <em>"Introduction to Subagents"</em> (curso). Disponível em: <a href="https://anthropic.skilljar.com/introduction-to-subagents" target="_blank" rel="noopener">anthropic.skilljar.com/introduction-to-subagents</a></p>
+            <p><strong>Anthropic</strong> &mdash; <em>"Claude Code Advanced Patterns: Subagents, MCP, and Scaling"</em> (PDF). Disponível em: <a href="https://resources.anthropic.com/hubfs/Claude%20Code%20Advanced%20Patterns_%20Subagents,%20MCP,%20and%20Scaling%20to%20Real%20Codebases.pdf" target="_blank" rel="noopener">resources.anthropic.com</a></p>
+            <p><strong>Anthropic</strong> &mdash; <em>"Building Effective Agents"</em>. Disponível em: <a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">anthropic.com/research/building-effective-agents</a></p>
+            <p><strong>Anthropic Engineering</strong> &mdash; <em>"Multi-Agent Research System"</em>. Disponível em: <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">anthropic.com/engineering/multi-agent-research-system</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 11.5 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 13.5</span>
+        <h2>Worktrees: Isolamento Seguro para Trabalho Paralelo</h2>
+
+        <p>Uma <strong>worktree</strong> (árvore de trabalho) é um recurso do Git que permite ter <strong>múltiplas cópias de trabalho do mesmo repositório simultaneamente</strong>, cada uma em um branch diferente, sem precisar clonar o repositório inteiro. No contexto de agentes de IA, worktrees são a tecnologia que permite que subagentes façam mudanças no código <strong>sem afetar o diretório de trabalho principal</strong>.</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Imagine que seu repositório é um <strong>documento original</strong>. Em vez de editá-lo diretamente (arriscando estragar algo), você faz uma <strong>cópia de trabalho</strong> (worktree). Se as mudanças ficarem boas, você incorpora a cópia. Se ficarem ruins, simplesmente joga a cópia fora &mdash; o original permanece intacto.</p>
+        </div>
+
+        <h3>O Problema que Worktrees Resolvem</h3>
+
+        <p>Sem worktrees, quando um agente de IA edita arquivos no seu projeto, as mudanças acontecem <strong>diretamente no seu diretório de trabalho</strong>. Isso causa problemas:</p>
+
+        <ul>
+          <li><strong>Risco de corrupção:</strong> se o agente fizer mudanças ruins, seu código fica em estado inconsistente</li>
+          <li><strong>Bloqueio:</strong> enquanto o agente trabalha, você não pode continuar editando</li>
+          <li><strong>Sem paralelismo:</strong> dois agentes não podem modificar os mesmos arquivos simultaneamente</li>
+          <li><strong>Rollback difícil:</strong> desfazer mudanças parciais é complicado</li>
+        </ul>
+
+        <h3>Como Worktrees Funcionam com Agentes</h3>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">1. Agente cria worktree</div>
+              <div class="v-pipeline-card-desc">Git cria um diretório separado com cópia do repo em um branch temporário</div>
+              <div class="v-pipeline-card-sub"><code>git worktree add /tmp/worktree-abc feature-branch</code></div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">2. Subagente trabalha no worktree</div>
+              <div class="v-pipeline-card-desc">Todas as edições, criações e exclusões de arquivos acontecem no diretório isolado</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(52,211,153,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-accent-green);">3a. Sucesso: mudanças preservadas</div>
+              <div class="v-pipeline-card-desc">O worktree é mantido com o path e branch retornados ao agente pai para review/merge</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(248,113,113,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-accent-red);">3b. Falha: worktree descartado</div>
+              <div class="v-pipeline-card-desc">Se o subagente não fez mudanças (ou falhou), o worktree é automaticamente limpo</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">4. Diretório principal intacto</div>
+              <div class="v-pipeline-card-desc">Em nenhum momento o código no seu diretório de trabalho foi modificado</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Worktrees no Claude Code</h3>
+
+        <p>No Claude Code, worktrees são ativadas através do parâmetro <code>isolation: "worktree"</code> na ferramenta Agent:</p>
+
+        <pre><code><span class="code-label">Claude Code</span><span class="code-comment"># Subagente com worktree para refatoração segura:</span>
+Agent(
+  <span class="code-attr">description</span>: <span class="code-string">"Refatorar módulo de pagamentos"</span>,
+  <span class="code-attr">prompt</span>: <span class="code-string">"Refatore payments/ de sync para async/await..."</span>,
+  <span class="code-attr">isolation</span>: <span class="code-string">"worktree"</span>
+)
+
+<span class="code-comment"># Resultado (se houve mudanças):</span>
+<span class="code-comment"># {</span>
+<span class="code-comment">#   worktree_path: "/tmp/worktree-a1b2c3",</span>
+<span class="code-comment">#   branch: "agent/refactor-payments-a1b2c3",</span>
+<span class="code-comment">#   summary: "Convertidos 12 arquivos para async..."</span>
+<span class="code-comment"># }</span></code></pre>
+
+        <h3>Cenários Ideais para Worktrees</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Cenário</th>
+                <th>Por que usar worktree</th>
+                <th>Exemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Refatoração grande</strong></td>
+                <td>Mudanças em muitos arquivos &mdash; seguro testar antes de mergear</td>
+                <td>Migrar de ORM, trocar framework de testes</td>
+              </tr>
+              <tr>
+                <td><strong>Experimentação</strong></td>
+                <td>Testar uma abordagem sem comprometer o código atual</td>
+                <td>"Tente implementar isso com Redis, e se não funcionar, descarte"</td>
+              </tr>
+              <tr>
+                <td><strong>Trabalho paralelo</strong></td>
+                <td>Múltiplos agentes trabalhando simultaneamente no mesmo repo</td>
+                <td>Um agente no frontend, outro no backend, outro nos testes</td>
+              </tr>
+              <tr>
+                <td><strong>Code review seguro</strong></td>
+                <td>Agente aplica sugestões de review sem tocar no branch principal</td>
+                <td>"Aplique todas as sugestões do PR review em um worktree"</td>
+              </tr>
+              <tr>
+                <td><strong>Prototipação</strong></td>
+                <td>Criar PoC rápida que pode ser descartada</td>
+                <td>"Crie um protótipo de como ficaria com GraphQL"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Worktrees + Subagentes: O Poder Combinado</h3>
+
+        <p>A combinação de subagentes com worktrees permite o padrão mais poderoso de desenvolvimento com IA &mdash; <strong>múltiplos agentes trabalhando em paralelo, cada um em seu próprio branch isolado</strong>:</p>
+
+        <div class="agent-pattern">
+          <div class="agent-flow">
+            <div class="agent-flow-node node-user">Tarefa: "Implementar feature X"</div>
+            <span class="agent-flow-arrow">&rarr;</span>
+            <div class="agent-flow-node node-orchestrator">Agente Principal</div>
+            <span class="agent-flow-arrow">&rarr;</span>
+            <div class="agent-flow-group">
+              <div class="agent-flow-node node-agent">Subagente 1 (worktree A) &mdash; Backend API</div>
+              <div class="agent-flow-node node-agent">Subagente 2 (worktree B) &mdash; Frontend UI</div>
+              <div class="agent-flow-node node-agent">Subagente 3 (worktree C) &mdash; Testes E2E</div>
+            </div>
+            <span class="agent-flow-arrow">&rarr;</span>
+            <div class="agent-flow-node node-result">Merge dos 3 branches</div>
+          </div>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Benefícios Combinados</div>
+            <ul>
+              <li><strong>Contexto isolado:</strong> cada subagente tem sua própria janela de contexto (não polui o pai)</li>
+              <li><strong>Filesystem isolado:</strong> cada worktree tem sua própria cópia dos arquivos (não conflita)</li>
+              <li><strong>Paralelismo real:</strong> 3 agentes trabalhando simultaneamente = 3x throughput</li>
+              <li><strong>Rollback trivial:</strong> descarte qualquer worktree sem afetar os outros</li>
+              <li><strong>Review facilitado:</strong> cada branch pode ser revisado independentemente antes do merge</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Ferramentas que Suportam Worktrees</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>Suporte a Worktree</th>
+                <th>Como funciona</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Claude Code</strong></td>
+                <td style="color: var(--color-accent-green);">Nativo</td>
+                <td><code>isolation: "worktree"</code> na ferramenta Agent. Cleanup automático se sem mudanças.</td>
+              </tr>
+              <tr>
+                <td><strong>Cursor</strong></td>
+                <td style="color: var(--color-accent-green);">Via Background Agents</td>
+                <td>Background Agents clonam o repo na cloud e trabalham em branch separado.</td>
+              </tr>
+              <tr>
+                <td><strong>OpenAI Codex</strong></td>
+                <td style="color: var(--color-accent-green);">Sandbox cloud</td>
+                <td>Cada agente roda em sandbox cloud preloaded com o repositório.</td>
+              </tr>
+              <tr>
+                <td><strong>Devin</strong></td>
+                <td style="color: var(--color-accent-green);">VM isolada</td>
+                <td>Cada Devin opera em VM cloud separada com IDE completa.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <p><strong>Git</strong> &mdash; <em>"git-worktree Documentation"</em>. Disponível em: <a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">git-scm.com/docs/git-worktree</a></p>
+            <p><strong>Anthropic</strong> &mdash; <em>"Create custom subagents"</em> (seção sobre isolation). Disponível em: <a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">code.claude.com/docs/en/sub-agents</a></p>
+            <p><strong>SmartScope</strong> &mdash; <em>"Codex vs Claude Code Subagent Architecture 2026"</em>. Disponível em: <a href="https://smartscope.blog/en/blog/codex-vs-claude-code-subagent-architecture-2026/" target="_blank" rel="noopener">smartscope.blog</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 11.6 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 13.6</span>
+        <h2>Benchmarks e Avaliação de Agentes</h2>
+
+        <p>Para avaliar a qualidade de agentes de codificação, a comunidade usa benchmarks padronizados:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Benchmark</th>
+                <th>O que avalia</th>
+                <th>Referência</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>SWE-bench</strong></td>
+                <td>Capacidade de resolver issues reais do GitHub</td>
+                <td><a href="https://arxiv.org/abs/2310.06770" target="_blank">arXiv:2310.06770</a></td>
+              </tr>
+              <tr>
+                <td><strong>SWE-bench Verified</strong></td>
+                <td>Subconjunto verificado por humanos</td>
+                <td><a href="https://www.swebench.com" target="_blank">swebench.com</a></td>
+              </tr>
+              <tr>
+                <td><strong>HumanEval</strong></td>
+                <td>Geração de funções Python a partir de docstrings</td>
+                <td>Chen et al. (2021) &mdash; <a href="https://arxiv.org/abs/2107.03374" target="_blank">arXiv:2107.03374</a></td>
+              </tr>
+              <tr>
+                <td><strong>MBPP</strong></td>
+                <td>Problemas de programação para iniciantes</td>
+                <td>Austin et al. (2021)</td>
+              </tr>
+              <tr>
+                <td><strong>Aider Polyglot</strong></td>
+                <td>Edição de código em múltiplas linguagens</td>
+                <td><a href="https://aider.chat/docs/leaderboards/" target="_blank">aider.chat/docs/leaderboards</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">📚</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <ul>
+              <li>Jimenez, C. et al. (2024). <em>"SWE-bench: Can Language Models Resolve Real-World GitHub Issues?"</em>. Princeton. <a href="https://arxiv.org/abs/2310.06770" target="_blank">arXiv:2310.06770</a></li>
+              <li>Yang, J. et al. (2024). <em>"SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering"</em>. Princeton. <a href="https://arxiv.org/abs/2405.15793" target="_blank">arXiv:2405.15793</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 11.7 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 13.7</span>
+        <h2>O Futuro dos Agentes de Codificação</h2>
+
+        <p>Tendências observadas e projetadas:</p>
+
+        <ol>
+          <li><strong>Agentes cada vez mais autônomos</strong> &mdash; De "sugerir código" para "implementar features completas"</li>
+          <li><strong>Integração com CI/CD</strong> &mdash; Agentes que automaticamente criam PRs, rodam testes e fazem deploy</li>
+          <li><strong>Multi-agentes especializados</strong> &mdash; Times virtuais com agentes para frontend, backend, QA, DevOps</li>
+          <li><strong>Agentes com memória de longo prazo</strong> &mdash; Aprendendo preferências e padrões do projeto ao longo do tempo</li>
+          <li><strong>Agentes proativos</strong> &mdash; Agentes que monitoram repositórios e propõem melhorias automaticamente</li>
+          <li><strong>Verificação formal</strong> &mdash; Uso de provas matemáticas para garantir correção do código gerado</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#x1f4a1;</span>
+          <div class="callout-content">
+            <div class="callout-title">Visão de Futuro</div>
+            <p>Estamos vivendo uma transição de <strong>"IA como autocomplete"</strong> para <strong>"IA como colega de equipe"</strong>. Em breve, a pergunta não será "a IA sabe programar?", mas sim "como eu orquestro um time de agentes para entregar o melhor software possível?"</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-10.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 12 &mdash; MCP</span>
+        </a>
+        <a href="ferramentas.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Apêndice A: Ferramentas Práticas</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

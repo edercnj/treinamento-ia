@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 08 — Rules e Arquivos de Configuração</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 08</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">08</div>
+        <h1>Rules e Arquivos de Configuração</h1>
+        <p class="module-desc">Como personalizar o comportamento de ferramentas de IA para seu projeto usando CLAUDE.md, agents.md, .cursorrules e copilot-instructions.md.</p>
+      </div>
+
+      <!-- 8.1 O Conceito de Rules -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 8.1</span>
+        <h2>O Conceito de Rules</h2>
+
+        <p><strong>Rules</strong> são instruções persistentes que personalizam o comportamento de ferramentas de IA para um projeto ou organização específica. Elas funcionam como um <strong>manual de estilo vivo</strong> que é automaticamente incluído no contexto toda vez que a IA é invocada.</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Rules são como o <code>.editorconfig</code> ou <code>.eslintrc</code> do mundo da IA &mdash; definem as "regras do jogo" para o assistente, assim como linters definem regras para o código.</p>
+        </div>
+
+        <h3>Por que Rules existem:</h3>
+        <ol>
+          <li><strong>Consistência:</strong> Todo membro da equipe recebe as mesmas instruções da IA</li>
+          <li><strong>Contexto automático:</strong> Informações críticas sobre o projeto são fornecidas sem que o desenvolvedor precise repeti-las</li>
+          <li><strong>Personalização:</strong> A IA se adapta às convenções, stack e práticas do time</li>
+          <li><strong>Eficiência:</strong> Evita reexplicar as mesmas coisas a cada conversa</li>
+        </ol>
+      </section>
+
+      <hr>
+
+      <!-- 8.2 CLAUDE.md -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 8.2</span>
+        <h2>CLAUDE.md &mdash; O "Manual do Projeto" para Claude</h2>
+
+        <p>O arquivo <strong>CLAUDE.md</strong> é o mecanismo de rules do <strong>Claude Code</strong>. Ele é automaticamente lido e incluído no contexto do modelo no início de cada sessão.</p>
+
+        <h3>Localização e hierarquia:</h3>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/.claude/CLAUDE.md</span>
+            <span class="v-tree-hint">Global (todas as máquinas do usuário)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/projeto/CLAUDE.md</span>
+            <span class="v-tree-hint">Raiz do projeto (commitado no git)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/projeto/src/CLAUDE.md</span>
+            <span class="v-tree-hint">Diretório específico (contexto local)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/projeto/.claude/CLAUDE.md</span>
+            <span class="v-tree-hint">Local do projeto (não commitada)</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;</span>
+          <div class="callout-content">
+            <div class="callout-title">Hierarquia de Carregamento</div>
+            <p>Todos os níveis são carregados e combinados. O mais específico complementa (não substitui) o mais geral.</p>
+          </div>
+        </div>
+
+        <h3>Estrutura recomendada de um CLAUDE.md:</h3>
+
+        <pre><code><span class="code-label">markdown</span># CLAUDE.md
+
+## Visão Geral do Projeto
+Breve descrição do que o projeto faz e sua arquitetura.
+
+## Stack Técnica
+- Linguagem: Python 3.12
+- Framework: FastAPI 0.104
+- Banco de dados: PostgreSQL 16 + SQLAlchemy 2.0 (async)
+- Testes: pytest + pytest-asyncio
+- Linter: ruff
+- Formatter: black
+
+## Comandos Importantes
+- `make test` — roda todos os testes
+- `make lint` — roda linter
+- `make dev` — inicia servidor de desenvolvimento
+- `docker compose up -d` — sobe dependências
+
+## Convenções de Código
+- Use snake_case para funções e variáveis
+- Use PascalCase para classes
+- Docstrings no formato Google
+- Imports absolutos (from app.services import ...)
+- Repository pattern para acesso a dados
+- Cada rota em arquivo separado em app/routers/
+
+## Padrões Arquiteturais
+app/
+├── routers/      ← Endpoints (thin controllers)
+├── schemas/      ← Pydantic models (request/response)
+├── services/     ← Lógica de negócio
+├── repositories/ ← Acesso a dados
+├── models/       ← SQLAlchemy models
+└── core/         ← Config, deps, security
+
+## Regras Importantes
+- SEMPRE rode `make lint` antes de commitar
+- NUNCA modifique arquivos em migrations/ manualmente
+- Testes devem usar fixtures do conftest.py para DB
+- Variáveis de ambiente vão em .env (NÃO commitar)
+
+## Contexto de Negócio
+Este é um sistema de e-commerce B2B. Os "usuários" são empresas,
+não pessoas físicas. Pedidos podem ter múltiplos endereços de entrega.</code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic. <em>"How Claude remembers your project"</em>. Disponível em: <a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/claude-code/memory</a></p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Prática</div>
+            <p>Anthropic. <em>"How Anthropic teams use Claude Code"</em> (PDF). Disponível em: <a href="https://www-cdn.anthropic.com/58284b19e702b49db9302d5b6f135ad8871e7658.pdf" target="_blank" rel="noopener">https://www-cdn.anthropic.com/58284b19e702b49db9302d5b6f135ad8871e7658.pdf</a> &mdash; Documento interno da Anthropic mostrando como suas próprias equipes usam CLAUDE.md e Claude Code.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Exemplo Real</div>
+            <p>CLAUDE.md do repositório claude-code-action da Anthropic. Disponível em: <a href="https://github.com/anthropics/claude-code-action/blob/main/CLAUDE.md" target="_blank" rel="noopener">https://github.com/anthropics/claude-code-action/blob/main/CLAUDE.md</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 8.3 agents.md -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 8.3</span>
+        <h2>agents.md &mdash; Instruções para Agentes Específicos</h2>
+
+        <p>O arquivo <strong>agents.md</strong> (ou diretório <code>.claude/agents/</code>) permite definir <strong>agentes especializados</strong> no Claude Code &mdash; agentes com instruções, ferramentas e comportamentos customizados para tarefas específicas.</p>
+
+        <h3>Exemplo de estrutura:</h3>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-folder depth-0">
+            <span class="v-tree-icon">&#128193;</span>
+            <span class="v-tree-label">.claude/</span>
+          </div>
+          <div class="v-tree-item tree-folder depth-1">
+            <span class="v-tree-icon">&#128193;</span>
+            <span class="v-tree-label">agents/</span>
+          </div>
+          <div class="v-tree-item tree-file depth-2">
+            <span class="v-tree-icon">&#128196;</span>
+            <span class="v-tree-label">code-reviewer.md</span>
+            <span class="v-tree-hint">Agente de revisão de código</span>
+          </div>
+          <div class="v-tree-item tree-file depth-2">
+            <span class="v-tree-icon">&#128196;</span>
+            <span class="v-tree-label">test-writer.md</span>
+            <span class="v-tree-hint">Agente de escrita de testes</span>
+          </div>
+          <div class="v-tree-item tree-file depth-2">
+            <span class="v-tree-icon">&#128196;</span>
+            <span class="v-tree-label">db-migration.md</span>
+            <span class="v-tree-hint">Agente de migrações de banco</span>
+          </div>
+        </div>
+
+        <h3>Exemplo de um agente especializado</h3>
+        <p>Arquivo: <code>.claude/agents/code-reviewer.md</code></p>
+
+        <pre><code><span class="code-label">markdown</span>---
+name: Code Reviewer
+description: Revisa código focando em segurança, performance e boas práticas
+tools:
+  - Read
+  - Grep
+  - Glob
+  - Bash
+---
+
+# Instruções
+
+Você é um revisor de código sênior. Ao receber código para revisão:
+
+1. Leia TODOS os arquivos modificados
+2. Verifique cada um dos seguintes critérios:
+   - [ ] Segurança (OWASP Top 10)
+   - [ ] Performance (queries N+1, loops desnecessários)
+   - [ ] Tratamento de erros
+   - [ ] Cobertura de testes
+   - [ ] Aderência às convenções do CLAUDE.md
+
+3. Produza um relatório no formato:
+   ## Resumo
+   ## Problemas Críticos
+   ## Sugestões de Melhoria
+   ## Aprovação: SIM/NÃO
+
+Nunca modifique arquivos — apenas analise e reporte.</code></pre>
+      </section>
+
+      <hr>
+
+      <!-- 8.4 Templates Completos por Ferramenta -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 8.4</span>
+        <h2>Templates Completos por Ferramenta</h2>
+
+        <p>Cada ferramenta de IA tem seu próprio formato de rules, localização de arquivos e mecanismos de ativação. Esta seção apresenta templates prontos, problemas resolvidos e boas práticas específicas para as principais ferramentas do mercado.</p>
+
+        <!-- 8.4.1 Claude Code -->
+        <h3>8.4.1 Claude Code &mdash; CLAUDE.md</h3>
+
+        <p>O mecanismo nativo de rules do <strong>Claude Code</strong>. Todos os arquivos encontrados na hierarquia são carregados e combinados &mdash; o mais específico complementa (não substitui) o mais geral.</p>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/.claude/CLAUDE.md</span>
+            <span class="v-tree-hint">Global (todas as máquinas do usuário)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">./CLAUDE.md</span>
+            <span class="v-tree-hint">Raiz do projeto (commitado no git)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">./.claude/CLAUDE.md</span>
+            <span class="v-tree-hint">Local do projeto (não commitado)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">./src/CLAUDE.md</span>
+            <span class="v-tree-hint">Contexto específico de subdiretório</span>
+          </div>
+        </div>
+
+        <h4>Template expandido</h4>
+
+        <pre><code><span class="code-label">CLAUDE.md</span># CLAUDE.md
+
+## Visão Geral do Projeto
+Sistema de e-commerce B2B para distribuidores industriais.
+Arquitetura: monolito modular em Python com workers assíncronos.
+Usuários são empresas (não pessoas físicas) com múltiplos compradores.
+
+## Stack Técnica
+- Linguagem: Python 3.12
+- Framework: FastAPI 0.110 (async)
+- ORM: SQLAlchemy 2.0 (async) + Alembic
+- Banco de dados: PostgreSQL 16
+- Cache/Fila: Redis 7 + Celery
+- Testes: pytest + pytest-asyncio + httpx
+- Linter/Formatter: ruff (substitui black, isort, flake8)
+- Type checker: mypy --strict
+
+## Comandos Importantes
+- `make test`        — roda toda a suíte de testes
+- `make test-unit`   — apenas testes unitários (rápido)
+- `make lint`        — ruff check + mypy
+- `make format`      — ruff format
+- `make dev`         — inicia servidor em modo dev (uvicorn --reload)
+- `make build`       — build da imagem Docker
+- `docker compose up -d` — sobe Postgres + Redis locais
+- `alembic upgrade head` — aplica migrações pendentes
+
+## Convenções de Código
+- snake_case para funções, variáveis e módulos
+- PascalCase para classes e tipos
+- UPPER_SNAKE_CASE para constantes
+- Docstrings no formato Google
+- Imports absolutos: `from app.services.order import ...`
+- Type hints obrigatórios em funções públicas
+- Linhas até 100 caracteres
+
+## Arquitetura (camadas)
+app/
+├── routers/       ← Thin controllers (FastAPI routes)
+├── schemas/       ← Pydantic v2 (request/response DTOs)
+├── services/      ← Lógica de negócio
+├── repositories/  ← Acesso a dados (Repository pattern)
+├── models/        ← SQLAlchemy ORM models
+├── workers/       ← Tarefas Celery
+└── core/          ← Config, deps, security, logging
+
+## Regras Críticas
+- SEMPRE rode `make lint` antes de commitar
+- NUNCA edite arquivos em `migrations/versions/` manualmente — use `alembic revision --autogenerate`
+- NUNCA faça `commit` direto na branch `main`
+- Testes devem usar fixtures do `conftest.py` para sessão de DB
+- Segredos vão em `.env` (nunca commite)
+- Queries com `select()` — evite SQL raw a menos que documentado
+
+## Contexto de Negócio
+- "Conta" = empresa compradora (pessoa jurídica)
+- "Usuário" = comprador individual vinculado a uma Conta
+- Pedidos podem ter múltiplos endereços de entrega (split-shipment)
+- Preços são negociados por Conta (tabela `price_agreements`)
+- Créditos B2B: pedidos podem ser aprovados sem pagamento imediato</code></pre>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Problemas que resolve</div>
+            <ul>
+              <li>Consistência entre todos os desenvolvedores do time (mesmas convenções aplicadas)</li>
+              <li>Contexto persistente entre sessões (não é preciso re-explicar o projeto)</li>
+              <li>Enforcement automático de convenções (naming, imports, padrões)</li>
+              <li>Onboarding instantâneo de novos desenvolvedores via IA</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;</span>
+          <div class="callout-content">
+            <div class="callout-title">Boa prática</div>
+            <p>Mantenha o CLAUDE.md <strong>abaixo de 300 linhas</strong>. Arquivos muito longos consomem tokens de contexto e diluem sinal. Se precisar de mais, use CLAUDE.md em subdiretórios com escopo local.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic. <em>"Memory &amp; CLAUDE.md"</em>. Disponível em: <a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/claude-code/memory</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 8.4.2 GitHub Copilot -->
+        <h3>8.4.2 GitHub Copilot &mdash; .github/copilot-instructions.md</h3>
+
+        <p>O <strong>GitHub Copilot</strong> lê instruções customizadas a partir do repositório e as aplica tanto em sugestões inline quanto em respostas do Copilot Chat.</p>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.github/copilot-instructions.md</span>
+            <span class="v-tree-hint">Arquivo principal (raiz do repositório)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.github/instructions/*.instructions.md</span>
+            <span class="v-tree-hint">Instruções segmentadas por caminho (path-specific)</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;</span>
+          <div class="callout-content">
+            <div class="callout-title">Limite prático</div>
+            <p>O Copilot suporta arquivos grandes (~128K caracteres), mas na prática instruções de 200&ndash;400 linhas funcionam melhor &mdash; contexto excessivo prejudica sugestões inline.</p>
+          </div>
+        </div>
+
+        <h4>Template</h4>
+
+        <pre><code><span class="code-label">.github/copilot-instructions.md</span># Copilot Instructions
+
+## Project Context
+Microserviço Go responsável pelo processamento de pagamentos (cartão de
+crédito, PIX, boleto) para uma plataforma SaaS multi-tenant.
+
+## Stack
+- Go 1.22
+- Echo v4 (HTTP framework)
+- pgx v5 (driver Postgres, sem ORM)
+- slog (logging estruturado)
+- testify + httptest (testes)
+
+## Coding Guidelines
+- Prefira a biblioteca padrão quando possível
+- Erros SEMPRE envoltos com contexto: `fmt.Errorf("order: %w", err)`
+- Use `context.Context` como primeiro parâmetro em funções que fazem I/O
+- Handlers HTTP ficam em `internal/http/handlers/`
+- Lógica de negócio em `internal/domain/`
+- NÃO use `interface{}` — prefira `any` ou tipos específicos
+
+## Naming Conventions
+- Pacotes: lowercase, sem underscore (`paymentgateway`, não `payment_gateway`)
+- Arquivos: snake_case (`order_service.go`)
+- Tipos exportados: PascalCase, não-exportados: camelCase
+- Interfaces: sufixo `-er` quando possível (`Repository`, `Notifier`)
+
+## Testing Expectations
+- Table-driven tests para todo código de domínio
+- Use `t.Run(tc.name, ...)` para subtests nomeados
+- Mocks gerados com `mockery` em `internal/mocks/`
+- Cobertura mínima: 80% em `internal/domain/`
+
+## Security Considerations
+- NUNCA logar dados sensíveis (PAN, CVV, senhas, tokens)
+- Validar entrada em TODOS os handlers (usar `go-playground/validator`)
+- Queries SQL sempre parametrizadas ($1, $2...) — nunca concatenação
+- Segredos via variáveis de ambiente, nunca hardcoded
+- Rate limiting obrigatório em rotas públicas</code></pre>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Problemas que resolve</div>
+            <ul>
+              <li>Sugestões inline seguem convenções do time (não apenas boas práticas genéricas)</li>
+              <li>Respostas do Copilot Chat são consistentes para todos os devs</li>
+              <li>Reforça regras de segurança que a IA poderia violar silenciosamente</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>GitHub Docs. <em>"Configure custom instructions for GitHub Copilot"</em>. Disponível em: <a href="https://docs.github.com/en/copilot/how-tos/configure-custom-instructions" target="_blank" rel="noopener">https://docs.github.com/en/copilot/how-tos/configure-custom-instructions</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 8.4.3 Cursor -->
+        <h3>8.4.3 Cursor &mdash; .cursor/rules/*.mdc (Project Rules)</h3>
+
+        <p>O <strong>Cursor</strong> adotou um novo formato baseado em arquivos <code>.mdc</code> (Markdown com frontmatter YAML) que substitui o antigo arquivo único <code>.cursorrules</code>. Permite múltiplos conjuntos de regras com escopo granular.</p>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-folder depth-0">
+            <span class="v-tree-icon">&#128193;</span>
+            <span class="v-tree-label">.cursor/rules/</span>
+            <span class="v-tree-hint">Rules do projeto (commitadas)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-1">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">typescript.mdc</span>
+            <span class="v-tree-hint">Regras para arquivos TypeScript</span>
+          </div>
+          <div class="v-tree-item tree-config depth-1">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">api-conventions.mdc</span>
+            <span class="v-tree-hint">Convenções de rotas e handlers</span>
+          </div>
+          <div class="v-tree-item tree-config depth-1">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">testing.mdc</span>
+            <span class="v-tree-hint">Padrões de teste (auto-attached)</span>
+          </div>
+          <div class="v-tree-item tree-folder depth-0">
+            <span class="v-tree-icon">&#128193;</span>
+            <span class="v-tree-label">~/.cursor/rules/</span>
+            <span class="v-tree-hint">User Rules (pessoais, não commitadas)</span>
+          </div>
+        </div>
+
+        <h4>Tipos de ativação (frontmatter)</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Frontmatter</th>
+                <th>Quando aplica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Always</strong></td>
+                <td><code>alwaysApply: true</code></td>
+                <td>Em todo prompt, sempre</td>
+              </tr>
+              <tr>
+                <td><strong>Auto Attached</strong></td>
+                <td><code>globs: [...]</code></td>
+                <td>Quando arquivos que casam com o glob estão no contexto</td>
+              </tr>
+              <tr>
+                <td><strong>Agent Requested</strong></td>
+                <td><code>description: "..."</code></td>
+                <td>IA decide se aplica baseada na descrição</td>
+              </tr>
+              <tr>
+                <td><strong>Manual</strong></td>
+                <td>(sem campos ativos)</td>
+                <td>Só quando invocado com <code>@ruleName</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Template com frontmatter</h4>
+
+        <pre><code><span class="code-label">.cursor/rules/typescript.mdc</span>---
+description: Regras de TypeScript strict e convenções de tipagem
+globs:
+  - "**/*.ts"
+  - "**/*.tsx"
+alwaysApply: false
+---
+
+# TypeScript Strict
+
+## Tipagem
+- `strict: true` no tsconfig — nunca desabilite
+- NUNCA use `any`. Prefira `unknown` + narrowing ou tipos específicos
+- Prefira `type` para uniões/intersecções; `interface` para contratos públicos
+- Use `satisfies` em vez de type assertions (`as`) sempre que possível
+
+## React
+- Componentes sempre como funções (não classes)
+- Props com `interface` nomeada: `interface UserCardProps { ... }`
+- Hooks customizados começam com `use` (regra do React)
+- Server Components por padrão no Next.js App Router
+
+## Exemplos
+// BAD
+const data = response as User;
+
+// GOOD
+const data = response satisfies User;
+
+// BAD
+function fetch(opts: any) { ... }
+
+// GOOD
+function fetch(opts: FetchOptions) { ... }</code></pre>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Problemas que resolve</div>
+            <ul>
+              <li><strong>Escopo granular:</strong> regras de front não aparecem quando você edita código de backend</li>
+              <li><strong>Ativação por padrão de arquivo:</strong> regras de teste só são aplicadas quando você abre um <code>*.test.ts</code></li>
+              <li><strong>Múltiplos conjuntos:</strong> separe convenções por domínio (API, UI, testes, infra)</li>
+              <li><strong>User Rules:</strong> preferências pessoais do dev sem poluir o projeto</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Cursor. <em>"Rules"</em>. Disponível em: <a href="https://cursor.com/docs/rules" target="_blank" rel="noopener">https://cursor.com/docs/rules</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 8.4.4 OpenAI Codex / AGENTS.md -->
+        <h3>8.4.4 OpenAI Codex &mdash; AGENTS.md</h3>
+
+        <p>O formato <strong>AGENTS.md</strong> foi proposto pela OpenAI (Codex) e vem sendo adotado como <strong>padrão de fato</strong> por múltiplas ferramentas de IA &mdash; incluindo Claude Code (como fallback), Cursor e outros. O arquivo mais próximo (nearest) vence.</p>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">./AGENTS.md</span>
+            <span class="v-tree-hint">Raiz do projeto</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">./packages/api/AGENTS.md</span>
+            <span class="v-tree-hint">Específico do subpacote (sobrescreve raiz)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">./packages/web/AGENTS.md</span>
+            <span class="v-tree-hint">Específico do frontend</span>
+          </div>
+        </div>
+
+        <h4>Template</h4>
+
+        <pre><code><span class="code-label">AGENTS.md</span># AGENTS.md
+
+## Project Introduction
+Plataforma SaaS multi-tenant para gestão de frotas. Monorepo com:
+- `packages/api`  — backend Node.js + Fastify
+- `packages/web`  — frontend Next.js 14
+- `packages/shared` — tipos e utilitários compartilhados
+
+## Tooling
+- Gerenciador: pnpm workspaces
+- Node: 20.x (use `.nvmrc`)
+- Build: tsup (libs) + next build (app)
+- Test: vitest (unit) + playwright (e2e)
+- Lint: biome (substitui eslint + prettier)
+
+## Build &amp; Test Commands
+- `pnpm install`           — instala dependências do monorepo
+- `pnpm -r build`          — builda todos os pacotes
+- `pnpm -r test`           — roda testes em todos os pacotes
+- `pnpm --filter api dev`  — inicia apenas a API em dev
+- `pnpm --filter web dev`  — inicia apenas o frontend em dev
+- `pnpm lint`              — biome check em todo o repo
+- `pnpm e2e`               — playwright (sobe docker-compose antes)
+
+## Conventions
+- Arquivos: kebab-case (`order-service.ts`)
+- Exports nomeados (evite `export default` exceto em pages do Next)
+- Schemas de validação com Zod, reutilizados entre server e client
+- Commits seguem Conventional Commits (feat:, fix:, chore:, etc.)
+- PRs precisam de 1 aprovação + CI verde
+
+## Things to Avoid
+- NÃO instale pacotes globais — sempre workspace-scoped
+- NÃO importe de `packages/api` no frontend (use `packages/shared`)
+- NÃO use `process.env` diretamente — use o módulo `config` validado com Zod
+- NÃO faça consultas a DB no frontend (só via API)
+- NÃO altere arquivos em `generated/` — são autogerados por Prisma</code></pre>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;</span>
+          <div class="callout-content">
+            <div class="callout-title">Padrão cross-tool</div>
+            <p>AGENTS.md é reconhecido por Codex, Claude Code (fallback), Cursor, Aider e outros. Ter um único AGENTS.md evita manter N arquivos de rules sincronizados para cada ferramenta usada pelo time.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Problemas que resolve</div>
+            <ul>
+              <li>Compatibilidade entre ferramentas (um único arquivo, múltiplos agentes)</li>
+              <li>Fonte única de verdade para contexto do projeto</li>
+              <li>Hierarquia natural em monorepos (cada pacote com seu AGENTS.md)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>OpenAI Developers. <em>"Codex &amp; AGENTS.md"</em>. Disponível em: <a href="https://developers.openai.com/codex" target="_blank" rel="noopener">https://developers.openai.com/codex</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- 8.4.5 Windsurf -->
+        <h3>8.4.5 Windsurf &mdash; .windsurf/rules/ ou .windsurfrules</h3>
+
+        <p>O <strong>Windsurf</strong> (Codeium) suporta dois formatos: o legado <code>.windsurfrules</code> (arquivo único) e o moderno diretório <code>.windsurf/rules/</code> com múltiplos arquivos e modos de ativação similares ao Cursor.</p>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-folder depth-0">
+            <span class="v-tree-icon">&#128193;</span>
+            <span class="v-tree-label">.windsurf/rules/</span>
+            <span class="v-tree-hint">Formato moderno (recomendado)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-1">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">global.md</span>
+            <span class="v-tree-hint">Aplicado sempre</span>
+          </div>
+          <div class="v-tree-item tree-config depth-1">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">python.md</span>
+            <span class="v-tree-hint">Auto-attached para *.py</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.windsurfrules</span>
+            <span class="v-tree-hint">Formato legado (arquivo único)</span>
+          </div>
+        </div>
+
+        <h4>Template</h4>
+
+        <pre><code><span class="code-label">.windsurf/rules/python.md</span>---
+trigger: glob
+globs:
+  - "**/*.py"
+---
+
+# Python Conventions
+
+## Stack
+- Python 3.12 + Poetry
+- FastAPI 0.110 + SQLAlchemy 2.0 (async)
+- pytest + pytest-asyncio
+- ruff + mypy --strict
+
+## Regras
+- Type hints em TODAS as funções públicas
+- Docstrings formato Google
+- Prefira dataclasses/pydantic a dicts para estruturas
+- NÃO use `print()` — use `logger.info()` (logging estruturado)
+- Imports absolutos sempre (`from app.services import ...`)
+
+## Padrões
+- Repository pattern em `app/repositories/`
+- Services em `app/services/` (lógica de negócio)
+- Rotas finas em `app/routers/` (apenas wiring)
+
+## Testes
+- Fixtures em `tests/conftest.py`
+- Nome: `test_<funcao>_<cenario>_<resultado>`
+- Use `pytest.mark.asyncio` para testes async</code></pre>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Problemas que resolve</div>
+            <ul>
+              <li>Modos de ativação (always/glob/manual) semelhantes ao Cursor</li>
+              <li>Separação clara entre regras globais e específicas de linguagem</li>
+              <li>Migração gradual do formato legado para o moderno</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Windsurf. <em>"Documentation"</em>. Disponível em: <a href="https://docs.windsurf.com" target="_blank" rel="noopener">https://docs.windsurf.com</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Tabela comparativa -->
+        <h3>Tabela Comparativa</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>Arquivo</th>
+                <th>Ativação</th>
+                <th>Escopo</th>
+                <th>Multi-arquivo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Claude Code</strong></td>
+                <td><code>CLAUDE.md</code></td>
+                <td>Sempre carregado</td>
+                <td>Global + projeto + subdiretório</td>
+                <td>Sim (hierárquico, combinado)</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Copilot</strong></td>
+                <td><code>.github/copilot-instructions.md</code></td>
+                <td>Sempre + path-specific</td>
+                <td>Repositório</td>
+                <td>Sim (via <code>.github/instructions/</code>)</td>
+              </tr>
+              <tr>
+                <td><strong>Cursor</strong></td>
+                <td><code>.cursor/rules/*.mdc</code></td>
+                <td>Always / Auto / Agent / Manual</td>
+                <td>Projeto + usuário</td>
+                <td>Sim (múltiplos <code>.mdc</code>)</td>
+              </tr>
+              <tr>
+                <td><strong>OpenAI Codex</strong></td>
+                <td><code>AGENTS.md</code></td>
+                <td>Sempre (nearest wins)</td>
+                <td>Qualquer diretório</td>
+                <td>Sim (um por diretório)</td>
+              </tr>
+              <tr>
+                <td><strong>Windsurf</strong></td>
+                <td><code>.windsurf/rules/*.md</code> ou <code>.windsurfrules</code></td>
+                <td>Always / Glob / Manual</td>
+                <td>Projeto</td>
+                <td>Sim (formato moderno)</td>
+              </tr>
+              <tr>
+                <td><strong>Aider</strong></td>
+                <td><code>.aider.conf.yml</code> + <code>CONVENTIONS.md</code></td>
+                <td>Config + arquivo de convenções</td>
+                <td>Projeto</td>
+                <td>Parcial</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 8.5 Problemas que Rules Resolvem -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 8.5</span>
+        <h2>Problemas que Rules Resolvem</h2>
+
+        <p>Entender <strong>por que</strong> rules existem é tão importante quanto saber como escrevê-las. Abaixo, os sete problemas concretos que sistemas de rules resolvem em projetos reais.</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Problema</th>
+                <th>Como Rules resolvem</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Inconsistência entre desenvolvedores</strong></td>
+                <td>Diferentes pessoas usam a IA, mas todas recebem as mesmas instruções automaticamente. O código gerado segue o mesmo estilo independente de quem prompta.</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Repetição de contexto</strong></td>
+                <td>Informações do projeto (stack, arquitetura, convenções) não precisam ser re-explicadas a cada sessão. O custo cognitivo de "preparar o terreno" vai a zero.</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>Aderência a convenções</strong></td>
+                <td>Naming, padrões arquiteturais, estilo de código &mdash; a IA passa a seguir automaticamente, mesmo quando o desenvolvedor não lembra de mencionar.</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>Restrições explícitas</strong></td>
+                <td>"Não use a biblioteca X (deprecated)", "Não edite arquivos em migrations/", "Nunca logue PAN de cartão". Regras negativas que evitam erros sistemáticos.</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>Contexto de domínio</strong></td>
+                <td>Regras de negócio específicas que a IA não tem como inferir do código (ex: "Conta = empresa, não usuário; pedidos B2B podem ser split-shipment").</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><strong>Onboarding</strong></td>
+                <td>Novos devs recebem a IA "pré-treinada" no projeto. Em vez de perguntar ao time, perguntam ao Claude/Copilot, que já conhece as convenções.</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><strong>Evolução do projeto</strong></td>
+                <td>Rules refletem o estado atual do projeto. Quando convenções mudam, atualizar o arquivo atualiza o comportamento da IA para todo o time, imediatamente.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-visual">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Regra geral</div>
+            <p>Se você já teve que explicar a mesma coisa para a IA <strong>duas vezes</strong>, essa informação deveria estar em um arquivo de rules.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 8.6 Boas Práticas Universais -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 8.6</span>
+        <h2>Boas Práticas Universais para Rules</h2>
+
+        <p>Independentemente da ferramenta (Claude Code, Copilot, Cursor, Codex, Windsurf...), os princípios abaixo se aplicam a qualquer sistema de rules. Seguir estas práticas transforma rules de "documentação que a IA ignora" em "guard-rails que moldam consistentemente o output".</p>
+
+        <h3>1. Seja específico, não genérico</h3>
+
+        <p>Rules genéricas são ruído &mdash; a IA já sabe "boas práticas" em geral. Valor real vem de regras concretas e acionáveis, específicas do seu projeto.</p>
+
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">&#10007; Genérico demais</div>
+            <pre><code>Siga boas práticas de código.
+Escreva código limpo.
+Use padrões de projeto.
+Trate erros adequadamente.</code></pre>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">&#10003; Específico e acionável</div>
+            <pre><code>Use Repository pattern: toda query vai em
+app/repositories/, nunca em services/ ou routers/.
+
+snake_case para funções, PascalCase para classes.
+
+Erros de domínio: `raise DomainError("código: mensagem")`.
+Erros HTTP: só em handlers, via HTTPException.
+
+Sempre rode `make lint` antes de commitar.
+Imports absolutos: `from app.services import ...`</code></pre>
+          </div>
+        </div>
+
+        <h3>2. Inclua exemplos de código</h3>
+
+        <p>Uma convenção descrita em texto é ambígua; uma convenção com exemplo é inequívoca. Inclua snippets curtos mostrando a convenção em prática.</p>
+
+        <h3>3. Mantenha atualizado</h3>
+
+        <p>Rules desatualizadas são <strong>piores</strong> que não ter rules &mdash; induzem a IA a gerar código errado com confiança. Revisite o arquivo a cada mudança significativa de arquitetura ou convenção.</p>
+
+        <h3>4. Commite no repositório</h3>
+
+        <p>Rules devem ser versionadas junto com o código. Se o time todo vai usar, o arquivo vai no git. Exceções: arquivos locais não-commitados (ex: <code>.claude/CLAUDE.md</code>) para preferências pessoais.</p>
+
+        <h3>5. Não duplique CLAUDE.md em README</h3>
+
+        <p>README é para humanos (onboarding, como rodar, links). Rules são para a IA (convenções técnicas detalhadas, restrições). Duplicar ambos gera divergência. <strong>Audiências diferentes, conteúdos diferentes.</strong></p>
+
+        <h3>6. Priorize o que a IA erra</h3>
+
+        <p>Se a IA sempre acerta algo sem precisar de rule, não escreva rule para isso &mdash; é token desperdiçado. Observe onde a IA erra repetidamente no seu projeto e <em>crie rules para esses casos específicos</em>.</p>
+
+        <h3>7. Inclua comandos de build/test</h3>
+
+        <p>A IA precisa saber como verificar seu trabalho. Liste comandos explícitos: <code>make test</code>, <code>pnpm lint</code>, <code>cargo check</code>. Sem isso, a IA adivinha ou roda comandos errados.</p>
+
+        <h3>8. Use hierarquia quando apropriado</h3>
+
+        <p>Em monorepos ou projetos grandes, aproveite a hierarquia: rules globais (stack, comandos gerais) na raiz; rules específicas (convenções de subpacote, regras de domínio) em subdiretórios. Evite um arquivo gigantesco.</p>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Dica prática</div>
+            <p>Comece com um arquivo de rules <strong>mínimo</strong> (stack, comandos, 3-5 convenções críticas). Adicione novas rules apenas quando identificar um padrão de erro da IA que se repete. Rules devem <em>crescer organicamente</em>, não serem escritas de uma vez.</p>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">Exercício: Audite suas próprias rules</div>
+          <ol>
+            <li><strong>Abra seu arquivo de rules atual</strong> (CLAUDE.md, copilot-instructions.md, .cursor/rules/, AGENTS.md).</li>
+            <li><strong>Risque tudo que é genérico</strong> &mdash; frases como "siga boas práticas", "escreva código limpo", "use padrões apropriados". Se a IA já saberia sem você falar, corte.</li>
+            <li><strong>Liste 5 erros que a IA cometeu essa semana</strong> no seu projeto. Para cada erro, escreva uma rule específica que o preveniria.</li>
+            <li><strong>Verifique se tem comandos de build/test</strong> documentados. Se não, adicione.</li>
+            <li><strong>Confira se há exemplos de código</strong>. Convenções sem exemplo são ambíguas &mdash; converta pelo menos 2 em snippets curtos.</li>
+            <li><strong>Meça a quantidade de linhas.</strong> Acima de 300? Considere dividir em arquivos específicos por subdiretório ou tipo de arquivo.</li>
+            <li><strong>Commite as mudanças</strong> e peça ao time para fazer o mesmo exercício no próximo sprint.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-07.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 07 &mdash; Ferramentas de IA</span>
+        </a>
+        <a href="modulo-configuracoes.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 09 &mdash; Configurações</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

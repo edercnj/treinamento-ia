@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hooks — Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Avançado</span>
+        <span>/</span>
+        <span>Hooks</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">11</div>
+        <h1>Hooks: Automação Baseada em Eventos</h1>
+        <p class="module-desc">Comandos que executam automaticamente em resposta a eventos do agente de IA. Formatação, guardrails, auditoria, notificações e integrações.</p>
+      </div>
+
+      <!-- 11.1 Hooks: Automação Baseada em Eventos -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 11.1</span>
+        <h2>Hooks: Automação Baseada em Eventos</h2>
+
+        <p><strong>Hooks</strong> são comandos shell que executam automaticamente em resposta a eventos específicos do Claude Code. Eles permitem criar <strong>automações</strong> que rodam antes ou depois de ações da IA.</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Hooks são como <strong>git hooks</strong> (pre-commit, post-commit) ou <strong>event listeners</strong> em JavaScript &mdash; código que executa automaticamente quando algo acontece.</p>
+        </div>
+
+        <h3>Eventos disponíveis para Hooks no Claude Code</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Evento</th>
+                <th>Quando dispara</th>
+                <th>Uso típico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PreToolUse</strong></td>
+                <td>Antes de qualquer ferramenta ser executada</td>
+                <td>Validação, aprovação automática, bloqueio</td>
+              </tr>
+              <tr>
+                <td><strong>PostToolUse</strong></td>
+                <td>Depois de uma ferramenta ser executada</td>
+                <td>Logging, formatação automática, notificação</td>
+              </tr>
+              <tr>
+                <td><strong>Notification</strong></td>
+                <td>Quando Claude precisa notificar o usuário</td>
+                <td>Integração com Slack, email, etc.</td>
+              </tr>
+              <tr>
+                <td><strong>Stop</strong></td>
+                <td>Quando Claude termina uma resposta</td>
+                <td>Verificação final, cleanup</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Configuração de Hooks (em settings.json)</h3>
+
+        <pre><code><span class="code-label">JSON</span>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit",
+        "command": "echo 'Arquivo sendo editado: $CLAUDE_FILE_PATH'"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "command": "npx prettier --write $CLAUDE_FILE_PATH 2&gt;/dev/null || true"
+      },
+      {
+        "matcher": "Bash",
+        "command": "echo '[LOG] Comando executado: $CLAUDE_COMMAND'"
+      }
+    ],
+    "Stop": [
+      {
+        "command": "make lint 2&gt;&amp;1 | tail -5"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h3>Exemplos práticos de Hooks</h3>
+
+        <h4>1. Auto-formatação após edição:</h4>
+
+        <pre><code><span class="code-label">JSON</span>{
+  "PostToolUse": [
+    {
+      "matcher": "Edit|Write",
+      "command": "npx prettier --write \"$CLAUDE_FILE_PATH\" 2&gt;/dev/null; ruff format \"$CLAUDE_FILE_PATH\" 2&gt;/dev/null; true"
+    }
+  ]
+}</code></pre>
+
+        <h4>2. Bloquear edição em arquivos protegidos:</h4>
+
+        <pre><code><span class="code-label">JSON</span>{
+  "PreToolUse": [
+    {
+      "matcher": "Edit",
+      "command": "if echo \"$CLAUDE_FILE_PATH\" | grep -q 'migrations/'; then echo 'BLOCKED: Não edite migrations diretamente'; exit 1; fi"
+    }
+  ]
+}</code></pre>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;</span>
+          <div class="callout-content">
+            <div class="callout-title">Atenção</div>
+            <p>O hook acima usa <code>exit 1</code> para bloquear a ação. Quando um hook PreToolUse retorna código de erro, a ferramenta não é executada.</p>
+          </div>
+        </div>
+
+        <h4>3. Notificação no terminal quando uma tarefa longa termina:</h4>
+
+        <pre><code><span class="code-label">JSON</span>{
+  "Stop": [
+    {
+      "command": "osascript -e 'display notification \"Claude Code terminou a tarefa\" with title \"Claude Code\"'"
+    }
+  ]
+}</code></pre>
+
+        <h3>11.1.1 Eventos de Ciclo de Vida (Expandido)</h3>
+
+        <p>Além dos eventos básicos, o Claude Code expõe outros eventos úteis para automação avançada:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Evento</th>
+                <th>Quando dispara</th>
+                <th>Uso típico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PreToolUse</strong></td>
+                <td>Antes de qualquer ferramenta ser executada</td>
+                <td>Validação, aprovação automática, bloqueio de comandos perigosos</td>
+              </tr>
+              <tr>
+                <td><strong>PostToolUse</strong></td>
+                <td>Depois de uma ferramenta ser executada</td>
+                <td>Formatação automática, logging, typecheck incremental</td>
+              </tr>
+              <tr>
+                <td><strong>Notification</strong></td>
+                <td>Quando o Claude precisa notificar o usuário</td>
+                <td>Slack, e-mail, desktop notifications</td>
+              </tr>
+              <tr>
+                <td><strong>Stop</strong></td>
+                <td>Quando o Claude termina uma resposta</td>
+                <td>Cleanup, geração de relatório, notificação de término</td>
+              </tr>
+              <tr>
+                <td><strong>SessionStart</strong></td>
+                <td>No início de uma sessão</td>
+                <td>Context injection (branch atual, status do CI, tickets ativos)</td>
+              </tr>
+              <tr>
+                <td><strong>SubagentStop</strong></td>
+                <td>Quando um subagente termina</td>
+                <td>Consolidação de resultados, logs específicos de subagentes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Variáveis de ambiente disponíveis nos hooks</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Variável</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>$CLAUDE_FILE_PATH</code></td><td>Caminho do arquivo sendo editado (Edit/Write)</td></tr>
+              <tr><td><code>$CLAUDE_COMMAND</code></td><td>Comando sendo executado (Bash)</td></tr>
+              <tr><td><code>$CLAUDE_TOOL_NAME</code></td><td>Nome da ferramenta invocada (Edit, Write, Bash, ...)</td></tr>
+              <tr><td><code>$CLAUDE_SESSION_ID</code></td><td>ID da sessão atual</td></tr>
+              <tr><td><code>$CLAUDE_PROJECT_DIR</code></td><td>Diretório raiz do projeto</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Onde configurar hooks</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Arquivo</th>
+                <th>Escopo</th>
+                <th>Versionado em git?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>~/.claude/settings.json</code></td><td>Global (todas as sessões do usuário)</td><td>Não (é pessoal)</td></tr>
+              <tr><td><code>.claude/settings.json</code></td><td>Projeto (compartilhado com o time)</td><td>Sim</td></tr>
+              <tr><td><code>.claude/settings.local.json</code></td><td>Projeto, só local</td><td>Não (adicione ao .gitignore)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência Oficial</div>
+            <p>Documentação completa dos hooks: <a href="https://docs.anthropic.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">docs.anthropic.com/en/docs/claude-code/hooks</a></p>
+          </div>
+        </div>
+
+        <h3>11.1.2 Hooks em Outras Ferramentas</h3>
+
+        <ul>
+          <li><strong>Cursor:</strong> possui background tasks e hooks baseados em MCP, mas com flexibilidade menor do que o Claude Code (menos eventos, menos variáveis de contexto).</li>
+          <li><strong>GitHub Copilot:</strong> não expõe hooks configuráveis pelo usuário. A customização é feita apenas via instruções textuais.</li>
+          <li><strong>OpenAI Codex:</strong> eventos de sandbox limitados; suporte a hooks é restrito a pre/post execução em contextos controlados.</li>
+          <li><strong>Windsurf:</strong> ações encadeadas em workflows, mas sem o modelo de event-driven hooks.</li>
+        </ul>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Nota</div>
+            <p>Hooks de ciclo de vida profundos e configuráveis são, hoje, amplamente um <strong>diferencial do Claude Code</strong>. Se automação baseada em eventos é crítica para o seu time, essa é uma razão forte de adoção.</p>
+          </div>
+        </div>
+
+        <h3>11.1.3 Problemas que Hooks Resolvem</h3>
+
+        <p>A seguir, oito problemas reais com exemplo concreto para cada um:</p>
+
+        <h4>1. Formatação automática após edição</h4>
+        <pre><code><span class="code-label">.claude/settings.json</span>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "if [[ \"$CLAUDE_FILE_PATH\" =~ \\.py$ ]]; then ruff format \"$CLAUDE_FILE_PATH\" &amp;&amp; ruff check --fix \"$CLAUDE_FILE_PATH\"; fi"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>2. Guardrails de segurança &mdash; bloquear comandos perigosos</h4>
+        <pre><code><span class="code-label">.claude/settings.json</span>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "command": "if echo \"$CLAUDE_COMMAND\" | grep -Eq '(rm -rf /|sudo rm|mkfs|:\\(\\)\\{)'; then echo 'BLOQUEADO: comando potencialmente destrutivo' &gt;&amp;2; exit 1; fi"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>3. Auditoria e logging</h4>
+        <pre><code><span class="code-label">.claude/settings.json</span>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "command": "mkdir -p ~/.claude/logs &amp;&amp; echo \"[$(date -Iseconds)] session=$CLAUDE_SESSION_ID tool=$CLAUDE_TOOL_NAME file=$CLAUDE_FILE_PATH cmd=$CLAUDE_COMMAND\" &gt;&gt; ~/.claude/logs/audit.log"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>4. Validação contínua &mdash; typecheck após mudança em TS</h4>
+        <pre><code><span class="code-label">.claude/settings.json</span>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "if [[ \"$CLAUDE_FILE_PATH\" =~ \\.(ts|tsx)$ ]]; then npx tsc --noEmit 2&gt;&amp;1 | tail -20 || true; fi"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>5. Notificação em Slack quando uma tarefa longa termina</h4>
+        <pre><code><span class="code-label">.claude/settings.json</span>{
+  "hooks": {
+    "Stop": [
+      {
+        "command": "curl -s -X POST -H 'Content-type: application/json' --data '{\"text\":\"Claude Code terminou a tarefa em '\"$CLAUDE_PROJECT_DIR\"'\"}' \"$SLACK_WEBHOOK_URL\" &gt; /dev/null"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>6. Integração com CI &mdash; disparar pipeline após mudança</h4>
+        <pre><code><span class="code-label">.claude/settings.json</span>{
+  "hooks": {
+    "Stop": [
+      {
+        "command": "cd \"$CLAUDE_PROJECT_DIR\" &amp;&amp; if ! git diff --quiet; then gh workflow run ci.yml --ref \"$(git branch --show-current)\" || true; fi"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>7. Context injection no início da sessão</h4>
+        <pre><code><span class="code-label">.claude/settings.json</span>{
+  "hooks": {
+    "SessionStart": [
+      {
+        "command": "echo \"Branch: $(git branch --show-current) | Último commit: $(git log -1 --oneline) | Status CI: $(gh run list -L 1 --json status -q '.[0].status' 2&gt;/dev/null || echo 'n/a')\""
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>8. Compliance &mdash; forçar revisão para arquivos sensíveis</h4>
+        <pre><code><span class="code-label">.claude/settings.json</span>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "if echo \"$CLAUDE_FILE_PATH\" | grep -Eq '(auth|payments|crypto|secrets)/'; then echo 'ATENÇÃO: arquivo sensível &mdash; requer revisão humana antes do commit' &gt;&amp;2; fi"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h3>11.1.4 Templates Prontos de Hooks (copy/paste)</h3>
+
+        <p>Templates completos e prontos para uso. Adicione ao <code>.claude/settings.json</code> do seu projeto:</p>
+
+        <h4>Template 1 &mdash; Python auto-format (ruff)</h4>
+        <pre><code><span class="code-label">settings.json</span>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "[[ \"$CLAUDE_FILE_PATH\" =~ \\.py$ ]] &amp;&amp; ruff format \"$CLAUDE_FILE_PATH\" &amp;&amp; ruff check --fix \"$CLAUDE_FILE_PATH\" || true"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>Template 2 &mdash; TypeScript auto-format (prettier + eslint)</h4>
+        <pre><code><span class="code-label">settings.json</span>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "if [[ \"$CLAUDE_FILE_PATH\" =~ \\.(ts|tsx|js|jsx)$ ]]; then npx prettier --write \"$CLAUDE_FILE_PATH\" &amp;&amp; npx eslint --fix \"$CLAUDE_FILE_PATH\" || true; fi"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>Template 3 &mdash; Bloquear comandos perigosos</h4>
+        <pre><code><span class="code-label">settings.json</span>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "command": "if echo \"$CLAUDE_COMMAND\" | grep -Eq '^(sudo rm|rm -rf /|rm -rf \\*|chmod -R 777|mkfs|dd if=)'; then echo 'BLOQUEADO: comando destrutivo detectado' &gt;&amp;2; exit 1; fi"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>Template 4 &mdash; Bloquear edições em migrations</h4>
+        <pre><code><span class="code-label">settings.json</span>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit",
+        "command": "if echo \"$CLAUDE_FILE_PATH\" | grep -Eq '(migrations|alembic/versions|prisma/migrations)/'; then echo 'BLOQUEADO: migrations não devem ser editadas &mdash; crie uma nova migration' &gt;&amp;2; exit 1; fi"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>Template 5 &mdash; Notificação Slack ao terminar (via webhook)</h4>
+        <pre><code><span class="code-label">settings.json</span>{
+  "hooks": {
+    "Stop": [
+      {
+        "command": "[ -n \"$SLACK_WEBHOOK_URL\" ] &amp;&amp; curl -s -X POST -H 'Content-type: application/json' --data \"{\\\"text\\\":\\\"Claude Code finalizou em $(basename \"$CLAUDE_PROJECT_DIR\")\\\"}\" \"$SLACK_WEBHOOK_URL\" &gt; /dev/null || osascript -e 'display notification \"Claude Code terminou\" with title \"Claude Code\"'"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h4>Template 6 &mdash; Log de todas as tool uses com timestamp</h4>
+        <pre><code><span class="code-label">settings.json</span>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "command": "mkdir -p ~/.claude/logs &amp;&amp; printf '[%s] session=%s tool=%s file=%s cmd=%s\\n' \"$(date -Iseconds)\" \"$CLAUDE_SESSION_ID\" \"$CLAUDE_TOOL_NAME\" \"${CLAUDE_FILE_PATH:-}\" \"${CLAUDE_COMMAND:-}\" &gt;&gt; ~/.claude/logs/tools-$(date +%Y-%m-%d).log"
+      }
+    ]
+  }
+}</code></pre>
+
+        <h3>11.1.5 Quando NÃO Usar Hooks</h3>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;</span>
+          <div class="callout-content">
+            <div class="callout-title">Anti-padrões com Hooks</div>
+            <ul>
+              <li><strong>Lógica de negócio:</strong> hooks são para automação de infraestrutura/qualidade. Lógica de produto pertence a skills ou ao próprio prompt.</li>
+              <li><strong>Hooks que bloqueiam com frequência:</strong> se um hook <code>PreToolUse</code> dispara exit 1 em cada ação, o fluxo fica insuportável. Prefira alertas (stderr sem exit).</li>
+              <li><strong>Side-effects irreversíveis:</strong> nunca coloque commits automáticos, deploys ou <code>git push</code> em hooks. Humanos devem autorizar isso.</li>
+              <li><strong>Dependência síncrona de rede:</strong> um webhook lento pode travar toda a sessão. Use <code>curl ... &amp;</code> (background) ou timeout curto.</li>
+              <li><strong>Hooks longos:</strong> se o comando demora &gt; 5s, o usuário sente. Faça o hook delegar para background.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>11.1.6 Segurança em Hooks</h3>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#128274;</span>
+          <div class="callout-content">
+            <div class="callout-title">Cuidado &mdash; hooks rodam com suas permissões</div>
+            <ul>
+              <li>Hooks são executados com <strong>as mesmas permissões do usuário</strong>. Um hook malicioso pode acessar qualquer arquivo que você acessa.</li>
+              <li>Nunca interpole dados não-sanitizados em shell. <code>"$CLAUDE_COMMAND"</code> pode conter caracteres especiais &mdash; sempre entre aspas duplas.</li>
+              <li>Valide scripts com <code>shellcheck</code> antes de commitar hooks.</li>
+              <li>Em scripts bash usados por hooks, prefira <code>set -euo pipefail</code> para falhar cedo.</li>
+              <li>Revise hooks de terceiros (ex.: copiados da internet) antes de aplicar &mdash; eles rodam automaticamente.</li>
+              <li>Não commit <code>.claude/settings.local.json</code> &mdash; inclua-o no <code>.gitignore</code>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <pre><code><span class="code-label">hook-seguro.sh</span>#!/usr/bin/env bash
+set -euo pipefail
+
+# Sempre cite variáveis
+file="${CLAUDE_FILE_PATH:-}"
+[ -z "$file" ] &amp;&amp; exit 0
+
+# Valide antes de usar
+case "$file" in
+  *.py) ruff format "$file" ;;
+  *.ts|*.tsx) npx prettier --write "$file" ;;
+  *) : ;;  # noop para outros tipos
+esac
+</code></pre>
+      </section>
+
+      <hr>
+
+      <!-- 11.2 Skills + Hooks: Workflows Poderosos -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 11.2</span>
+        <h2>Skills + Hooks: Workflows Poderosos</h2>
+
+        <p>A combinação de Skills e Hooks permite criar workflows sofisticados:</p>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">1. Usuário invoca: <code>/deploy staging</code></div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(99,102,241,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-primary-light);">2. Skill "deploy" executa</div>
+              <div class="v-pipeline-card-sub">
+                a. Roda testes (<code>make test</code>)<br>
+                b. Verifica lint (<code>make lint</code>)<br>
+                c. Cria tag de versão<br>
+                d. Gera changelog
+              </div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(248,113,113,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-accent-red);">3. Hook PreToolUse (Bash)</div>
+              <div class="v-pipeline-card-sub">
+                &#128683; Bloqueia qualquer comando <code>rm -rf</code><br>
+                &#128683; Bloqueia deploy em produção sem flag explícita
+              </div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(52,211,153,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-accent-green);">4. Hook PostToolUse (Bash)</div>
+              <div class="v-pipeline-card-sub">
+                &#10004; Envia notificação no Slack<br>
+                &#10004; Registra log de deploy
+              </div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(251,191,36,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-accent-amber);">5. Hook Stop</div>
+              <div class="v-pipeline-card-sub">
+                &#9989; Verifica se testes passaram<br>
+                &#128203; Gera relatório de deploy
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-visual">
+          <span class="callout-icon">&#128202;</span>
+          <div class="callout-content">
+            <div class="callout-title">Ciclo de Vida</div>
+            <p>O fluxo completo de uma ação no Claude Code segue o ciclo: <strong>Evento</strong> &rarr; <strong>Hook PreToolUse</strong> &rarr; <strong>Execução da Tool</strong> &rarr; <strong>Hook PostToolUse</strong> &rarr; <strong>Resultado</strong>. Hooks permitem interceptar qualquer ponto deste ciclo.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic. <em>"Claude Code — Hooks"</em>. Disponível em: <a href="https://docs.anthropic.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/claude-code/hooks</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 11.3 Comparativo Final: Skills vs Hooks vs Rules -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 11.3</span>
+        <h2>Comparativo Final: Skills vs Hooks vs Rules</h2>
+
+        <p>Três conceitos estendem o comportamento de um agente de IA, mas cada um tem um papel distinto. Entender a diferença evita misturar responsabilidades.</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Conceito</th>
+                <th>Quando dispara</th>
+                <th>Controlado por</th>
+                <th>Exemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Rules</strong></td>
+                <td>Automaticamente, carregadas como contexto no início da sessão</td>
+                <td>Arquivo Markdown no repositório (<code>CLAUDE.md</code>, <code>.cursor/rules/</code>)</td>
+                <td>"Use sempre Portuguese em mensagens de commit"</td>
+              </tr>
+              <tr>
+                <td><strong>Skills</strong></td>
+                <td>Quando o usuário invoca explicitamente (ou o modelo decide usar)</td>
+                <td>Comando manual <code>/skill</code> ou seleção do modelo</td>
+                <td><code>/commit</code>, <code>/review</code>, <code>/deploy</code></td>
+              </tr>
+              <tr>
+                <td><strong>Hooks</strong></td>
+                <td>Eventos do sistema (PreToolUse, PostToolUse, Stop, ...)</td>
+                <td>Configuração em <code>settings.json</code></td>
+                <td>Auto-format após edição, bloqueio de <code>rm -rf</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Ordem de execução em uma sessão típica</h3>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">1. Rules carregadas no início da sessão</div>
+              <div class="v-pipeline-card-desc">O conteúdo de <code>CLAUDE.md</code> e demais arquivos de regras entra no contexto inicial.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Hook <code>SessionStart</code> dispara</div>
+              <div class="v-pipeline-card-desc">(opcional) Injeta contexto dinâmico &mdash; branch, status do CI, tickets ativos.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">2. Usuário invoca uma Skill (ou conversa normal)</div>
+              <div class="v-pipeline-card-desc">Ex.: <code>/commit</code> carrega o prompt especializado.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">3. Claude decide executar uma tool</div>
+              <div class="v-pipeline-card-desc">Ex.: <code>Bash("git diff")</code>.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(248,113,113,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-accent-red);">4. Hook <code>PreToolUse</code> dispara</div>
+              <div class="v-pipeline-card-desc">Pode <strong>bloquear</strong> a execução retornando exit 1.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">5. A tool executa</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(52,211,153,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-accent-green);">6. Hook <code>PostToolUse</code> dispara</div>
+              <div class="v-pipeline-card-desc">Formatação, log, typecheck &mdash; tudo aqui.</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot"></div><div class="v-pipeline-connector"></div></div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">7. Claude continua (loop) ou termina</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line"><div class="v-pipeline-dot active"></div></div>
+            <div class="v-pipeline-card" style="border-color: rgba(251,191,36,0.3);">
+              <div class="v-pipeline-card-title" style="color: var(--color-accent-amber);">8. Hook <code>Stop</code> dispara no fim</div>
+              <div class="v-pipeline-card-desc">Notificação Slack, cleanup, relatório final.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-visual">
+          <span class="callout-icon">&#128202;</span>
+          <div class="callout-content">
+            <div class="callout-title">Regra prática</div>
+            <p>Se é <strong>algo que sempre deve ser verdade</strong> &rarr; <strong>Rule</strong>. Se é <strong>algo que o usuário invoca</strong> &rarr; <strong>Skill</strong>. Se é <strong>algo que deve rodar automaticamente em resposta a um evento</strong> &rarr; <strong>Hook</strong>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-09.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 10 &mdash; Skills</span>
+        </a>
+        <a href="modulo-10.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 12 &mdash; MCP</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

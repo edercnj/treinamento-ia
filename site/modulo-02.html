@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 02 — Tokens: A Unidade Fundamental | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item active"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 02</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">02</div>
+        <h1>Tokens: A Unidade Fundamental da IA</h1>
+        <p class="module-desc">O que são tokens, Byte Pair Encoding, vocabulários, custos e ferramentas de contagem.</p>
+      </div>
+
+      <!-- 2.1 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 2.1</span>
+        <h2>O que são Tokens?</h2>
+
+        <p><strong>Tokens são as unidades atômicas de processamento de uma LLM.</strong> Tudo que entra e sai de um modelo de linguagem é medido em tokens. Eles não são exatamente palavras, nem exatamente caracteres — são pedaços de texto de tamanho variável, definidos pelo processo de tokenização.</p>
+
+        <h4>Exemplos concretos de tokenização:</h4>
+
+        <pre><code><span class="code-label">Tokenização</span>Texto: "Programação com IA é incrível!"
+
+Tokens (aproximação para modelo Claude/GPT-4):
+["Program", "ação", " com", " IA", " é", " incrível", "!"]
+= 7 tokens
+
+Texto: "Hello world"
+Tokens: ["Hello", " world"]
+= 2 tokens
+
+Texto: "indivisibilidade"
+Tokens: ["ind", "ivis", "ibil", "idade"]
+= 4 tokens (palavras longas são quebradas)
+
+Código: "function calculateTotal(items) {"
+Tokens: ["function", " calculate", "Total", "(", "items", ")", " {"]
+= 7 tokens</code></pre>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Regra prática</div>
+            <p>Em inglês, 1 token &asymp; 4 caracteres &asymp; &frac34; de uma palavra. Em português, a proporção é menos favorável: 1 token &asymp; 3 caracteres, e palavras longas comuns (como "desenvolvimento") podem consumir 3-4 tokens.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Sennrich, R. et al. (2016). <em>"Neural Machine Translation of Rare Words with Subword Units"</em>. University of Edinburgh. arXiv:1508.07909. Disponível em: <a href="https://arxiv.org/abs/1508.07909" target="_blank" rel="noopener">https://arxiv.org/abs/1508.07909</a> — Paper fundacional sobre Byte Pair Encoding (BPE), o algoritmo base da tokenização moderna.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2.2 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 2.2</span>
+        <h2>Como Funciona a Tokenização (BPE — Byte Pair Encoding)</h2>
+
+        <p>O algoritmo mais usado para tokenização em LLMs é o <strong>Byte Pair Encoding (BPE)</strong>. Aqui está como ele funciona:</p>
+
+        <h4>Fase de Treinamento do Tokenizador:</h4>
+
+        <ol>
+          <li><strong>Início:</strong> Comece com um vocabulário de caracteres individuais (a, b, c, ..., 0, 1, ..., !, @, ...)</li>
+          <li><strong>Contagem:</strong> Conte todos os pares de caracteres adjacentes no corpus de treinamento</li>
+          <li><strong>Merge:</strong> O par mais frequente é fundido em um novo token</li>
+          <li><strong>Repetição:</strong> Volte ao passo 2 com o novo vocabulário</li>
+          <li><strong>Parada:</strong> Continue até atingir o tamanho desejado do vocabulário (ex: 100.000 tokens)</li>
+        </ol>
+
+        <h4>Exemplo passo a passo:</h4>
+
+        <pre><code><span class="code-label">BPE</span>Corpus: "aaa bbb aab"
+
+Passo 0 — Vocabulário: {a, b, ' '}
+Texto: [a, a, a, ' ', b, b, b, ' ', a, a, b]
+
+Passo 1 — Par mais frequente: (a, a) aparece 3 vezes
+Novo token: "aa"
+Texto: [aa, a, ' ', b, b, b, ' ', aa, b]
+
+Passo 2 — Par mais frequente: (b, b) aparece 2 vezes
+Novo token: "bb"
+Texto: [aa, a, ' ', bb, b, ' ', aa, b]
+
+...e assim por diante</code></pre>
+
+        <h4>Por que BPE é importante para programadores:</h4>
+
+        <ul>
+          <li><strong>Código</strong> tende a ser tokenizado de forma diferente de texto natural</li>
+          <li><strong>Nomes de variáveis</strong> em camelCase ou snake_case são quebrados nos limites: <code>calculateTotal</code> &rarr; <code>["calculate", "Total"]</code></li>
+          <li><strong>Indentação</strong> consome tokens: cada espaço ou tab é contabilizado</li>
+          <li><strong>Linguagens com vocabulário menor</strong> (Python) tendem a usar menos tokens que linguagens verbosas (Java)</li>
+          <li><strong>Idiomas não-ingleses</strong> (como português) usam mais tokens por palavra, pois o tokenizador foi treinado predominantemente em inglês</li>
+        </ul>
+      </section>
+
+      <!-- 2.3 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 2.3</span>
+        <h2>Vocabulários de Diferentes Modelos</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Modelo</th>
+                <th>Tokenizador</th>
+                <th>Tamanho do Vocabulário</th>
+                <th>Observação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GPT-2</td>
+                <td>BPE</td>
+                <td>~50.257</td>
+                <td>Baseado em bytes</td>
+              </tr>
+              <tr>
+                <td>GPT-3.5/4</td>
+                <td>cl100k_base (tiktoken)</td>
+                <td>~100.256</td>
+                <td>Melhor para código</td>
+              </tr>
+              <tr>
+                <td>GPT-4o</td>
+                <td>o200k_base</td>
+                <td>~200.000</td>
+                <td>Otimizado para multilíngue</td>
+              </tr>
+              <tr>
+                <td>Claude 3/3.5/4</td>
+                <td>Proprietário (BPE variante)</td>
+                <td>~100.000+</td>
+                <td>Otimizado para código e multilíngue</td>
+              </tr>
+              <tr>
+                <td>LLaMA 2/3</td>
+                <td>SentencePiece BPE</td>
+                <td>~32.000-128.000</td>
+                <td>Open source</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>OpenAI. <em>"tiktoken"</em> — Biblioteca de tokenização rápida. Disponível em: <a href="https://github.com/openai/tiktoken" target="_blank" rel="noopener">https://github.com/openai/tiktoken</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2.4 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 2.4</span>
+        <h2>Tokens e Custos</h2>
+
+        <p>Tokens são a <strong>moeda</strong> dos modelos de IA. Todo o modelo de precificação gira em torno deles:</p>
+
+        <h4>Estrutura de custos típica (valores ilustrativos para referência — abril 2026):</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Modelo</th>
+                <th>Input (por 1M tokens)</th>
+                <th>Output (por 1M tokens)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Claude 3.5 Sonnet</td>
+                <td>$3.00</td>
+                <td>$15.00</td>
+              </tr>
+              <tr>
+                <td>Claude 3.5 Haiku</td>
+                <td>$0.80</td>
+                <td>$4.00</td>
+              </tr>
+              <tr>
+                <td>Claude Opus 4</td>
+                <td>$15.00</td>
+                <td>$75.00</td>
+              </tr>
+              <tr>
+                <td>GPT-4o</td>
+                <td>$2.50</td>
+                <td>$10.00</td>
+              </tr>
+              <tr>
+                <td>GPT-4o-mini</td>
+                <td>$0.15</td>
+                <td>$0.60</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;&#65039;</span>
+          <div class="callout-content">
+            <div class="callout-title">Nota</div>
+            <p>Consulte sempre os sites oficiais para preços atualizados:</p>
+            <ul>
+              <li>Anthropic: <a href="https://docs.anthropic.com/en/docs/about-claude/models" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/about-claude/models</a></li>
+              <li>OpenAI: <a href="https://openai.com/pricing" target="_blank" rel="noopener">https://openai.com/pricing</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Implicação prática:</h4>
+
+        <p>A distinção entre tokens de <strong>input</strong> e <strong>output</strong> é crucial:</p>
+
+        <ul>
+          <li><strong>Input tokens</strong> (mais baratos): seu prompt, contexto, arquivos enviados</li>
+          <li><strong>Output tokens</strong> (mais caros): a resposta gerada pelo modelo</li>
+        </ul>
+
+        <p>Isso significa que enviar muito contexto (input) é proporcionalmente mais barato que pedir respostas longas (output). Esta é uma das razões pelas quais a <strong>Engenharia de Contexto</strong> (Módulo 4) é tão importante.</p>
+
+        <h4>Conceito: Prompt Caching</h4>
+
+        <p>Modelos como Claude oferecem <strong>cache de prompt</strong> — se o início do seu prompt for idêntico a uma chamada anterior recente, os tokens cacheados custam significativamente menos (até 90% de desconto). Isso é especialmente relevante para ferramentas como Claude Code, onde o contexto do sistema (system prompt) e arquivos do projeto são enviados repetidamente.</p>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic. <em>"Prompt Caching"</em>. Disponível em: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2.5 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 2.5</span>
+        <h2>Ferramentas Práticas para Tokens</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>URL</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>OpenAI Tokenizer</strong></td>
+                <td><a href="https://platform.openai.com/tokenizer" target="_blank" rel="noopener">platform.openai.com/tokenizer</a></td>
+                <td>Visualizador oficial da OpenAI — cole texto e veja os tokens coloridos</td>
+              </tr>
+              <tr>
+                <td><strong>Tiktokenizer</strong></td>
+                <td><a href="https://tiktokenizer.vercel.app" target="_blank" rel="noopener">tiktokenizer.vercel.app</a></td>
+                <td>Versão open-source com visualização colorida de tokens</td>
+              </tr>
+              <tr>
+                <td><strong>tiktoken (Python)</strong></td>
+                <td><a href="https://github.com/openai/tiktoken" target="_blank" rel="noopener">github.com/openai/tiktoken</a></td>
+                <td>Biblioteca Python para contagem programática de tokens</td>
+              </tr>
+              <tr>
+                <td><strong>Anthropic Token Counter</strong></td>
+                <td><a href="https://docs.anthropic.com/en/docs/build-with-claude/token-counting" target="_blank" rel="noopener">docs.anthropic.com/...</a></td>
+                <td>API da Anthropic para contagem de tokens do Claude</td>
+              </tr>
+              <tr>
+                <td><strong>Hugging Face Tokenizers</strong></td>
+                <td><a href="https://huggingface.co/docs/tokenizers" target="_blank" rel="noopener">huggingface.co/docs/tokenizers</a></td>
+                <td>Biblioteca universal de tokenizadores</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2.6 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 2.6</span>
+        <h2>Exercício Prático: Contando Tokens</h2>
+
+        <div class="exercise">
+          <div class="exercise-title">Exercício para os participantes</div>
+
+          <p><strong>1.</strong> Acesse <a href="https://platform.openai.com/tokenizer" target="_blank" rel="noopener">https://platform.openai.com/tokenizer</a></p>
+
+          <p><strong>2.</strong> Cole o seguinte trecho de código Python:</p>
+
+          <pre><code><span class="code-label">Python</span><span class="code-keyword">def</span> <span class="code-function">calcular_fatorial</span>(n):
+    <span class="code-string">"""Calcula o fatorial de um número inteiro positivo."""</span>
+    <span class="code-keyword">if</span> n &lt; <span class="code-number">0</span>:
+        <span class="code-keyword">raise</span> <span class="code-type">ValueError</span>(<span class="code-string">"Número deve ser não-negativo"</span>)
+    <span class="code-keyword">if</span> n == <span class="code-number">0</span>:
+        <span class="code-keyword">return</span> <span class="code-number">1</span>
+    <span class="code-keyword">return</span> n * calcular_fatorial(n - <span class="code-number">1</span>)</code></pre>
+
+          <p><strong>3.</strong> Observe quantos tokens são gerados</p>
+
+          <p><strong>4.</strong> Agora traduza os nomes para inglês e compare:</p>
+
+          <pre><code><span class="code-label">Python</span><span class="code-keyword">def</span> <span class="code-function">calculate_factorial</span>(n):
+    <span class="code-string">"""Calculate the factorial of a positive integer."""</span>
+    <span class="code-keyword">if</span> n &lt; <span class="code-number">0</span>:
+        <span class="code-keyword">raise</span> <span class="code-type">ValueError</span>(<span class="code-string">"Number must be non-negative"</span>)
+    <span class="code-keyword">if</span> n == <span class="code-number">0</span>:
+        <span class="code-keyword">return</span> <span class="code-number">1</span>
+    <span class="code-keyword">return</span> n * calculate_factorial(n - <span class="code-number">1</span>)</code></pre>
+
+          <p><strong>5.</strong> Compare a diferença — o código em inglês usa <strong>menos tokens</strong> porque o tokenizador foi treinado predominantemente em inglês</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Ponto-chave</div>
+            <p>Isso tem implicação direta em custos e eficiência quando programamos com IA. Código com nomes em inglês é mais "token-eficiente" para modelos atuais.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-01.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 01 — Como uma LLM Funciona</span>
+        </a>
+        <a href="modulo-03.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 03 — Janela de Contexto</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

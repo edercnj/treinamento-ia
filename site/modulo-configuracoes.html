@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações — Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Configurações</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">09</div>
+        <h1>Configurações</h1>
+        <p class="module-desc">Ajustes de ferramenta além de regras: settings.json, configuração de servidores MCP, permissões, variáveis de ambiente e integrações com IDEs.</p>
+      </div>
+
+      <!-- 9.1 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 9.1</span>
+        <h2>Por Que uma Seção Separada para Configurações?</h2>
+
+        <p>Ao personalizar uma ferramenta de IA, três conceitos costumam ser confundidos: <strong>Rules</strong>, <strong>Hooks</strong> e <strong>Configurações</strong>. Eles resolvem problemas diferentes, vivem em arquivos diferentes e são consumidos por partes diferentes do sistema.</p>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-file depth-0">
+            <span class="v-tree-icon">&#128221;</span>
+            <span class="v-tree-label">Rules</span>
+            <span class="v-tree-hint">Instruções textuais para o modelo &mdash; CLAUDE.md, AGENTS.md, .cursor/rules/</span>
+          </div>
+          <div class="v-tree-item tree-folder depth-0">
+            <span class="v-tree-icon">&#9889;</span>
+            <span class="v-tree-label">Hooks</span>
+            <span class="v-tree-hint">Automações event-driven &mdash; comandos shell disparados por eventos</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">Configurações</span>
+            <span class="v-tree-hint">O resto &mdash; settings.json, MCP, permissões, variáveis de ambiente, IDE</span>
+          </div>
+        </div>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p><strong>Rules</strong> são o <em>manual de conduta</em> da IA (o que fazer, como escrever código, o que evitar). <strong>Hooks</strong> são os <em>reflexos automáticos</em> (quando algo acontece, execute este comando). <strong>Configurações</strong> são a <em>preparação do ambiente de trabalho</em> (que modelo usar, quais servidores MCP estão disponíveis, que permissões a ferramenta tem, onde estão as chaves de API).</p>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;</span>
+          <div class="callout-content">
+            <div class="callout-title">Onde estão as outras peças</div>
+            <p>Rules estão detalhadas no <a href="modulo-08.html">Módulo 08 &mdash; Rules</a>. Hooks têm página dedicada (<a href="modulo-hooks.html">11 &mdash; Hooks</a>). Esta página foca exclusivamente em <strong>configurações de ferramenta</strong>.</p>
+          </div>
+        </div>
+
+        <h3>Quando cada um é a escolha certa</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Você quer...</th>
+                <th>Use</th>
+                <th>Exemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ensinar convenções de código ao modelo</td>
+                <td><strong>Rules</strong></td>
+                <td><code>CLAUDE.md</code> com regras de estilo</td>
+              </tr>
+              <tr>
+                <td>Rodar <code>pnpm lint</code> após cada edição</td>
+                <td><strong>Hooks</strong></td>
+                <td><code>PostToolUse</code> hook no <code>settings.json</code></td>
+              </tr>
+              <tr>
+                <td>Trocar o modelo padrão, liberar tool X</td>
+                <td><strong>Configurações</strong></td>
+                <td><code>settings.json</code> com <code>model</code> e <code>permissions</code></td>
+              </tr>
+              <tr>
+                <td>Conectar o assistente ao seu Postgres</td>
+                <td><strong>Configurações</strong></td>
+                <td><code>mcpServers</code> em <code>.claude/mcp.json</code></td>
+              </tr>
+              <tr>
+                <td>Definir chave de API sem expor no repo</td>
+                <td><strong>Configurações</strong></td>
+                <td>Variáveis de ambiente e <code>.env</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 9.2 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 9.2</span>
+        <h2>settings.json (Claude Code)</h2>
+
+        <p>O arquivo <code>settings.json</code> é o mecanismo central de configuração do <strong>Claude Code</strong>. Ele controla permissões, modelo padrão, hooks, servidores MCP, variáveis de ambiente e muito mais. Diferente do <code>CLAUDE.md</code> (que é conteúdo para o modelo), este arquivo é consumido pela <strong>própria ferramenta</strong> antes de qualquer token ser gasto.</p>
+
+        <h3>Hierarquia de carregamento</h3>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/.claude/settings.json</span>
+            <span class="v-tree-hint">Global &mdash; aplica-se a todos os projetos do usuário</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.claude/settings.json</span>
+            <span class="v-tree-hint">Projeto &mdash; compartilhado com o time (commitado no git)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.claude/settings.local.json</span>
+            <span class="v-tree-hint">Local &mdash; preferências pessoais (vai no .gitignore)</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;</span>
+          <div class="callout-content">
+            <div class="callout-title">Merge, não substituição</div>
+            <p>Os três níveis são mesclados: <code>global &rarr; projeto &rarr; local</code>. O nível mais específico sobrescreve o mais genérico para chaves conflitantes, mas estende listas (permissões, hooks) quando possível.</p>
+          </div>
+        </div>
+
+        <h3>Chaves mais comuns</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Chave</th>
+                <th>Função</th>
+                <th>Exemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>permissions</code></td>
+                <td>Regras granulares de quais ferramentas/comandos a IA pode usar</td>
+                <td><code>{"allow": ["Bash(pnpm test:*)"]}</code></td>
+              </tr>
+              <tr>
+                <td><code>hooks</code></td>
+                <td>Event handlers (ver <a href="modulo-hooks.html">Hooks</a>)</td>
+                <td><code>PostToolUse</code>, <code>UserPromptSubmit</code>...</td>
+              </tr>
+              <tr>
+                <td><code>mcpServers</code></td>
+                <td>Servidores MCP disponibilizados ao agente (ver <a href="modulo-10.html">MCP</a>)</td>
+                <td><code>{"github": {...}}</code></td>
+              </tr>
+              <tr>
+                <td><code>model</code></td>
+                <td>Modelo padrão usado em novas sessões</td>
+                <td><code>"claude-opus-4-5"</code></td>
+              </tr>
+              <tr>
+                <td><code>env</code></td>
+                <td>Variáveis de ambiente injetadas no processo</td>
+                <td><code>{"NODE_ENV": "development"}</code></td>
+              </tr>
+              <tr>
+                <td><code>includeCoAuthoredBy</code></td>
+                <td>Liga/desliga linha <code>Co-Authored-By: Claude</code> em commits</td>
+                <td><code>true</code> / <code>false</code></td>
+              </tr>
+              <tr>
+                <td><code>cleanupPeriodDays</code></td>
+                <td>Dias até expiração de histórico local</td>
+                <td><code>30</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Template completo (copy-paste)</h3>
+
+        <p>Arquivo: <code>.claude/settings.json</code></p>
+
+        <pre><code><span class="code-label">json</span>{
+  "model": "claude-opus-4-5",
+  "includeCoAuthoredBy": true,
+  "cleanupPeriodDays": 30,
+
+  "env": {
+    "NODE_ENV": "development",
+    "PYTHONUNBUFFERED": "1"
+  },
+
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Read(**)",
+      "Edit(src/**)",
+      "Edit(tests/**)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "deny": [
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Edit(**/secrets/**)",
+      "Bash(git push:*)",
+      "Bash(rm -rf:*)",
+      "Bash(curl:*)"
+    ]
+  },
+
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "pnpm lint --fix $CLAUDE_FILE_PATHS" }
+        ]
+      }
+    ]
+  },
+
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "${GITHUB_TOKEN}" }
+    }
+  }
+}</code></pre>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic. <em>"Claude Code settings"</em>. Disponível em: <a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">https://docs.claude.com/en/docs/claude-code/settings</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 9.3 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 9.3</span>
+        <h2>Modos de Permissão</h2>
+
+        <p>O Claude Code opera em um de quatro modos de permissão, cada um com um perfil de risco diferente. O modo determina o comportamento <strong>padrão</strong> do agente; regras granulares em <code>permissions.allow</code> / <code>deny</code> continuam valendo por cima.</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Modo</th>
+                <th>Comportamento</th>
+                <th>Quando usar</th>
+                <th>Risco</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>default</code></td>
+                <td>Pede confirmação humana para cada ação sensível (edição, shell, rede)</td>
+                <td>Trabalho em produção, código crítico, pair programming</td>
+                <td><span style="color: var(--color-accent-green);">Baixo</span></td>
+              </tr>
+              <tr>
+                <td><code>acceptEdits</code></td>
+                <td>Aceita automaticamente edições de arquivos; ainda pede para shell/rede</td>
+                <td>Tarefas de refatoração em massa, geração de boilerplate</td>
+                <td><span style="color: var(--color-accent-amber);">Médio</span></td>
+              </tr>
+              <tr>
+                <td><code>plan</code></td>
+                <td>Modo só-leitura &mdash; o agente planeja, mas não executa mudanças</td>
+                <td>Investigação, auditoria, exploração de código novo</td>
+                <td><span style="color: var(--color-accent-green);">Muito baixo</span></td>
+              </tr>
+              <tr>
+                <td><code>bypassPermissions</code></td>
+                <td>Executa qualquer ação sem prompts (YOLO mode)</td>
+                <td>Sandbox descartável, container efêmero, CI isolado</td>
+                <td><span style="color: var(--color-accent-red);">Alto</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;</span>
+          <div class="callout-content">
+            <div class="callout-title">Cuidado com bypassPermissions</div>
+            <p>Este modo permite que o agente rode <strong>qualquer comando</strong> sem sua aprovação &mdash; incluindo <code>rm -rf</code>, <code>git push --force</code>, envio de requests autenticados, etc. Só use em ambientes <em>descartáveis</em> (container, VM efêmera, máquina de teste). Nunca ative em sua workstation principal.</p>
+          </div>
+        </div>
+
+        <h3>Como configurar</h3>
+
+        <p>Via CLI (sobrescreve o padrão apenas para a sessão):</p>
+
+        <pre><code><span class="code-label">bash</span># Iniciar em modo plano
+claude --permission-mode plan
+
+# Iniciar aceitando edições automaticamente
+claude --permission-mode acceptEdits
+
+# YOLO (não faça isso em casa)
+claude --permission-mode bypassPermissions</code></pre>
+
+        <p>Via <code>settings.json</code> (padrão persistente do projeto):</p>
+
+        <pre><code><span class="code-label">json</span>{
+  "permissions": {
+    "defaultMode": "acceptEdits"
+  }
+}</code></pre>
+
+        <h3>Regras granulares com allow/deny</h3>
+
+        <p>Independentemente do modo, você pode definir uma <em>allowlist</em> e uma <em>denylist</em>. A sintaxe suporta globs em caminhos e prefixos em comandos de shell:</p>
+
+        <pre><code><span class="code-label">json</span>{
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Edit(src/**)",
+      "Bash(pnpm:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)"
+    ],
+    "deny": [
+      "Edit(.env)",
+      "Edit(**/secrets/**)",
+      "Bash(git push:*)",
+      "Bash(sudo:*)"
+    ]
+  }
+}</code></pre>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Dica</div>
+            <p>Comece conservador (<code>default</code> + allowlist mínima) e <em>afrouxe</em> conforme observa que ações são seguras. O inverso &mdash; começar liberal e apertar depois &mdash; tende a ser muito mais doloroso.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 9.4 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 9.4</span>
+        <h2>Configuração de Servidores MCP</h2>
+
+        <p>O <strong>Model Context Protocol (MCP)</strong> permite expor ferramentas externas (bancos de dados, APIs, filesystems remotos) ao agente. Do ponto de vista de <em>configuração</em>, o que importa é <strong>declarar</strong> quais servidores MCP estarão disponíveis &mdash; os detalhes do protocolo e como escrever servidores estão no <a href="modulo-10.html">Módulo 12</a>.</p>
+
+        <h3>Onde declarar</h3>
+
+        <p>Servidores MCP podem ser declarados em dois lugares:</p>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.claude/mcp.json</span>
+            <span class="v-tree-hint">Arquivo dedicado &mdash; recomendado para configs longas</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.claude/settings.json (chave mcpServers)</span>
+            <span class="v-tree-hint">Dentro do settings.json principal &mdash; bom para poucos servidores</span>
+          </div>
+        </div>
+
+        <h3>Exemplo completo (.claude/mcp.json)</h3>
+
+        <pre><code><span class="code-label">json</span>{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost:5432/meu_projeto"
+      ],
+      "env": {
+        "PGUSER": "${PGUSER}",
+        "PGPASSWORD": "${PGPASSWORD}"
+      }
+    },
+
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/eu/docs",
+        "/Users/eu/notas"
+      ]
+    }
+  }
+}</code></pre>
+
+        <h3>Anatomia de um servidor MCP na configuração</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>command</code></td>
+                <td>Executável que inicia o servidor (<code>npx</code>, <code>uvx</code>, <code>docker</code>, binário...)</td>
+              </tr>
+              <tr>
+                <td><code>args</code></td>
+                <td>Argumentos passados ao comando &mdash; pode incluir pacote, caminhos e flags</td>
+              </tr>
+              <tr>
+                <td><code>env</code></td>
+                <td>Variáveis de ambiente injetadas no processo (chaves, URLs, tokens)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;</span>
+          <div class="callout-content">
+            <div class="callout-title">Interpolação de variáveis</div>
+            <p>Use <code>${NOME_DA_VAR}</code> para injetar variáveis de ambiente sem precisar escrever o valor literal no arquivo. Isso permite commitar a configuração sem vazar segredos.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Model Context Protocol. <em>"Introduction"</em>. Disponível em: <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">https://modelcontextprotocol.io</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 9.5 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 9.5</span>
+        <h2>Variáveis de Ambiente</h2>
+
+        <p>Variáveis de ambiente são o mecanismo padrão para fornecer <strong>segredos</strong> (chaves de API, tokens) e <strong>configurações sensíveis ao ambiente</strong> (URL do banco, host da API) para ferramentas de IA. Elas nunca devem ser commitadas.</p>
+
+        <h3>Variáveis comuns</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Variável</th>
+                <th>Usada por</th>
+                <th>Função</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ANTHROPIC_API_KEY</code></td>
+                <td>Claude Code, SDK Anthropic</td>
+                <td>Autenticação com a API da Anthropic</td>
+              </tr>
+              <tr>
+                <td><code>OPENAI_API_KEY</code></td>
+                <td>Codex CLI, SDK OpenAI, Copilot (alguns fluxos)</td>
+                <td>Autenticação com a API da OpenAI</td>
+              </tr>
+              <tr>
+                <td><code>GITHUB_TOKEN</code></td>
+                <td>MCP GitHub, gh CLI, Copilot</td>
+                <td>Token de acesso pessoal ou de app do GitHub</td>
+              </tr>
+              <tr>
+                <td><code>CLAUDE_CODE_USE_BEDROCK</code></td>
+                <td>Claude Code</td>
+                <td>Roteia chamadas via AWS Bedrock</td>
+              </tr>
+              <tr>
+                <td><code>CLAUDE_CODE_USE_VERTEX</code></td>
+                <td>Claude Code</td>
+                <td>Roteia chamadas via Google Vertex AI</td>
+              </tr>
+              <tr>
+                <td><code>CLAUDE_CODE_MAX_OUTPUT_TOKENS</code></td>
+                <td>Claude Code</td>
+                <td>Limite máximo de tokens de saída por resposta</td>
+              </tr>
+              <tr>
+                <td><code>HTTP_PROXY</code> / <code>HTTPS_PROXY</code></td>
+                <td>Genérica</td>
+                <td>Proxy corporativo para chamadas de rede</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Onde definir (em ordem de preferência)</h3>
+
+        <ol>
+          <li><strong>Gerenciador de segredos do SO</strong> &mdash; Keychain (macOS), Credential Manager (Windows), secret-tool (Linux).</li>
+          <li><strong><code>.env</code> do projeto</strong> &mdash; carregado por <code>direnv</code>, <code>dotenv</code>, ou plugin do shell. <em>SEMPRE</em> no <code>.gitignore</code>.</li>
+          <li><strong>Shell profile</strong> (<code>~/.zshrc</code>, <code>~/.bashrc</code>) &mdash; para variáveis globais do usuário.</li>
+          <li><strong>Cofre de CI/CD</strong> &mdash; GitHub Actions Secrets, GitLab Variables, etc., para pipelines.</li>
+        </ol>
+
+        <h3>Exemplo de .env de projeto</h3>
+
+        <pre><code><span class="code-label">bash</span># .env (NUNCA commitar)
+ANTHROPIC_API_KEY=sk-ant-...
+GITHUB_TOKEN=ghp_...
+PGUSER=eder
+PGPASSWORD=supersecret
+DATABASE_URL=postgresql://localhost:5432/app_dev</code></pre>
+
+        <p>E o <code>.gitignore</code> correspondente:</p>
+
+        <pre><code><span class="code-label">gitignore</span># Segredos
+.env
+.env.*
+!.env.example
+
+# Config local de IA
+.claude/settings.local.json</code></pre>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;</span>
+          <div class="callout-content">
+            <div class="callout-title">Nunca commite chaves de API</div>
+            <p>Chaves de API commitadas em repositórios &mdash; mesmo privados &mdash; são um vetor de ataque clássico. Bots varrem o GitHub em tempo real procurando por padrões como <code>sk-ant-</code>, <code>ghp_</code> e <code>AKIA</code>. Se você vazar uma chave, <strong>revogue imediatamente</strong> e gere uma nova, mesmo que tenha removido o commit.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Boas práticas</div>
+            <ul>
+              <li>Mantenha um <code>.env.example</code> commitado com as chaves esperadas, sem valores reais.</li>
+              <li>Use ferramentas como <a href="https://www.gitguardian.com/" target="_blank" rel="noopener">GitGuardian</a> ou <code>git-secrets</code> para scannear commits antes do push.</li>
+              <li>Rotacione chaves periodicamente, especialmente após trocas de membros do time.</li>
+              <li>Prefira tokens de curto prazo (OAuth) a chaves de API permanentes quando possível.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 9.6 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 9.6</span>
+        <h2>Configurações por Ferramenta</h2>
+
+        <p>Cada ferramenta de IA tem seu próprio sistema de configuração. A tabela abaixo resume os caminhos mais importantes; lembre-se que <strong>rules</strong> (instruções de texto para o modelo) são tratadas em um arquivo diferente dentro da mesma ferramenta &mdash; isto aqui é o lado <em>configuração</em>.</p>
+
+        <h3>Claude Code</h3>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/.claude/</span>
+            <span class="v-tree-hint">Config global (settings.json, agents/, commands/)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.claude/</span>
+            <span class="v-tree-hint">Config do projeto (settings.json, settings.local.json, mcp.json)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">VS Code: Settings &rarr; Claude Code</span>
+            <span class="v-tree-hint">Integração com a extensão (mesmo schema do settings.json)</span>
+          </div>
+        </div>
+
+        <h3>GitHub Copilot</h3>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">VS Code: settings.json (github.copilot.*)</span>
+            <span class="v-tree-hint">Habilitar/desabilitar por linguagem, toggles de Copilot Chat</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">GitHub &rarr; Org Settings &rarr; Copilot</span>
+            <span class="v-tree-hint">Políticas organizacionais, exclusões de conteúdo</span>
+          </div>
+          <div class="v-tree-item tree-file depth-0">
+            <span class="v-tree-icon">&#128221;</span>
+            <span class="v-tree-label">.github/copilot-instructions.md</span>
+            <span class="v-tree-hint">Rules, não config &mdash; instruções textuais ao modelo</span>
+          </div>
+        </div>
+
+        <h3>Cursor</h3>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/.cursor/</span>
+            <span class="v-tree-hint">Config global do aplicativo</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.cursor/</span>
+            <span class="v-tree-hint">Config do projeto (incluindo regras em .cursor/rules/)</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">Cursor menu &rarr; Settings</span>
+            <span class="v-tree-hint">UI para modelo, rules, privacidade, MCP</span>
+          </div>
+        </div>
+
+        <h3>OpenAI Codex CLI</h3>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/.codex/config.toml</span>
+            <span class="v-tree-hint">Config TOML &mdash; modelo, sandbox, approval mode, MCP</span>
+          </div>
+          <div class="v-tree-item tree-file depth-0">
+            <span class="v-tree-icon">&#128221;</span>
+            <span class="v-tree-label">AGENTS.md</span>
+            <span class="v-tree-hint">Rules, não config &mdash; instruções textuais ao modelo</span>
+          </div>
+        </div>
+
+        <p>Exemplo de <code>~/.codex/config.toml</code>:</p>
+
+        <pre><code><span class="code-label">toml</span>model = "o4-mini"
+approval_policy = "on-failure"
+sandbox_mode = "workspace-write"
+
+[mcp_servers.github]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-github"]
+env = { GITHUB_TOKEN = "${GITHUB_TOKEN}" }</code></pre>
+
+        <h3>Windsurf</h3>
+
+        <div class="v-tree">
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">~/.windsurf/</span>
+            <span class="v-tree-hint">Config global do aplicativo</span>
+          </div>
+          <div class="v-tree-item tree-config depth-0">
+            <span class="v-tree-icon">&#9881;</span>
+            <span class="v-tree-label">.windsurf/</span>
+            <span class="v-tree-hint">Config do projeto (workflows, rules, MCP)</span>
+          </div>
+        </div>
+
+        <h3>Tabela comparativa rápida</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>Config global</th>
+                <th>Config do projeto</th>
+                <th>Formato</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Claude Code</td>
+                <td><code>~/.claude/settings.json</code></td>
+                <td><code>.claude/settings.json</code></td>
+                <td>JSON</td>
+              </tr>
+              <tr>
+                <td>GitHub Copilot</td>
+                <td>VS Code user settings</td>
+                <td>VS Code workspace settings</td>
+                <td>JSON</td>
+              </tr>
+              <tr>
+                <td>Cursor</td>
+                <td><code>~/.cursor/</code> + UI</td>
+                <td><code>.cursor/</code></td>
+                <td>JSON / MDC</td>
+              </tr>
+              <tr>
+                <td>Codex CLI</td>
+                <td><code>~/.codex/config.toml</code></td>
+                <td>&mdash;</td>
+                <td>TOML</td>
+              </tr>
+              <tr>
+                <td>Windsurf</td>
+                <td><code>~/.windsurf/</code></td>
+                <td><code>.windsurf/</code></td>
+                <td>JSON / YAML</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 9.7 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 9.7</span>
+        <h2>Integrações com IDEs</h2>
+
+        <p>O <em>surface</em> da ferramenta &mdash; CLI, extensão de IDE, app standalone &mdash; influencia quais configurações você precisa ajustar e onde. Um agente pode existir em múltiplos surfaces simultaneamente (ex: Claude Code no terminal <strong>e</strong> na extensão do VS Code compartilham o mesmo <code>settings.json</code>).</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>Surfaces disponíveis</th>
+                <th>Observações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Claude Code</td>
+                <td>CLI, extensão VS Code, plugin JetBrains</td>
+                <td>Todos compartilham <code>~/.claude/</code> e <code>.claude/</code> do projeto</td>
+              </tr>
+              <tr>
+                <td>Cursor</td>
+                <td>IDE standalone (fork do VS Code)</td>
+                <td>Toda a experiência dentro do próprio app; instala extensões do VS Code marketplace</td>
+              </tr>
+              <tr>
+                <td>GitHub Copilot</td>
+                <td>VS Code, JetBrains, Neovim, Xcode, Visual Studio, CLI</td>
+                <td>Cada IDE tem extensão dedicada; config fica nas preferências do IDE</td>
+              </tr>
+              <tr>
+                <td>OpenAI Codex</td>
+                <td>CLI + app para macOS</td>
+                <td>Sem extensão oficial de IDE &mdash; executa como processo separado</td>
+              </tr>
+              <tr>
+                <td>Windsurf</td>
+                <td>IDE standalone (Codeium)</td>
+                <td>Similar ao Cursor em modelo de distribuição</td>
+              </tr>
+              <tr>
+                <td>Continue.dev</td>
+                <td>Extensão VS Code e JetBrains</td>
+                <td>Open source; config em <code>~/.continue/config.json</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Escolha do surface</div>
+            <p>Para tarefas longas e agênticas (refatoração em grande escala, criação de feature inteira), CLI ou app standalone tendem a funcionar melhor. Para completions inline e chat pontual enquanto você escreve código, extensões de IDE são insuperáveis. Muitas equipes usam os dois em paralelo.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- 9.8 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 9.8</span>
+        <h2>Checklist de Configuração Inicial</h2>
+
+        <p>Um novo projeto (ou um projeto existente adotando IA pela primeira vez) precisa passar por uma série de decisões de configuração. Use o checklist abaixo como ponto de partida.</p>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Checklist de setup inicial</div>
+            <ul>
+              <li>[ ] <strong>Chaves de API em variáveis de ambiente</strong>, nunca literais em código ou config commitado.</li>
+              <li>[ ] <strong><code>settings.json</code> do projeto commitado</strong> com as configurações que o time todo precisa (modelo, permissões base, hooks de lint).</li>
+              <li>[ ] <strong><code>settings.local.json</code> no <code>.gitignore</code></strong> para preferências pessoais não compartilhadas.</li>
+              <li>[ ] <strong>Permission mode apropriado</strong> definido (<code>default</code> em produção; <code>acceptEdits</code> só em contexto bem delimitado).</li>
+              <li>[ ] <strong>Allowlist / denylist</strong> explícita para ações críticas (proibir <code>git push</code>, <code>rm -rf</code>, edição de <code>.env</code>).</li>
+              <li>[ ] <strong>Servidores MCP necessários configurados</strong> (GitHub, banco de dados, filesystem) com variáveis interpoladas.</li>
+              <li>[ ] <strong>CLAUDE.md / AGENTS.md presente</strong> na raiz (ver <a href="modulo-08.html">Rules</a>) &mdash; rules e config andam juntos.</li>
+              <li>[ ] <strong>Hooks relevantes</strong> (lint, teste rápido, bloqueio de secrets) configurados (ver <a href="modulo-hooks.html">Hooks</a>).</li>
+              <li>[ ] <strong>Extensões de IDE instaladas</strong> e logadas com a mesma conta do CLI.</li>
+              <li>[ ] <strong><code>.env.example</code> commitado</strong> com a lista de variáveis esperadas (sem valores).</li>
+              <li>[ ] <strong>Team alinhado</strong>: todos usando as mesmas configs base (compartilhadas via <code>.claude/</code> no git).</li>
+              <li>[ ] <strong>Scanner de segredos</strong> (git-secrets, GitGuardian) ativo no pipeline.</li>
+              <li>[ ] <strong>Documentação de onboarding</strong> explicando como configurar a ferramenta localmente (chaves, MCP, permissões).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;</span>
+          <div class="callout-content">
+            <div class="callout-title">Config vs. Rules vs. Hooks &mdash; revisão final</div>
+            <p>Se ainda houver dúvida sobre onde algo deve ir: pergunte <em>"quem consome isso?"</em>. Se é a <strong>ferramenta</strong> (antes de qualquer token), é <strong>configuração</strong>. Se é o <strong>modelo</strong> (como contexto), é <strong>rule</strong>. Se é o <strong>sistema operacional</strong> (como comando disparado por evento), é <strong>hook</strong>.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências complementares</div>
+            <ul>
+              <li>Anthropic. <em>"Claude Code settings"</em>. <a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">https://docs.claude.com/en/docs/claude-code/settings</a></li>
+              <li>Anthropic. <em>"Claude Code security"</em>. <a href="https://docs.claude.com/en/docs/claude-code/security" target="_blank" rel="noopener">https://docs.claude.com/en/docs/claude-code/security</a></li>
+              <li>Model Context Protocol. <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">https://modelcontextprotocol.io</a></li>
+              <li>OpenAI. <em>"Codex CLI"</em>. <a href="https://github.com/openai/codex" target="_blank" rel="noopener">https://github.com/openai/codex</a></li>
+              <li>GitHub. <em>"Copilot configuration"</em>. <a href="https://docs.github.com/en/copilot" target="_blank" rel="noopener">https://docs.github.com/en/copilot</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-08.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 08 &mdash; Rules</span>
+        </a>
+        <a href="modulo-09.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 09 &mdash; Skills</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

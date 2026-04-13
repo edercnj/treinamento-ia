@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 03 — Janela de Contexto | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item active"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 03</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">03</div>
+        <h1>Janela de Contexto</h1>
+        <p class="module-desc">Limites de processamento, evolução histórica de 1K a 1M tokens, e o fenômeno "Lost in the Middle".</p>
+      </div>
+
+      <!-- 3.1 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 3.1</span>
+        <h2>O que é a Janela de Contexto?</h2>
+
+        <p>A <strong>janela de contexto</strong> (context window) é o <strong>limite máximo de tokens</strong> que um modelo pode processar em uma única interação. Pense nela como a "memória de trabalho" da LLM — tudo que o modelo pode "ver" simultaneamente.</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Imagine que você está trabalhando em uma mesa. A janela de contexto é o <strong>tamanho da mesa</strong>. Quanto maior a mesa, mais documentos, referências e notas você pode ter abertos ao mesmo tempo. Uma mesa pequena obriga você a empilhar documentos e trocar entre eles — perdendo visão do todo.</p>
+        </div>
+
+        <h4>A janela de contexto inclui TUDO:</h4>
+
+        <div class="context-window">
+          <div class="context-window-title">Janela de Contexto</div>
+          <div class="context-window-stack">
+
+            <div class="context-slot slot-system">
+              <div class="context-slot-icon">&#9881;</div>
+              <div class="context-slot-text">
+                <div class="context-slot-label">System Prompt</div>
+                <div class="context-slot-desc">Instruções ao modelo &mdash; Ex: "Você é um assistente de código..."</div>
+              </div>
+              <div class="context-slot-bar"><div class="context-slot-bar-fill"></div></div>
+            </div>
+
+            <div class="context-slot slot-history">
+              <div class="context-slot-icon">&#128172;</div>
+              <div class="context-slot-text">
+                <div class="context-slot-label">Histórico de Mensagens</div>
+                <div class="context-slot-desc">Toda a conversa até agora (mensagens anteriores do usuário e do modelo)</div>
+              </div>
+              <div class="context-slot-bar"><div class="context-slot-bar-fill"></div></div>
+            </div>
+
+            <div class="context-slot slot-context">
+              <div class="context-slot-icon">&#128193;</div>
+              <div class="context-slot-text">
+                <div class="context-slot-label">Contexto Adicional</div>
+                <div class="context-slot-desc">Arquivos, documentos, resultados de ferramentas, código-fonte</div>
+              </div>
+              <div class="context-slot-bar"><div class="context-slot-bar-fill"></div></div>
+            </div>
+
+            <div class="context-slot slot-user">
+              <div class="context-slot-icon">&#9998;</div>
+              <div class="context-slot-text">
+                <div class="context-slot-label">Sua Mensagem Atual</div>
+                <div class="context-slot-desc">O prompt do usuário neste turno da conversa</div>
+              </div>
+              <div class="context-slot-bar"><div class="context-slot-bar-fill"></div></div>
+            </div>
+
+            <div class="context-slot slot-output">
+              <div class="context-slot-icon">&#9889;</div>
+              <div class="context-slot-text">
+                <div class="context-slot-label">Resposta do Modelo</div>
+                <div class="context-slot-desc">Espaço reservado para os tokens de output gerados</div>
+              </div>
+              <div class="context-slot-bar"><div class="context-slot-bar-fill"></div></div>
+            </div>
+
+          </div>
+          <div class="context-window-footer">
+            <strong>TOTAL</strong> &le; limite da janela de contexto
+          </div>
+        </div>
+      </section>
+
+      <!-- 3.2 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 3.2</span>
+        <h2>Evolução das Janelas de Contexto</h2>
+
+        <p>A evolução das janelas de contexto é uma das histórias mais impressionantes da IA recente:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Modelo</th>
+                <th>Ano</th>
+                <th>Janela de Contexto</th>
+                <th>Equivalente aproximado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GPT-2</td>
+                <td>2019</td>
+                <td>1.024 tokens</td>
+                <td>~2 páginas</td>
+              </tr>
+              <tr>
+                <td>GPT-3</td>
+                <td>2020</td>
+                <td>4.096 tokens</td>
+                <td>~6 páginas</td>
+              </tr>
+              <tr>
+                <td>GPT-3.5</td>
+                <td>2022</td>
+                <td>4.096 tokens</td>
+                <td>~6 páginas</td>
+              </tr>
+              <tr>
+                <td>GPT-3.5-16k</td>
+                <td>2023</td>
+                <td>16.384 tokens</td>
+                <td>~24 páginas</td>
+              </tr>
+              <tr>
+                <td>GPT-4</td>
+                <td>2023</td>
+                <td>8.192 tokens</td>
+                <td>~12 páginas</td>
+              </tr>
+              <tr>
+                <td>GPT-4-32k</td>
+                <td>2023</td>
+                <td>32.768 tokens</td>
+                <td>~50 páginas</td>
+              </tr>
+              <tr>
+                <td>Claude 2</td>
+                <td>2023</td>
+                <td>100.000 tokens</td>
+                <td>~150 páginas</td>
+              </tr>
+              <tr>
+                <td>GPT-4 Turbo</td>
+                <td>2023</td>
+                <td>128.000 tokens</td>
+                <td>~200 páginas</td>
+              </tr>
+              <tr>
+                <td>Claude 3</td>
+                <td>2024</td>
+                <td>200.000 tokens</td>
+                <td>~300 páginas</td>
+              </tr>
+              <tr>
+                <td>Gemini 1.5 Pro</td>
+                <td>2024</td>
+                <td>1.000.000 tokens</td>
+                <td>~1.500 páginas</td>
+              </tr>
+              <tr>
+                <td>Claude 3.5/4</td>
+                <td>2024-2025</td>
+                <td>200.000 tokens</td>
+                <td>~300 páginas</td>
+              </tr>
+              <tr>
+                <td>Claude Opus 4 (com extensão)</td>
+                <td>2025</td>
+                <td>1.000.000 tokens</td>
+                <td>~1.500 páginas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <ul>
+              <li>Anthropic. <em>"Context Windows"</em>. Disponível em: <a href="https://docs.anthropic.com/en/docs/build-with-claude/context-windows" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/build-with-claude/context-windows</a></li>
+              <li>Anthropic. <em>"100K Context Windows"</em> (blog post). Disponível em: <a href="https://www.anthropic.com/news/100k-context-windows" target="_blank" rel="noopener">https://www.anthropic.com/news/100k-context-windows</a></li>
+              <li>Anthropic. <em>"Prompting Long Context"</em>. Disponível em: <a href="https://www.anthropic.com/news/prompting-long-context" target="_blank" rel="noopener">https://www.anthropic.com/news/prompting-long-context</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3.3 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 3.3</span>
+        <h2>A Janela de Contexto na Prática da Programação</h2>
+
+        <p>Na programação com IA, a janela de contexto determina <strong>quanto do seu projeto o modelo pode "ver" simultaneamente</strong>. Isso tem implicações profundas:</p>
+
+        <h4>Cenário real — Debugando um bug em um projeto grande:</h4>
+
+        <div class="stats-card">
+          <div>
+            <div class="stats-group-title">Seu Projeto</div>
+            <div class="stat-row">
+              <span class="stat-label">Arquivos de código</span>
+              <span class="stat-value">500</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Linhas de código total</span>
+              <span class="stat-value">200.000</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Tokens no total</span>
+              <span class="stat-value">~2.000.000</span>
+            </div>
+          </div>
+          <div>
+            <div class="stats-group-title">Janela Claude 200K</div>
+            <div class="stat-row">
+              <span class="stat-label">System prompt e instruções</span>
+              <span class="stat-value">~5.000</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Histórico da conversa</span>
+              <span class="stat-value">~15.000</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Espaço para código</span>
+              <span class="stat-value">~160.000</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Reserva para resposta</span>
+              <span class="stat-value">~20.000</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Visibilidade do projeto</span>
+              <span class="stat-value stat-highlight">~8% por vez</span>
+            </div>
+          </div>
+        </div>
+
+        <h4>Isso significa que:</h4>
+
+        <ol>
+          <li><strong>O modelo não pode ver todo o seu projeto de uma vez</strong> — ferramentas como Claude Code precisam ser inteligentes sobre <strong>quais</strong> arquivos carregar no contexto</li>
+          <li><strong>A seleção de contexto é crítica</strong> — enviar os arquivos certos é mais importante que enviar tudo</li>
+          <li><strong>Conversas longas consomem janela</strong> — cada mensagem anterior ocupa espaço que poderia ser usado para código</li>
+          <li><strong>Compressão de contexto</strong> é uma técnica real — algumas ferramentas resumem mensagens antigas para liberar espaço</li>
+        </ol>
+      </section>
+
+      <!-- 3.4 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 3.4</span>
+        <h2>O Problema do "Lost in the Middle"</h2>
+
+        <p>Um fenômeno importante descoberto por pesquisadores é que LLMs prestam <strong>menos atenção</strong> a informações que estão no <strong>meio</strong> de contextos longos, comparado com informações no início e no final.</p>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Liu, N. et al. (2023). <em>"Lost in the Middle: How Language Models Use Long Contexts"</em>. Stanford University. arXiv:2307.03172. Disponível em: <a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener">https://arxiv.org/abs/2307.03172</a></p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;&#65039;</span>
+          <div class="callout-content">
+            <div class="callout-title">Implicação prática</div>
+            <p>Quando você está programando com IA e envia múltiplos arquivos como contexto:</p>
+            <ul>
+              <li>Coloque as informações <strong>mais importantes</strong> no <strong>início</strong> ou no <strong>final</strong> do contexto</li>
+              <li><strong>Não confie</strong> que o modelo prestará igual atenção a um arquivo no meio de 20 outros</li>
+              <li>Ferramentas como Claude Code mitigam isso com técnicas de organização inteligente do contexto</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3.5 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 3.5</span>
+        <h2>Conceitos Relacionados Importantes</h2>
+
+        <h3>3.5.1 Context Window vs. Max Output Tokens</h3>
+
+        <p>Não confunda:</p>
+        <ul>
+          <li><strong>Context Window</strong> = limite TOTAL (input + output)</li>
+          <li><strong>Max Output Tokens</strong> = limite apenas para a resposta</li>
+        </ul>
+
+        <p>Exemplo: Claude 3.5 Sonnet tem 200K de contexto mas máximo de 8.192 tokens de output por padrão (extensível a 64K com configuração).</p>
+
+        <h3>3.5.2 Prompt Caching e a Janela de Contexto</h3>
+
+        <p>Quando a janela de contexto é grande e o início do prompt é repetido entre chamadas (como em ferramentas de codificação), o <strong>prompt caching</strong> (Módulo 2.4) permite reutilizar o processamento dos tokens iniciais, reduzindo custo e latência significativamente.</p>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Anthropic. <em>"Prompt Caching"</em>. Disponível em: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching</a></p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-02.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 02 — Tokens</span>
+        </a>
+        <a href="modulo-04.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 04 — Engenharia de Contexto</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

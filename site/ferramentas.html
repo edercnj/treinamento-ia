@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apêndice A — Ferramentas Práticas e Simuladores — Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Apêndice A</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header">
+        <div class="module-number">A</div>
+        <h1>Ferramentas Práticas e Simuladores</h1>
+        <p class="module-desc">Simuladores de tokens, playgrounds de LLMs, ferramentas de desenvolvimento e exercícios práticos para cada módulo.</p>
+      </div>
+
+      <!-- A.1 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção A.1</span>
+        <h2>Ferramentas para Experimentar com Tokens</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>URL</th>
+                <th>Tipo</th>
+                <th>Gratuita</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>OpenAI Tokenizer</strong></td>
+                <td><a href="https://platform.openai.com/tokenizer" target="_blank">platform.openai.com/tokenizer</a></td>
+                <td>Web</td>
+                <td>Sim</td>
+              </tr>
+              <tr>
+                <td><strong>Tiktokenizer</strong></td>
+                <td><a href="https://tiktokenizer.vercel.app" target="_blank">tiktokenizer.vercel.app</a></td>
+                <td>Web</td>
+                <td>Sim</td>
+              </tr>
+              <tr>
+                <td><strong>tiktoken (Python)</strong></td>
+                <td><a href="https://github.com/openai/tiktoken" target="_blank">github.com/openai/tiktoken</a></td>
+                <td>Biblioteca</td>
+                <td>Sim</td>
+              </tr>
+              <tr>
+                <td><strong>Anthropic Token Counter</strong></td>
+                <td><a href="https://docs.anthropic.com/en/docs/build-with-claude/token-counting" target="_blank">docs.anthropic.com/.../token-counting</a></td>
+                <td>API</td>
+                <td>Sim (com API key)</td>
+              </tr>
+              <tr>
+                <td><strong>Hugging Face Tokenizers</strong></td>
+                <td><a href="https://huggingface.co/docs/tokenizers" target="_blank">huggingface.co/docs/tokenizers</a></td>
+                <td>Biblioteca</td>
+                <td>Sim</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- A.2 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção A.2</span>
+        <h2>Playgrounds de LLMs</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>URL</th>
+                <th>Modelos</th>
+                <th>Gratuita</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Anthropic Console</strong></td>
+                <td><a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></td>
+                <td>Claude</td>
+                <td>Créditos gratuitos</td>
+              </tr>
+              <tr>
+                <td><strong>OpenAI Playground</strong></td>
+                <td><a href="https://platform.openai.com/playground" target="_blank">platform.openai.com/playground</a></td>
+                <td>GPT-4, etc.</td>
+                <td>Créditos gratuitos</td>
+              </tr>
+              <tr>
+                <td><strong>Google AI Studio</strong></td>
+                <td><a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></td>
+                <td>Gemini</td>
+                <td>Sim</td>
+              </tr>
+              <tr>
+                <td><strong>Hugging Face Spaces</strong></td>
+                <td><a href="https://huggingface.co/spaces" target="_blank">huggingface.co/spaces</a></td>
+                <td>Diversos open-source</td>
+                <td>Sim</td>
+              </tr>
+              <tr>
+                <td><strong>Poe</strong></td>
+                <td><a href="https://poe.com" target="_blank">poe.com</a></td>
+                <td>Multi-modelo</td>
+                <td>Freemium</td>
+              </tr>
+              <tr>
+                <td><strong>OpenRouter</strong></td>
+                <td><a href="https://openrouter.ai" target="_blank">openrouter.ai</a></td>
+                <td>Multi-modelo</td>
+                <td>Pay-per-use</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- A.3 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção A.3</span>
+        <h2>Ferramentas de Desenvolvimento com IA</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>URL</th>
+                <th>Tipo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Claude Code</strong></td>
+                <td><a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank">docs.anthropic.com/.../claude-code</a></td>
+                <td>CLI Agent</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Copilot</strong></td>
+                <td><a href="https://github.com/features/copilot" target="_blank">github.com/features/copilot</a></td>
+                <td>IDE Extension</td>
+              </tr>
+              <tr>
+                <td><strong>Cursor</strong></td>
+                <td><a href="https://cursor.com" target="_blank">cursor.com</a></td>
+                <td>IDE</td>
+              </tr>
+              <tr>
+                <td><strong>Windsurf</strong></td>
+                <td><a href="https://windsurf.com" target="_blank">windsurf.com</a></td>
+                <td>IDE</td>
+              </tr>
+              <tr>
+                <td><strong>OpenAI Codex CLI</strong></td>
+                <td><a href="https://github.com/openai/codex" target="_blank">github.com/openai/codex</a></td>
+                <td>CLI Agent</td>
+              </tr>
+              <tr>
+                <td><strong>Aider</strong></td>
+                <td><a href="https://aider.chat" target="_blank">aider.chat</a></td>
+                <td>CLI Agent</td>
+              </tr>
+              <tr>
+                <td><strong>Continue</strong></td>
+                <td><a href="https://continue.dev" target="_blank">continue.dev</a></td>
+                <td>IDE Extension (open source)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- A.4 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção A.4</span>
+        <h2>Ferramentas para Visualização e Aprendizado</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Ferramenta</th>
+                <th>URL</th>
+                <th>O que ensina</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>The Illustrated Transformer</strong></td>
+                <td><a href="https://jalammar.github.io/illustrated-transformer/" target="_blank">jalammar.github.io/illustrated-transformer</a></td>
+                <td>Arquitetura Transformer visual</td>
+              </tr>
+              <tr>
+                <td><strong>Attention Visualization</strong></td>
+                <td><a href="https://jalammar.github.io/visualizing-neural-machine-translation-mechanics-of-seq2seq-models-with-attention/" target="_blank">jalammar.github.io/...attention</a></td>
+                <td>Mecanismo de atenção</td>
+              </tr>
+              <tr>
+                <td><strong>Transformer Explainer</strong></td>
+                <td><a href="https://poloclub.github.io/transformer-explainer/" target="_blank">poloclub.github.io/transformer-explainer</a></td>
+                <td>Transformer interativo</td>
+              </tr>
+              <tr>
+                <td><strong>CNN Explainer</strong></td>
+                <td><a href="https://poloclub.github.io/cnn-explainer/" target="_blank">poloclub.github.io/cnn-explainer</a></td>
+                <td>Redes neurais visual</td>
+              </tr>
+              <tr>
+                <td><strong>TensorFlow Playground</strong></td>
+                <td><a href="https://playground.tensorflow.org" target="_blank">playground.tensorflow.org</a></td>
+                <td>Redes neurais básicas</td>
+              </tr>
+              <tr>
+                <td><strong>3Blue1Brown Neural Networks</strong></td>
+                <td><a href="https://www.3blue1brown.com/topics/neural-networks" target="_blank">3blue1brown.com/topics/neural-networks</a></td>
+                <td>Vídeos educativos</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- A.5 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção A.5</span>
+        <h2>Exercícios Práticos Sugeridos</h2>
+
+        <div class="exercise">
+          <div class="exercise-title">Exercício 1 &mdash; Token Explorer (Módulo 2)</div>
+          <ol>
+            <li>Abra o <a href="https://tiktokenizer.vercel.app" target="_blank">Tiktokenizer</a></li>
+            <li>Compare a tokenização de: código Python, texto em português, JSON, Markdown</li>
+            <li>Calcule o custo de enviar um arquivo de 500 linhas ao Claude</li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">Exercício 2 &mdash; Context Window Challenge (Módulo 3)</div>
+          <ol>
+            <li>Escolha um projeto com pelo menos 50 arquivos</li>
+            <li>Conte o total de tokens do projeto (use tiktoken)</li>
+            <li>Calcule que porcentagem cabe na janela de 200K do Claude</li>
+            <li>Decida quais arquivos priorizaria para um bug fix</li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">Exercício 3 &mdash; Prompt Engineering Dojo (Módulo 5)</div>
+          <ol>
+            <li>Escolha uma tarefa de codificação</li>
+            <li>Escreva um prompt "ingênuo" (sem técnicas)</li>
+            <li>Aplique cada técnica: role prompting, CoT, few-shot, structured output</li>
+            <li>Compare os resultados de cada versão</li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">Exercício 4 &mdash; Spec-Driven Development (Módulo 6)</div>
+          <ol>
+            <li>Escolha uma feature para implementar</li>
+            <li>Escreva a spec completa seguindo o template do Módulo 6</li>
+            <li>Entregue a spec ao Claude Code</li>
+            <li>Compare o resultado com o que você esperava</li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">Exercício 5 &mdash; CLAUDE.md Workshop (Módulo 8)</div>
+          <ol>
+            <li>Analise um projeto existente</li>
+            <li>Escreva um CLAUDE.md completo</li>
+            <li>Teste fazendo tarefas com e sem o CLAUDE.md</li>
+            <li>Observe a diferença na qualidade das respostas</li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">Exercício 6 &mdash; MCP Server (Módulo 12)</div>
+          <ol>
+            <li>Configure um MCP server de GitHub no Claude Code</li>
+            <li>Use Claude Code para analisar issues do repositório</li>
+            <li>Peça para criar uma issue a partir de um bug encontrado</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="modulo-11.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 13 &mdash; Agentes Autônomos</span>
+        </a>
+        <a href="referencias.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Apêndice B: Referências</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

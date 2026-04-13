@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 01 — Como uma LLM Funciona | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item active"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 01</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header fade-in">
+        <div class="module-number">01</div>
+        <h1>Fundamentos: Como uma LLM Funciona</h1>
+        <p class="module-desc">Arquitetura Transformer, mecanismo de atenção, treinamento (pre-training, SFT, RLHF) e inferência autorregressiva.</p>
+      </div>
+
+      <!-- 1.1 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 1.1</span>
+        <h2>O que é uma LLM (Large Language Model)?</h2>
+
+        <p>Um <strong>Large Language Model</strong> (Modelo de Linguagem de Grande Escala) é um sistema de inteligência artificial treinado em vastas quantidades de texto para compreender e gerar linguagem natural. Na sua essência, uma LLM é uma função matemática massiva que, dado um texto de entrada, calcula a probabilidade de qual deveria ser a próxima palavra (ou, mais precisamente, o próximo <strong>token</strong>).</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia prática</div>
+          <p>Imagine o auto-completar do seu celular, mas multiplicado por bilhões de vezes em capacidade. Seu celular prevê a próxima palavra com base em padrões simples. Uma LLM faz o mesmo, mas com uma compreensão profunda de gramática, lógica, código, matemática e raciocínio — tudo emergindo de padrões estatísticos aprendidos em trilhões de palavras.</p>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência fundamental</div>
+            <p>Brown, T. et al. (2020). <em>"Language Models are Few-Shot Learners"</em>. OpenAI. arXiv:2005.14165. Disponível em: <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">https://arxiv.org/abs/2005.14165</a> — Este paper introduziu o GPT-3 e demonstrou que modelos de linguagem suficientemente grandes podem realizar tarefas sem treinamento específico, apenas com exemplos no prompt.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1.2 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 1.2</span>
+        <h2>A Revolução Transformer</h2>
+
+        <p>Tudo começa em 2017, com um paper que mudou a história da IA:</p>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Paper fundacional</div>
+            <p><strong>"Attention Is All You Need"</strong> — Vaswani, A. et al. (2017). Google Brain. arXiv:1706.03762. Disponível em: <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">https://arxiv.org/abs/1706.03762</a></p>
+          </div>
+        </div>
+
+        <p>Antes dos Transformers, os modelos de linguagem usavam <strong>Redes Neurais Recorrentes (RNNs)</strong> e <strong>LSTMs</strong> (Long Short-Term Memory). Essas arquiteturas processavam texto sequencialmente — palavra por palavra, da esquerda para a direita. Isso criava dois problemas críticos:</p>
+
+        <ol>
+          <li><strong>Gargalo sequencial:</strong> Não era possível paralelizar o processamento. Cada palavra dependia do resultado da anterior.</li>
+          <li><strong>Perda de contexto distante:</strong> Informações do início de um texto longo se "diluíam" ao chegar ao final (o problema do <em>vanishing gradient</em>).</li>
+        </ol>
+
+        <p>A arquitetura <strong>Transformer</strong> resolveu ambos os problemas com um mecanismo revolucionário: a <strong>Atenção (Attention)</strong>.</p>
+
+        <!-- 1.2.1 -->
+        <h3>1.2.1 O Mecanismo de Atenção (Self-Attention)</h3>
+
+        <p>O mecanismo de auto-atenção permite que cada palavra no texto "olhe" simultaneamente para todas as outras palavras, calculando a relevância de cada uma para o contexto atual.</p>
+
+        <h4>Como funciona, passo a passo:</h4>
+
+        <ol>
+          <li><strong>Representação vetorial:</strong> Cada token de entrada é convertido em um vetor numérico (embedding) de alta dimensionalidade (ex: 768 ou 1024 dimensões).</li>
+          <li><strong>Três projeções (Q, K, V):</strong> Para cada token, o modelo cria três vetores diferentes:
+            <ul>
+              <li><strong>Query (Q):</strong> "O que estou procurando?"</li>
+              <li><strong>Key (K):</strong> "O que tenho a oferecer?"</li>
+              <li><strong>Value (V):</strong> "Qual é minha informação?"</li>
+            </ul>
+          </li>
+          <li><strong>Cálculo de atenção:</strong> O modelo calcula o produto escalar entre o Query de um token e as Keys de todos os outros tokens. Isso produz um "score de atenção" — quanto cada token é relevante para o token atual.</li>
+          <li><strong>Softmax:</strong> Os scores são normalizados via função softmax para se tornarem probabilidades (somam 1).</li>
+          <li><strong>Combinação ponderada:</strong> Os Values são multiplicados pelos scores de atenção e somados, produzindo uma representação rica que incorpora informação de todo o contexto.</li>
+        </ol>
+
+        <div class="formula">
+          Attention(Q, K, V) = softmax(QK<sup>T</sup> / &radic;d<sub>k</sub>) &times; V
+        </div>
+
+        <p>Onde <code>d_k</code> é a dimensão dos vetores Key (usado para estabilizar os gradientes).</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia prática</div>
+          <p>Imagine que você está em uma sala de reunião (o texto). Cada pessoa (token) quer entender o contexto da discussão. Em vez de ouvir apenas a pessoa ao lado (como RNNs fazem), cada pessoa pode olhar para TODAS as outras simultaneamente e decidir quem é mais relevante para o que ela precisa entender naquele momento. O gerente de projeto presta mais atenção ao desenvolvedor quando se fala de código, mas mais atenção ao designer quando se fala de UI.</p>
+        </div>
+
+        <!-- 1.2.2 -->
+        <h3>1.2.2 Multi-Head Attention</h3>
+
+        <p>Em vez de calcular a atenção uma única vez, os Transformers usam <strong>múltiplas "cabeças" de atenção</strong> em paralelo. Cada cabeça aprende a prestar atenção a aspectos diferentes:</p>
+
+        <ul>
+          <li>Uma cabeça pode focar em relações sintáticas (sujeito-verbo)</li>
+          <li>Outra em relações semânticas (sinônimos, antônimos)</li>
+          <li>Outra em relações posicionais (proximidade no texto)</li>
+          <li>Outra em relações de longo alcance (referências a parágrafos anteriores)</li>
+        </ul>
+
+        <p>Modelos modernos como o Claude usam dezenas a centenas de cabeças de atenção.</p>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Clark, K. et al. (2019). <em>"What Does BERT Look At? An Analysis of BERT's Attention"</em>. Stanford NLP. arXiv:1906.04341. Disponível em: <a href="https://arxiv.org/abs/1906.04341" target="_blank" rel="noopener">https://arxiv.org/abs/1906.04341</a> — Análise detalhada de como diferentes cabeças de atenção se especializam.</p>
+          </div>
+        </div>
+
+        <!-- 1.2.3 -->
+        <h3>1.2.3 Arquitetura Completa do Transformer</h3>
+
+        <p>Um Transformer completo consiste em:</p>
+
+        <div class="v-pipeline">
+          <div class="v-pipeline-step active">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">ENTRADA (texto)</div>
+              <div class="v-pipeline-card-desc">Texto bruto fornecido ao modelo</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Tokenização</div>
+              <div class="v-pipeline-card-desc">Texto convertido em sequência de tokens numéricos</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Embedding + Codificação Posicional</div>
+              <div class="v-pipeline-card-desc">Tokens mapeados para vetores de alta dimensionalidade com informação de posição</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Bloco Transformer &times; N camadas</div>
+              <div class="v-pipeline-card-desc">Blocos empilhados que processam as representações</div>
+              <div class="v-pipeline-card-sub">Multi-Head Self-Attention &rarr; Add &amp; Normalize &rarr; Feed-Forward Network (FFN) &rarr; Add &amp; Normalize</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Camada de Saída</div>
+              <div class="v-pipeline-card-desc">Projeção para o vocabulário completo do modelo</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+              <div class="v-pipeline-connector"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">Softmax</div>
+              <div class="v-pipeline-card-desc">Distribuição de probabilidade sobre todos os tokens possíveis</div>
+            </div>
+          </div>
+          <div class="v-pipeline-step active">
+            <div class="v-pipeline-line">
+              <div class="v-pipeline-dot"></div>
+            </div>
+            <div class="v-pipeline-card">
+              <div class="v-pipeline-card-title">PRÓXIMO TOKEN</div>
+              <div class="v-pipeline-card-desc">Token selecionado da distribuição de probabilidade</div>
+            </div>
+          </div>
+        </div>
+
+        <h4>Componentes-chave:</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Componente</th>
+                <th>Função</th>
+                <th>Analogia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Embedding</strong></td>
+                <td>Converte tokens em vetores numéricos</td>
+                <td>Traduzir palavras para coordenadas em um "mapa de significados"</td>
+              </tr>
+              <tr>
+                <td><strong>Codificação Posicional</strong></td>
+                <td>Informa a posição de cada token na sequência</td>
+                <td>Numerar as páginas de um livro</td>
+              </tr>
+              <tr>
+                <td><strong>Self-Attention</strong></td>
+                <td>Permite que tokens se "olhem" mutuamente</td>
+                <td>Reunião onde todos podem falar com todos</td>
+              </tr>
+              <tr>
+                <td><strong>Feed-Forward Network</strong></td>
+                <td>Processa cada posição independentemente</td>
+                <td>Cada pessoa reflete individualmente após a reunião</td>
+              </tr>
+              <tr>
+                <td><strong>Conexão Residual</strong></td>
+                <td>Preserva informação original somando-a ao resultado</td>
+                <td>Manter suas anotações originais além das novas</td>
+              </tr>
+              <tr>
+                <td><strong>Layer Normalization</strong></td>
+                <td>Estabiliza o treinamento</td>
+                <td>Calibrar instrumentos entre medições</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 1.3 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 1.3</span>
+        <h2>Do Transformer às LLMs Modernas</h2>
+
+        <p>As LLMs que usamos hoje (Claude, GPT-4, etc.) são variações do Transformer original, especificamente usando a metade <strong>Decoder</strong> da arquitetura (chamados de modelos "decoder-only" ou "autoregressivos").</p>
+
+        <!-- 1.3.1 -->
+        <h3>1.3.1 O Processo de Treinamento</h3>
+
+        <p>O treinamento de uma LLM acontece em fases:</p>
+
+        <h4>Fase 1 — Pré-treinamento (Pre-training)</h4>
+        <ul>
+          <li>O modelo lê trilhões de tokens de texto (livros, artigos, código, websites)</li>
+          <li>Tarefa: prever o próximo token dada a sequência anterior</li>
+          <li>Escala: meses de processamento em milhares de GPUs</li>
+          <li>Custo: dezenas a centenas de milhões de dólares</li>
+          <li>Resultado: um modelo com conhecimento geral amplo, mas sem "personalidade" ou alinhamento</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Kaplan, J. et al. (2020). <em>"Scaling Laws for Neural Language Models"</em>. Johns Hopkins/OpenAI. arXiv:2001.08361. Disponível em: <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">https://arxiv.org/abs/2001.08361</a> — Demonstra como performance escala previsivelmente com dados, parâmetros e computação.</p>
+          </div>
+        </div>
+
+        <h4>Fase 2 — Fine-tuning Supervisionado (SFT)</h4>
+        <ul>
+          <li>Humanos criam exemplos de diálogos ideais (perguntas e respostas desejadas)</li>
+          <li>O modelo aprende a seguir instruções e a formatar respostas adequadamente</li>
+          <li>Escala: milhares a milhões de exemplos curados</li>
+        </ul>
+
+        <h4>Fase 3 — RLHF (Reinforcement Learning from Human Feedback)</h4>
+        <ul>
+          <li>Humanos avaliam e ranqueiam respostas do modelo</li>
+          <li>Um modelo de recompensa aprende as preferências humanas</li>
+          <li>O modelo é otimizado para gerar respostas que os humanos preferem</li>
+          <li>Resultado: respostas mais seguras, úteis e alinhadas com valores humanos</li>
+        </ul>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Ouyang, L. et al. (2022). <em>"Training language models to follow instructions with human feedback"</em>. OpenAI. arXiv:2203.02155. Disponível em: <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">https://arxiv.org/abs/2203.02155</a> — Paper fundacional sobre RLHF que introduziu o InstructGPT.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência adicional</div>
+            <p>Bai, Y. et al. (2022). <em>"Constitutional AI: Harmlessness from AI Feedback"</em>. Anthropic. arXiv:2212.08073. Disponível em: <a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">https://arxiv.org/abs/2212.08073</a> — Abordagem da Anthropic (RLAIF) para treinamento constitucional, onde a IA ajuda a si mesma a se alinhar.</p>
+          </div>
+        </div>
+
+        <!-- 1.3.2 -->
+        <h3>1.3.2 Inferência: Como o Modelo Gera Texto</h3>
+
+        <p>Quando você faz uma pergunta a uma LLM, o processo de <strong>inferência</strong> ocorre assim:</p>
+
+        <ol>
+          <li>Seu texto é <strong>tokenizado</strong> (convertido em números)</li>
+          <li>Os tokens passam por todas as camadas do Transformer</li>
+          <li>O modelo produz uma <strong>distribuição de probabilidade</strong> sobre todo o vocabulário</li>
+          <li>Um token é <strong>selecionado</strong> dessa distribuição (amostragem)</li>
+          <li>O token selecionado é <strong>adicionado à sequência</strong></li>
+          <li>O processo <strong>repete</strong> do passo 2 com a sequência estendida</li>
+          <li>Continua até gerar um token de parada ou atingir o limite</li>
+        </ol>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;&#65039;</span>
+          <div class="callout-content">
+            <div class="callout-title">Conceito crítico</div>
+            <p><strong>A geração é autorregressiva</strong> — o modelo gera UM token por vez, e cada novo token depende de todos os anteriores. Isso é fundamental para entender por que a velocidade de resposta de LLMs é proporcional ao tamanho da saída.</p>
+          </div>
+        </div>
+
+        <h4>Parâmetros de amostragem importantes:</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Parâmetro</th>
+                <th>O que controla</th>
+                <th>Valor baixo</th>
+                <th>Valor alto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Temperature</strong></td>
+                <td>Aleatoriedade da seleção</td>
+                <td>Mais determinístico, previsível</td>
+                <td>Mais criativo, imprevisível</td>
+              </tr>
+              <tr>
+                <td><strong>Top-p (Nucleus)</strong></td>
+                <td>Porcentagem do vocabulário considerada</td>
+                <td>Menos opções, mais focado</td>
+                <td>Mais opções, mais diverso</td>
+              </tr>
+              <tr>
+                <td><strong>Top-k</strong></td>
+                <td>Número fixo de candidatos</td>
+                <td>Poucos candidatos</td>
+                <td>Muitos candidatos</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+            <p>Holtzman, A. et al. (2020). <em>"The Curious Case of Neural Text Degeneration"</em>. University of Washington. arXiv:1904.09751. Disponível em: <a href="https://arxiv.org/abs/1904.09751" target="_blank" rel="noopener">https://arxiv.org/abs/1904.09751</a> — Paper que introduziu Nucleus Sampling (top-p).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1.4 -->
+      <section class="fade-in">
+        <span class="section-badge">Seção 1.4</span>
+        <h2>Por que isso importa para Programação com IA?</h2>
+
+        <p>Entender como LLMs funcionam não é apenas curiosidade acadêmica — é conhecimento <strong>operacional</strong> para quem programa com IA:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Conceito</th>
+                <th>Implicação Prática</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LLMs preveem o próximo token</td>
+                <td>A qualidade da sua entrada determina diretamente a qualidade da saída</td>
+              </tr>
+              <tr>
+                <td>Atenção tem alcance limitado</td>
+                <td>Textos muito longos podem fazer o modelo "esquecer" o início</td>
+              </tr>
+              <tr>
+                <td>Geração é autorregressiva</td>
+                <td>Respostas longas são mais lentas e mais caras</td>
+              </tr>
+              <tr>
+                <td>Treinamento é estático</td>
+                <td>O modelo não sabe nada posterior à data de corte do treinamento</td>
+              </tr>
+              <tr>
+                <td>Alucinações são intrínsecas</td>
+                <td>O modelo gera texto plausível, não necessariamente verdadeiro</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 1.5 -->
+      <section class="fade-in" id="1.5">
+        <span class="section-badge">Seção 1.5</span>
+        <h2>Alucinações: Por Que Acontecem</h2>
+
+        <p>Se você já usou uma LLM para programar, certamente já se deparou com ela afirmando, com total confiança, que existe uma função <code>pandas.read_excel_streaming()</code> ou que o parâmetro <code>timeout</code> de um método aceita uma string ISO-8601. Nenhuma das duas coisas é verdade — o modelo <strong>alucinou</strong>.</p>
+
+        <p>Uma <strong>alucinação</strong> é a geração de informação que parece plausível, bem estruturada e coerente, mas que é factualmente incorreta, inventada ou inconsistente com a realidade. No contexto de programação, alucinações são especialmente perigosas porque o código alucinado costuma <em>parecer</em> certo — tem a assinatura típica da biblioteca, segue o estilo idiomático da linguagem e compila limpo em muitos casos.</p>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">&#9888;&#65039;</span>
+          <div class="callout-content">
+            <div class="callout-title">Alucinações NÃO são bugs</div>
+            <p>É tentador tratar alucinações como defeitos que serão corrigidos na próxima versão do modelo. Essa visão é <strong>incorreta</strong>. Alucinações são uma <strong>propriedade fundamental</strong> de como LLMs funcionam — são uma consequência direta do objetivo de treinamento, não um erro de implementação. Modelos mais novos alucinam menos, mas nenhum modelo estatístico de próximo-token pode eliminar alucinações completamente.</p>
+          </div>
+        </div>
+
+        <h3>Por que alucinações são intrínsecas</h3>
+
+        <p>Lembre-se do que a LLM realmente faz (Seção 1.3): ela calcula <code>P(próximo token | tokens anteriores)</code> e amostra dessa distribuição. Ela <strong>não</strong> consulta um banco de fatos, <strong>não</strong> possui um mecanismo de "não sei", e <strong>não</strong> distingue entre "padrão estatístico plausível" e "fato verificado".</p>
+
+        <div class="analogy">
+          <div class="analogy-title">Analogia</div>
+          <p>Imagine um estudante extremamente bem-lido que leu milhões de livros de programação, mas que nunca pode consultar a documentação durante a prova e é obrigado a <em>sempre</em> responder com firmeza, mesmo quando não tem certeza. Quando perguntado sobre uma função que ele não lembra, ele vai "preencher" com algo que <em>soa</em> como teria que soar uma função real daquela biblioteca — afinal, seu cérebro está otimizado para produzir texto plausível, não texto verdadeiro.</p>
+        </div>
+
+        <h3>A raiz do problema: incompatibilidade de objetivos</h3>
+
+        <p>Há uma assimetria crítica entre <strong>o que treinamos</strong> e <strong>o que queremos</strong>:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Objetivo do treinamento</th>
+                <th>O que desejamos ao usar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Maximizar a probabilidade do próximo token</td>
+                <td>Obter informação factualmente correta</td>
+              </tr>
+              <tr>
+                <td>Produzir texto que <em>parece</em> provável dado o corpus</td>
+                <td>Produzir texto que <em>é</em> verdadeiro</td>
+              </tr>
+              <tr>
+                <td>Sempre gerar uma continuação</td>
+                <td>Reconhecer limites do conhecimento</td>
+              </tr>
+              <tr>
+                <td>Otimizar fluência e coerência</td>
+                <td>Otimizar precisão verificável</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Essa incompatibilidade é a origem estrutural das alucinações: o modelo foi otimizado para uma métrica (perplexidade, probabilidade do próximo token) que não é <em>exatamente</em> aquilo que medimos quando avaliamos se a resposta está "certa". Um texto pode ter altíssima probabilidade sob o modelo e ainda assim conter fatos falsos.</p>
+
+        <h3>Tipos de alucinação no contexto de programação</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Descrição</th>
+                <th>Exemplo típico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>API fantasma</strong></td>
+                <td>Função, método ou classe inventada que nunca existiu na biblioteca.</td>
+                <td><code>requests.get_json(url)</code> (não existe — o correto é <code>requests.get(url).json()</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>Import errado</strong></td>
+                <td>Importa de um módulo real, mas o símbolo não pertence àquele módulo.</td>
+                <td><code>from pandas import json_normalize</code> em versões antigas, ou <code>from typing import Self</code> em Python &lt; 3.11.</td>
+              </tr>
+              <tr>
+                <td><strong>Alucinação sintática</strong></td>
+                <td>Código que não compila / não parseia; mistura regras sintáticas inválidas.</td>
+                <td>Usar <code>match</code> com cláusula <code>default</code> em Python (o correto é <code>case _</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>Alucinação semântica</strong></td>
+                <td>Código compila e roda, mas faz algo diferente do pedido. Mais perigoso.</td>
+                <td>Implementar busca "binária" que na verdade é linear; usar <code>==</code> para comparar floats sem tolerância.</td>
+              </tr>
+              <tr>
+                <td><strong>API desatualizada</strong></td>
+                <td>Referência a métodos que existiam na versão do <em>training cutoff</em>, mas que foram depreciados ou removidos.</td>
+                <td><code>pd.DataFrame.append()</code> (removido no pandas 2.0 — usar <code>pd.concat</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>Híbrido (cross-language)</strong></td>
+                <td>Mistura a sintaxe de duas linguagens ou frameworks parecidos.</td>
+                <td>Usar <code>console.log</code> em Python, ou <code>f&quot;...&quot;</code> template strings em JavaScript com sintaxe Python.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Alucinação semântica é a mais perigosa</div>
+            <p>APIs fantasma e erros de sintaxe são detectados imediatamente (o interpretador/compilador reclama). Já alucinações semânticas passam pelos linters, compiladores e até pelos testes superficiais — só aparecem quando o código vai para produção ou sob cargas que você não testou. Por isso, <strong>verificação ativa</strong> (Módulo 5) é obrigatória.</p>
+          </div>
+        </div>
+
+        <h3>E a mitigação?</h3>
+
+        <p>Entender a natureza das alucinações é o primeiro passo. O <em>combate</em> a elas envolve um conjunto de técnicas práticas — grounding, verification loops, RAG, extended thinking, human-in-the-loop — que são exatamente o tema da Seção 5.6 deste treinamento.</p>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">&#128073;</span>
+          <div class="callout-content">
+            <div class="callout-title">Continua em</div>
+            <p>Veja <a href="modulo-05.html#5.6">Módulo 5 &mdash; Seção 5.6: Alucinações: Como Mitigar na Programação</a> para um guia prático e detalhado de técnicas de mitigação, checklist anti-alucinação e ferramentas recomendadas.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <p>Ji, Z. et al. (2023). <em>"Survey of Hallucination in Natural Language Generation"</em>. ACM Computing Surveys. arXiv:2202.03629. Disponível em: <a href="https://arxiv.org/abs/2202.03629" target="_blank" rel="noopener">https://arxiv.org/abs/2202.03629</a> — Taxonomia canônica de alucinações em NLG, incluindo alucinações intrínsecas vs. extrínsecas e métricas de avaliação.</p>
+            <p>Xu, Z., Jain, S., &amp; Kankanhalli, M. (2024). <em>"Hallucination is Inevitable: An Innate Limitation of Large Language Models"</em>. arXiv:2401.11817. Disponível em: <a href="https://arxiv.org/abs/2401.11817" target="_blank" rel="noopener">https://arxiv.org/abs/2401.11817</a> — Prova teórica de que, para qualquer LLM computável, existem funções de verdade que ele é incapaz de aprender — portanto alucinações são matematicamente inevitáveis.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="index.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Início</span>
+        </a>
+        <a href="modulo-02.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 02 — Tokens</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

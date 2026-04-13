@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apêndice C — Glossário — Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Apêndice C</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- Module Header -->
+      <div class="module-header">
+        <div class="module-number">C</div>
+        <h1>Glossário</h1>
+        <p class="module-desc">30+ termos técnicos definidos: de "Agent" a "Zero-Shot". Referência rápida para todos os conceitos do treinamento.</p>
+      </div>
+
+      <section class="fade-in">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Termo</th>
+                <th>Definição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Agent</strong></td>
+                <td>Sistema de IA que planeja e executa ações autonomamente</td>
+              </tr>
+              <tr>
+                <td><strong>Attention</strong></td>
+                <td>Mecanismo que permite tokens "olharem" uns para os outros</td>
+              </tr>
+              <tr>
+                <td><strong>BPE</strong></td>
+                <td>Byte Pair Encoding &mdash; algoritmo de tokenização</td>
+              </tr>
+              <tr>
+                <td><strong>Chain-of-Thought</strong></td>
+                <td>Técnica de prompt que pede raciocínio passo a passo</td>
+              </tr>
+              <tr>
+                <td><strong>Context Window</strong></td>
+                <td>Limite máximo de tokens processáveis por vez</td>
+              </tr>
+              <tr>
+                <td><strong>Embedding</strong></td>
+                <td>Representação vetorial de tokens em espaço de alta dimensão</td>
+              </tr>
+              <tr>
+                <td><strong>Few-Shot</strong></td>
+                <td>Prompting com exemplos</td>
+              </tr>
+              <tr>
+                <td><strong>Fine-tuning</strong></td>
+                <td>Treinamento adicional especializado de um modelo</td>
+              </tr>
+              <tr>
+                <td><strong>Hallucination</strong></td>
+                <td>Quando o modelo gera informação plausível mas falsa</td>
+              </tr>
+              <tr>
+                <td><strong>Hook</strong></td>
+                <td>Comando que executa automaticamente em resposta a um evento</td>
+              </tr>
+              <tr>
+                <td><strong>Inference</strong></td>
+                <td>Processo de gerar output a partir de input</td>
+              </tr>
+              <tr>
+                <td><strong>LLM</strong></td>
+                <td>Large Language Model</td>
+              </tr>
+              <tr>
+                <td><strong>MCP</strong></td>
+                <td>Model Context Protocol &mdash; protocolo aberto para integrações</td>
+              </tr>
+              <tr>
+                <td><strong>Multi-Head Attention</strong></td>
+                <td>Múltiplas camadas de atenção em paralelo</td>
+              </tr>
+              <tr>
+                <td><strong>Pre-training</strong></td>
+                <td>Treinamento inicial em corpus massivo de texto</td>
+              </tr>
+              <tr>
+                <td><strong>Prompt</strong></td>
+                <td>Texto de entrada enviado ao modelo</td>
+              </tr>
+              <tr>
+                <td><strong>RAG</strong></td>
+                <td>Retrieval-Augmented Generation &mdash; busca + geração</td>
+              </tr>
+              <tr>
+                <td><strong>RLHF</strong></td>
+                <td>Reinforcement Learning from Human Feedback</td>
+              </tr>
+              <tr>
+                <td><strong>Rules</strong></td>
+                <td>Instruções persistentes que configuram o comportamento da IA</td>
+              </tr>
+              <tr>
+                <td><strong>Skill</strong></td>
+                <td>Comando especializado que encapsula um workflow</td>
+              </tr>
+              <tr>
+                <td><strong>Spec</strong></td>
+                <td>Especificação detalhada de uma tarefa para a IA</td>
+              </tr>
+              <tr>
+                <td><strong>System Prompt</strong></td>
+                <td>Instrução "invisível" que define comportamento base</td>
+              </tr>
+              <tr>
+                <td><strong>Temperature</strong></td>
+                <td>Parâmetro que controla aleatoriedade da geração</td>
+              </tr>
+              <tr>
+                <td><strong>Token</strong></td>
+                <td>Unidade atômica de texto processada por LLMs</td>
+              </tr>
+              <tr>
+                <td><strong>Tokenizer</strong></td>
+                <td>Algoritmo que converte texto em tokens</td>
+              </tr>
+              <tr>
+                <td><strong>Tool</strong></td>
+                <td>Capacidade que um agente pode invocar (ler arquivo, buscar, etc.)</td>
+              </tr>
+              <tr>
+                <td><strong>Transformer</strong></td>
+                <td>Arquitetura de rede neural baseada em atenção</td>
+              </tr>
+              <tr>
+                <td><strong>Worktree</strong></td>
+                <td>Cópia isolada do repositório para trabalho seguro</td>
+              </tr>
+              <tr>
+                <td><strong>Zero-Shot</strong></td>
+                <td>Prompting sem exemplos</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Page Navigation -->
+      <nav class="page-nav">
+        <a href="referencias.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Apêndice B: Referências</span>
+        </a>
+        <a href="index.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Início</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>
