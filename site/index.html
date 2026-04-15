@@ -22,6 +22,10 @@
       </a>
     </div>
     <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
       <div class="nav-section-title">Fundamentos</div>
       <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
       <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
@@ -42,6 +46,15 @@
       <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
       <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
       <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
 
       <div class="nav-section-title">Apêndices</div>
       <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
@@ -64,10 +77,10 @@
     <!-- Hero -->
     <section class="hero">
       <div class="hero-content">
-        <div class="hero-badge"><span class="dot"></span> Treinamento Interativo 2026</div>
+        <div class="hero-badge"><span class="dot"></span> Treinamento Interativo 2026 &middot; v2.0 Edição Profunda</div>
         <h1>Programação com<br>Agentes de IA</h1>
-        <p class="subtitle">Domine os fundamentos de LLMs, tokens, engenharia de contexto e as ferramentas que estão transformando o desenvolvimento de software.</p>
-        <p style="color: var(--color-text-muted); font-size: var(--font-size-sm);">13 módulos &middot; Exercícios práticos &middot; 60+ referências acadêmicas</p>
+        <p class="subtitle">Domine os fundamentos de LLMs, tokens, engenharia de contexto, reasoning models e as ferramentas que estão transformando o desenvolvimento de software.</p>
+        <p style="color: var(--color-text-muted); font-size: var(--font-size-sm);">17 módulos + 2 opcionais &middot; Trilha avançada (Reasoning, Alinhamento, Avaliação, RAG) &middot; 100+ referências acadêmicas</p>
       </div>
     </section>
 
@@ -119,7 +132,21 @@
             <span class="dep-level-label" style="color: #f87171;">Nível 6</span>
             <a href="modulo-11.html" class="dep-node" style="border-color: rgba(248,113,113,0.4);">13 &mdash; Agentes Autônomos</a>
           </div>
+          <div class="dep-connector"></div>
+          <div class="dep-level">
+            <span class="dep-level-label" style="color: #ec4899;">Nível 7 &middot; Trilha Avançada (v2.0)</span>
+            <a href="modulo-reasoning.html" class="dep-node" style="border-color: rgba(236,72,153,0.4);">14 &mdash; Deep Thinking</a>
+            <a href="modulo-alinhamento.html" class="dep-node" style="border-color: rgba(236,72,153,0.4);">15 &mdash; Alinhamento</a>
+            <a href="modulo-avaliacao.html" class="dep-node" style="border-color: rgba(236,72,153,0.4);">16 &mdash; Avaliação</a>
+            <a href="modulo-rag.html" class="dep-node" style="border-color: rgba(236,72,153,0.4);">17 &mdash; Embeddings &amp; RAG</a>
+          </div>
         </div>
+
+        <p style="margin-top: 1.5rem; color: var(--color-text-muted); font-size: var(--font-size-sm);">
+          <strong>Pré-requisitos opcionais:</strong>
+          <a href="modulo-00.html">Módulo 00 — História da IA</a> &middot;
+          <a href="modulo-matematica.html">Módulo M — Matemática Essencial</a>
+        </p>
       </section>
 
       <hr>
@@ -285,6 +312,107 @@
             </div>
           </a>
 
+          <a href="modulo-reasoning.html" class="module-card" data-level="7">
+            <span class="card-number">14</span>
+            <div class="card-level">Nível 7 &mdash; Trilha Avançada</div>
+            <div class="card-title">Deep Thinking e Reasoning Models</div>
+            <div class="card-desc">Test-time compute, RLVR, chain-of-thought emergente. Como o1, Claude extended thinking, DeepSeek-R1 e Gemini 2.5 mudam a economia da IA.</div>
+            <div class="card-tags">
+              <span class="tag">o1 / o3</span>
+              <span class="tag">DeepSeek-R1</span>
+              <span class="tag">Extended Thinking</span>
+            </div>
+          </a>
+
+          <a href="modulo-alinhamento.html" class="module-card" data-level="7">
+            <span class="card-number">15</span>
+            <div class="card-level">Nível 7 &mdash; Trilha Avançada</div>
+            <div class="card-title">Alinhamento e Segurança</div>
+            <div class="card-desc">RLHF, Constitutional AI, DPO, jailbreaks, prompt injection. Por que existem guardrails e como falham em produção.</div>
+            <div class="card-tags">
+              <span class="tag">RLHF</span>
+              <span class="tag">Constitutional AI</span>
+              <span class="tag">Prompt Injection</span>
+            </div>
+          </a>
+
+          <a href="modulo-avaliacao.html" class="module-card" data-level="7">
+            <span class="card-number">16</span>
+            <div class="card-level">Nível 7 &mdash; Trilha Avançada</div>
+            <div class="card-title">Avaliação e Benchmarks</div>
+            <div class="card-desc">MMLU, SWE-Bench, RULER, ARC-AGI, HLE. Como ler leaderboards com ceticismo calibrado e montar sua própria eval.</div>
+            <div class="card-tags">
+              <span class="tag">SWE-Bench</span>
+              <span class="tag">HELM</span>
+              <span class="tag">Evals</span>
+            </div>
+          </a>
+
+          <a href="modulo-rag.html" class="module-card" data-level="7">
+            <span class="card-number">17</span>
+            <div class="card-level">Nível 7 &mdash; Trilha Avançada</div>
+            <div class="card-title">Embeddings, Retrieval e RAG</div>
+            <div class="card-desc">Dense/sparse/hybrid retrieval, re-rankers, GraphRAG, Agentic RAG, Contextual Retrieval. Além do RAG ingênuo.</div>
+            <div class="card-tags">
+              <span class="tag">Embeddings</span>
+              <span class="tag">ColBERT</span>
+              <span class="tag">GraphRAG</span>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Módulos Opcionais -->
+      <section class="fade-in">
+        <h2>Pré-requisitos opcionais</h2>
+        <p>Módulos fundacionais recomendados para quem quer profundidade teórica antes de começar o Módulo 01.</p>
+        <div class="modules-grid">
+          <a href="modulo-00.html" class="module-card" data-level="0">
+            <span class="card-number">00</span>
+            <div class="card-level">Opcional &mdash; Fundação Histórica</div>
+            <div class="card-title">História e Fundamentos de IA</div>
+            <div class="card-desc">Do Perceptron (1958) às LLMs modernas (2026). 70 anos de pesquisa condensados para situar onde estamos e por quê.</div>
+            <div class="card-tags">
+              <span class="tag">Timeline</span>
+              <span class="tag">Perceptron</span>
+              <span class="tag">Backprop</span>
+            </div>
+          </a>
+          <a href="modulo-matematica.html" class="module-card" data-level="0">
+            <span class="card-number">M</span>
+            <div class="card-level">Opcional &mdash; Base Matemática</div>
+            <div class="card-title">Matemática Essencial para LLMs</div>
+            <div class="card-desc">Embeddings, softmax, entropia cruzada, gradiente, quantização. O mínimo operacional para ler papers e não cair em marketing.</div>
+            <div class="card-tags">
+              <span class="tag">Álgebra Linear</span>
+              <span class="tag">Softmax</span>
+              <span class="tag">Perplexidade</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Ferramentas Interativas -->
+      <section class="fade-in">
+        <h2>Ferramentas Interativas</h2>
+        <p>Aplicativos embutidos no treinamento para experimentação hands-on.</p>
+        <div class="modules-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+          <a href="comparador.html" class="module-card" style="border-color: rgba(99,102,241,0.4);">
+            <span class="card-number">&#128202;</span>
+            <div class="card-level">Interativo &middot; v2.0</div>
+            <div class="card-title">Comparador de Modelos &amp; Simulador de Custo</div>
+            <div class="card-desc">Compare 16 modelos de 2026 lado-a-lado com filtros e ordenação. Simule o custo real de uma chamada incluindo thinking tokens.</div>
+            <div class="card-tags">
+              <span class="tag">16 modelos</span>
+              <span class="tag">Thinking cost</span>
+              <span class="tag">Filtrável</span>
+            </div>
+          </a>
         </div>
       </section>
 

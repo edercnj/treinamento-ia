@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 14 — Deep Thinking | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item active"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 14 — Deep Thinking</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">14</div>
+        <h1>Deep Thinking e Reasoning Models</h1>
+        <p class="module-desc">Test-time compute, RLVR, chain-of-thought emergente. Como o1, Claude extended thinking, DeepSeek-R1 e Gemini 2.5 mudam a economia da IA.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Seção 14.1</span>
+        <h2>Por que reasoning models existem</h2>
+<p>Até ~2024, o caminho para melhorar LLMs era <strong>escalar o pré-treinamento</strong>. Mas dados de alta qualidade são finitos, custo marginal explodiu, e <strong>muitas tarefas se beneficiam mais de pensar mais na hora da resposta do que de um modelo maior</strong>.</p>
+        <p>A resposta: <strong>test-time compute scaling</strong> — deixar o modelo pensar mais durante a inferência.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Paper seminal</div>
+<p>Snell, C. et al. (2024). <em>"Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters"</em>. arXiv:2408.03314. <a href="https://arxiv.org/abs/2408.03314" target="_blank" rel="noopener">arxiv.org/abs/2408.03314</a></p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 14.2</span>
+        <h2>Como um reasoning model funciona</h2>
+<p>O modelo gera uma longa <strong>chain-of-thought interna</strong> (às vezes milhares de tokens) antes de produzir a resposta final. Esses <em>thinking tokens</em> são treinados via <strong>reinforcement learning</strong> com recompensas verificáveis.</p>
+        <ol>
+        <li><strong>Base model</strong> — LLM pré-treinada normalmente</li>
+        <li><strong>CoT prompting</strong> — força pensamento passo a passo</li>
+        <li><strong>RLVR (RL from Verifiable Rewards)</strong> — tarefas com resposta checável (matemática, código com testes, lógica). +1 se acerta, 0 se erra.</li>
+        <li><strong>Emergência de comportamentos:</strong> auto-correção, backtracking, verificação, planejamento. <strong>Não foram programados</strong> — emergem do RL.</li>
+        </ol>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Paper obrigatório</div>
+<p>DeepSeek-AI (2025). <em>"DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL"</em>. arXiv:2501.12948. <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">arxiv.org/abs/2501.12948</a> — demonstra que RL puro (sem SFT inicial) já induz reasoning emergente.</p>
+            <p>OpenAI (2024). <em>"Learning to Reason with LLMs"</em> (post técnico do o1). <a href="https://openai.com/index/learning-to-reason-with-llms/" target="_blank" rel="noopener">openai.com</a></p>
+            <p>Kimi Team (2025). <em>"Kimi k1.5: Scaling RL with LLMs"</em>. arXiv:2501.12599</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 14.3</span>
+        <h2>Taxonomia de reasoning models (abril 2026)</h2>
+<table>
+        <thead><tr><th>Modelo</th><th>Tipo</th><th>Visível?</th><th>Controle</th></tr></thead>
+        <tbody>
+        <tr><td>OpenAI o3 / o4-mini</td><td>Nativo, obrigatório</td><td>Sumário</td><td><code>reasoning_effort</code>: low/med/high</td></tr>
+        <tr><td>GPT-5</td><td>Opcional, roteado</td><td>Sumário</td><td>Parâmetro <code>thinking</code></td></tr>
+        <tr><td>Claude Opus/Sonnet 4.6</td><td>Extended thinking opt-in</td><td>Sim</td><td><code>budget_tokens</code></td></tr>
+        <tr><td>Gemini 2.5 Pro</td><td>Thinking integrado</td><td>Sim</td><td><code>thinking_budget</code></td></tr>
+        <tr><td>DeepSeek-R1</td><td>Nativo</td><td>Sim (tag &lt;think&gt;)</td><td>On/off</td></tr>
+        <tr><td>Grok 4</td><td>Nativo</td><td>Parcial</td><td>—</td></tr>
+        </tbody>
+        </table>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 14.4</span>
+        <h2>Quando usar thinking</h2>
+<div class="analogy">
+        <div class="analogy-title">Use reasoning quando</div>
+        <ul>
+        <li>Tarefa é multi-passo e cada passo gera erro composto (matemática, prova, debugging)</li>
+        <li>Resposta errada custa caro (código de produção, análise legal)</li>
+        <li>Você quer o melhor possível e pode pagar 5–20× mais tokens</li>
+        </ul>
+        </div>
+        <div class="analogy">
+        <div class="analogy-title">Não use quando</div>
+        <ul>
+        <li>Tarefa é de recuperação/formatação (extrair JSON, traduzir, resumir)</li>
+        <li>Latência é crítica (chat conversacional, autocomplete)</li>
+        <li>O modelo base já acerta — meça antes de pagar thinking</li>
+        </ul>
+        </div>
+        <p>Evidência: modelos sofrem de <strong>overthinking</strong> em tarefas fáceis. Ver Chen et al. 2024 — <em>"Do NOT Think That Much for 2+3=?"</em>, arXiv:2412.21187.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 14.5</span>
+        <h2>Implicações para programação</h2>
+<ul>
+        <li><strong>Agentes de codificação</strong> (Claude Code, Cursor Agent, Devin) combinam thinking + tool use + loops. O thinking decide <em>o que fazer a seguir</em>.</li>
+        <li><strong>SWE-Bench Verified</strong> saltou de ~20% (2024) para &gt;70% (reasoning + agentes, 2025).</li>
+        <li><strong>Custo real</strong> = input + output + <strong>(thinking × várias chamadas em loop)</strong>. Monitore.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 14.6</span>
+        <h2>Limitações honestas</h2>
+<ul>
+        <li>Ainda alucinam e erram matemática simples ocasionalmente.</li>
+        <li><strong>Faithfulness of CoT:</strong> Turpin et al. 2023 (arXiv:2305.04388) — a CoT mostrada nem sempre reflete o que o modelo "realmente" computou. Anthropic 2025 confirma em modelos novos.</li>
+        <li><strong>Thinking injection</strong> é uma nova superfície de ataque.</li>
+        </ul>
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-11.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 13 — Agentes</span>
+        </a>
+        <a href="modulo-alinhamento.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 15 — Alinhamento</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

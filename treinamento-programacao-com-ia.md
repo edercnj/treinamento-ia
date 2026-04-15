@@ -1,28 +1,45 @@
 # Programação com Agentes de IA: Treinamento Completo
 
-> **Versão:** 1.0 | **Data:** Abril 2026
+> **Versão:** 2.0 (Edição Profunda) | **Data:** Abril 2026
 > **Público-alvo:** Desenvolvedores de software que desejam dominar a programação assistida por IA
 > **Formato de entrega:** Site interativo (gerado a partir deste documento)
+>
+> **Novo na v2.0:** módulos sobre Deep Thinking / Reasoning Models, Alinhamento e Segurança, Avaliação de Modelos, Embeddings e RAG; seções adicionadas sobre Scaling Laws, Mixture of Experts, KV Cache, RoPE e FlashAttention; tabelas de modelos atualizadas com Claude Opus 4.6, GPT-5, o3/o4, Gemini 2.5, Grok 4, Llama 4 e DeepSeek R1.
 
 ---
 
 ## Sumário Geral
 
-- [Árvore de Dependências dos Módulos](#árvore-de-dependências-dos-módulos)
+**Trilha Fundacional (Teoria Profunda)**
+- [Módulo 0 — História e Fundamentos de IA](#módulo-0--história-e-fundamentos-de-ia) *(pré-requisito opcional)*
 - [Módulo 1 — Fundamentos: Como uma LLM Funciona](#módulo-1--fundamentos-como-uma-llm-funciona)
+- [Módulo 1.5 — Matemática Essencial para LLMs](#módulo-15--matemática-essencial-para-llms)
 - [Módulo 2 — Tokens: A Unidade Fundamental da IA](#módulo-2--tokens-a-unidade-fundamental-da-ia)
 - [Módulo 3 — Janela de Contexto](#módulo-3--janela-de-contexto)
+
+**Trilha de Técnicas**
 - [Módulo 4 — Engenharia de Contexto](#módulo-4--engenharia-de-contexto)
 - [Módulo 5 — Prompt Engineering](#módulo-5--prompt-engineering)
 - [Módulo 6 — Spec-Driven Design](#módulo-6--spec-driven-design)
+
+**Trilha de Ferramentas e Ecossistema**
 - [Módulo 7 — Panorama das Ferramentas de Programação com IA](#módulo-7--panorama-das-ferramentas-de-programação-com-ia)
 - [Módulo 8 — Rules e Arquivos de Configuração](#módulo-8--rules-e-arquivos-de-configuração)
 - [Módulo 9 — Skills e Hooks](#módulo-9--skills-e-hooks)
 - [Módulo 10 — MCP (Model Context Protocol)](#módulo-10--mcp-model-context-protocol)
 - [Módulo 11 — Agentes Autônomos e Sistemas Multi-Agentes](#módulo-11--agentes-autônomos-e-sistemas-multi-agentes)
+
+**Trilha Avançada (novos na v2.0)**
+- [Módulo 12 — Deep Thinking e Reasoning Models](#módulo-12--deep-thinking-e-reasoning-models)
+- [Módulo 13 — Alinhamento, Segurança e Red-Teaming](#módulo-13--alinhamento-segurança-e-red-teaming)
+- [Módulo 14 — Avaliação de Modelos e Benchmarks](#módulo-14--avaliação-de-modelos-e-benchmarks)
+- [Módulo 15 — Embeddings, Retrieval e RAG Avançado](#módulo-15--embeddings-retrieval-e-rag-avançado)
+
+**Apêndices**
 - [Apêndice A — Ferramentas Práticas e Simuladores](#apêndice-a--ferramentas-práticas-e-simuladores)
 - [Apêndice B — Referências Bibliográficas Completas](#apêndice-b--referências-bibliográficas-completas)
 - [Apêndice C — Glossário](#apêndice-c--glossário)
+- [Apêndice D — Leitura Recomendada por Módulo](#apêndice-d--leitura-recomendada-por-módulo)
 
 ---
 
@@ -100,9 +117,74 @@ NÍVEL 6 — AGENTES AUTÔNOMOS
 └─────────────────────────────────────────────┘
 ```
 
-**Leitura da árvore:** Cada módulo depende de todos os módulos acima dele. Por exemplo, para entender Engenharia de Contexto (Módulo 4), é necessário primeiro compreender o que são Tokens (Módulo 2) e o que é a Janela de Contexto (Módulo 3). Para entender MCP (Módulo 10), é preciso ter passado por todos os módulos de 1 a 9.
+**Leitura da árvore:** Cada módulo depende de todos os módulos acima dele. Para entender Engenharia de Contexto (Módulo 4), é necessário primeiro compreender Tokens (Módulo 2) e Janela de Contexto (Módulo 3). Para entender MCP (Módulo 10), é preciso ter passado por 1 a 9.
+
+**Trilha avançada (novos na v2.0):** após o Módulo 11, quatro módulos aprofundam temas específicos e podem ser lidos em qualquer ordem entre si:
+
+```
+NÍVEL 7 — TRILHA AVANÇADA (paralela)
+┌──────────────┬──────────────┬──────────────┬──────────────┐
+│ Módulo 12    │ Módulo 13    │ Módulo 14    │ Módulo 15    │
+│ Deep Thinking│ Alinhamento  │ Avaliação    │ Embeddings & │
+│ & Reasoning  │ & Segurança  │ & Benchmarks │ RAG Avançado │
+└──────────────┴──────────────┴──────────────┴──────────────┘
+```
+
+Módulos fundacionais opcionais — **Módulo 0** (História) e **Módulo 1.5** (Matemática) — são pré-requisitos úteis mas dispensáveis para quem já domina os fundamentos.
 
 > **Sugestão para o site:** Renderizar esta árvore como um diagrama SVG interativo onde cada nó é clicável e leva ao respectivo módulo. Usar cores para indicar o nível (azul para fundação, verde para técnicas, laranja para ferramentas, vermelho para agentes). Ferramentas sugeridas para gerar o diagrama: D3.js, Mermaid.js, ou React Flow.
+
+---
+
+## Módulo 0 — História e Fundamentos de IA
+
+> **Pré-requisito opcional.** Este módulo existe para situar as LLMs no contexto de 70 anos de pesquisa em IA. Se você já conhece a história, pode pular direto para o Módulo 1.
+
+### 0.1 Por que estudar a história?
+
+Todo conceito moderno — atenção, embeddings, gradiente descendente, RLHF — é resposta a um problema que pesquisadores anteriores tentaram resolver. Entender *por que* uma ideia venceu ajuda você a reconhecer quando ela deixará de valer.
+
+### 0.2 Linha do tempo condensada
+
+| Ano | Marco | Por que importa |
+|---|---|---|
+| 1943 | McCulloch & Pitts — neurônio artificial | Primeira formalização matemática de um neurônio |
+| 1950 | Turing — *"Computing Machinery and Intelligence"* | Teste de Turing e base filosófica da IA |
+| 1958 | Rosenblatt — **Perceptron** | Primeiro algoritmo de aprendizado supervisionado |
+| 1969 | Minsky & Papert — *Perceptrons* | Prova limitações (XOR) → "AI Winter" |
+| 1986 | Rumelhart, Hinton & Williams — **Backpropagation** | Viabiliza redes multicamadas |
+| 1997 | Hochreiter & Schmidhuber — **LSTM** | Resolve vanishing gradient em sequências |
+| 2006 | Hinton et al. — Deep Belief Networks | "Deep Learning" como termo e programa |
+| 2012 | Krizhevsky et al. — **AlexNet** (ImageNet) | Deep learning domina visão computacional |
+| 2013 | Mikolov et al. — **word2vec** | Embeddings distributionais viáveis |
+| 2014 | Goodfellow et al. — **GANs** | Geração adversarial |
+| 2014 | Bahdanau et al. — **Attention** em tradução | Semente da atenção moderna |
+| 2017 | Vaswani et al. — **Transformer** | Arquitetura base de todas LLMs modernas |
+| 2018 | Devlin et al. — **BERT** / Radford — **GPT-1** | Pré-treinamento em larga escala |
+| 2020 | Brown et al. — **GPT-3** (175B) | Few-shot learning emerge da escala |
+| 2022 | Ouyang et al. — **InstructGPT** / ChatGPT | RLHF e assistente conversacional |
+| 2022 | Bai et al. — **Constitutional AI** | RLAIF, base do Claude |
+| 2023 | GPT-4, Claude 2, Llama 2 | Multimodal, contextos longos, open source |
+| 2024 | o1 (OpenAI), Claude 3.5 | Test-time compute, agentes robustos |
+| 2025 | DeepSeek-R1, GPT-5, Claude 4 | Reasoning models comoditizados; agentes autônomos |
+| 2026 | Claude Opus 4.6, Gemini 2.5, Grok 4 | Contextos de milhões de tokens; thinking integrado |
+
+### 0.3 As três tradições da IA
+
+1. **Simbólica (GOFAI)** — regras explícitas, lógica de primeira ordem. Ex: sistemas especialistas anos 80.
+2. **Conexionista** — redes neurais, aprendizado estatístico. Ex: deep learning moderno.
+3. **Estatística/Bayesiana** — probabilidade, inferência. Ex: filtros de spam, graphical models.
+
+LLMs são conexionistas, mas incorporam elementos estatísticos (amostragem, decodificação) e simbólicos (tool use, programas gerados). A fronteira está borrando.
+
+### 0.4 Referências fundacionais
+
+- Russell, S. & Norvig, P. (2020). *Artificial Intelligence: A Modern Approach* (4ª ed.). Pearson. — Livro-texto canônico.
+- Goodfellow, I., Bengio, Y. & Courville, A. (2016). *Deep Learning*. MIT Press. Disponível gratuitamente em https://www.deeplearningbook.org
+- Turing, A. M. (1950). *"Computing Machinery and Intelligence"*. Mind 59(236). https://doi.org/10.1093/mind/LIX.236.433
+- Rosenblatt, F. (1958). *"The perceptron: A probabilistic model..."*. Psychological Review 65(6).
+- Rumelhart, D., Hinton, G. & Williams, R. (1986). *"Learning representations by back-propagating errors"*. Nature 323. https://www.nature.com/articles/323533a0
+- Schmidhuber, J. (2015). *"Deep Learning in Neural Networks: An Overview"*. arXiv:1404.7828 — retrospectiva exaustiva.
 
 ---
 
@@ -268,6 +350,70 @@ Quando você faz uma pergunta a uma LLM, o processo de **inferência** ocorre as
 
 > **Sugestão de imagem para o site:** Animação mostrando o processo de geração token a token. Uma barra de probabilidades aparece a cada passo, mostrando os top-5 candidatos e qual é selecionado. Implementável com JavaScript/D3.js. Referência para dados de demonstração: usar a API da OpenAI com `logprobs=true` para obter probabilidades reais.
 
+#### 1.3.3 Scaling Laws: Por que maior costuma ser melhor
+
+Kaplan et al. (2020) e depois Hoffmann et al. (2022, "Chinchilla") descobriram que a perda (loss) de um modelo segue uma **lei de potência** em relação a três variáveis: número de parâmetros (N), tamanho do dataset (D) e compute (C).
+
+A forma aproximada da lei de Chinchilla:
+
+```
+L(N, D) ≈ E + A/N^α + B/D^β
+```
+
+Onde `E` é a irredutível entropia do texto, e `α ≈ 0.34`, `β ≈ 0.28`. A contribuição decisiva: **para um orçamento de compute fixo, dobrar N e dobrar D juntos é ótimo** — GPT-3 foi sub-treinado em dados (175B params, apenas ~300B tokens); Chinchilla (70B params, 1.4T tokens) venceu com menos parâmetros.
+
+**Implicações práticas:**
+- Modelos menores bem treinados (Llama, Mistral) competem com gigantes mal treinados.
+- "Quanto compute para um modelo de X parâmetros?" é uma pergunta respondível.
+- **Emergent abilities** (Wei et al. 2022) — habilidades que aparecem descontinuamente com escala — são parcialmente um artefato de métricas (Schaeffer et al. 2023, *"Are Emergent Abilities of Large Language Models a Mirage?"*, NeurIPS).
+
+**Refs:**
+- Kaplan, J. et al. (2020). *"Scaling Laws for Neural Language Models"*. arXiv:2001.08361
+- Hoffmann, J. et al. (2022). *"Training Compute-Optimal Large Language Models"* (Chinchilla). arXiv:2203.15556
+- Wei, J. et al. (2022). *"Emergent Abilities of Large Language Models"*. arXiv:2206.07682
+- Schaeffer, R. et al. (2023). arXiv:2304.15004
+
+#### 1.3.4 KV Cache: Por que a inferência é rápida depois do primeiro token
+
+Na geração autoregressiva, a cada novo token o modelo precisaria recalcular atenção sobre **toda** a sequência. O **KV Cache** armazena as matrizes Key e Value de tokens já processados, de modo que apenas o Query do novo token precisa ser calculado.
+
+**Consequências operacionais:**
+- **Prefill** (processar o prompt inteiro) é paralelo e rápido em FLOPs, mas pesado em memória.
+- **Decode** (gerar 1 token por vez) é sequencial e limitado por **memory bandwidth**, não compute.
+- O KV cache cresce linearmente com o contexto — para contextos de 1M tokens vira o gargalo principal.
+- **Prompt caching** (Anthropic, Google, OpenAI) reutiliza o KV cache entre requisições — daí o desconto de até 90%.
+
+Variantes que reduzem o cache:
+- **MQA** (Multi-Query Attention) — Shazeer 2019: uma Key/Value para todas as heads.
+- **GQA** (Grouped-Query Attention) — Ainslie et al. 2023, arXiv:2305.13245: compromisso entre MHA e MQA. Usado em Llama 2/3/4.
+- **MLA** (Multi-head Latent Attention) — DeepSeek-V2, 2024: comprime KV via projeção de baixa dimensão.
+
+#### 1.3.5 Positional Encodings: Como o modelo sabe a ordem
+
+Atenção é permutation-invariant por si só — precisa de sinal de posição externo.
+
+- **Absolute (Vaswani 2017):** `sin/cos` em cada dimensão. Simples, não generaliza para contextos além do treinado.
+- **Learned:** tabela aprendida. Mesma limitação.
+- **RoPE (Rotary Positional Embedding)** — Su et al. 2021, arXiv:2104.09864: rotaciona Q e K por ângulos dependentes da posição. Usado em Llama, Mistral, Qwen, DeepSeek. Permite extrapolação via interpolação (**Position Interpolation**, Chen et al. 2023; **YaRN**, Peng et al. 2023).
+- **ALiBi** — Press et al. 2022: bias linear nas attention scores. Usado em Bloom, MPT.
+
+Entender isso é útil quando você vê um modelo "quebrar" em contextos muito longos: costuma ser degradação do positional encoding.
+
+#### 1.3.6 Mixture of Experts (MoE)
+
+Modelos modernos frontier (GPT-4, Mixtral, DeepSeek-V3, Llama 4) são **MoE**: em vez de um único FFN denso por camada, há N "experts" (ex: 8, 64, 256) e um **roteador** seleciona os top-k (geralmente 2) para cada token.
+
+- **Total params vs. active params:** DeepSeek-V3 tem 671B totais mas apenas ~37B ativos por token. Isso barateia inferência mantendo capacidade.
+- Refs: Shazeer et al. (2017) *"Outrageously Large Neural Networks"*, arXiv:1701.06538; Fedus et al. (2022) *"Switch Transformer"*, arXiv:2101.03961; DeepSeek-AI (2024), *"DeepSeek-V3 Technical Report"*, arXiv:2412.19437.
+
+**Implicação prática:** quando um provedor anuncia "2 trilhões de parâmetros", pergunte quantos são *ativos*. A métrica de custo/qualidade é compute por token, não total params.
+
+#### 1.3.7 FlashAttention e eficiência de hardware
+
+Atenção padrão é O(N²) em memória. **FlashAttention** (Dao et al. 2022, arXiv:2205.14135; v2 2023; v3 2024) reorganiza o cálculo em blocos que cabem em SRAM da GPU, eliminando round-trips para HBM. Resultado: **10–20× mais rápido**, mesmo resultado matemático.
+
+Por que importa para o desenvolvedor: a diferença entre "context de 1M é viável" e "custa uma fortuna" frequentemente é FlashAttention + variante de atenção (GQA/MLA) + quantização. Isso explica por que modelos abertos alcançam provedores fechados.
+
 ### 1.4 Por que isso importa para Programação com IA?
 
 Entender como LLMs funcionam não é apenas curiosidade acadêmica — é conhecimento **operacional** para quem programa com IA:
@@ -281,6 +427,88 @@ Entender como LLMs funcionam não é apenas curiosidade acadêmica — é conhec
 | Alucinações são intrínsecas | O modelo gera texto plausível, não necessariamente verdadeiro |
 
 > **Sugestão para o site:** Seção interativa "Teste Você Mesmo" onde o participante pode ajustar temperature e top-p em um playground e ver como as respostas mudam. Implementar com chamadas à API da Anthropic ou OpenAI.
+
+---
+
+## Módulo 1.5 — Matemática Essencial para LLMs
+
+> **Objetivo:** Dar a você intuição numérica suficiente para ler um paper de LLM, entender debates no Twitter/arXiv e não cair em marketing. Não é um curso de álgebra linear — é o mínimo operacional.
+
+### 1.5.1 Vetores, embeddings e similaridade
+
+Um **embedding** é um ponto num espaço `R^d` (tipicamente d=768 a d=12288). Tokens semanticamente próximos ficam próximos nesse espaço.
+
+**Produto escalar** mede alinhamento:
+```
+a · b = |a| |b| cos(θ)
+```
+
+**Similaridade de cosseno** (ignora magnitude):
+```
+cos_sim(a, b) = (a · b) / (|a| |b|)
+```
+
+Toda atenção, todo retrieval, todo RAG é — no fim — produto escalar em alta dimensão.
+
+**Refs:**
+- Mikolov, T. et al. (2013). *"Efficient Estimation of Word Representations in Vector Space"* (word2vec). arXiv:1301.3781
+- Reimers, N. & Gurevych, I. (2019). *"Sentence-BERT"*. arXiv:1908.10084
+
+### 1.5.2 Softmax e temperatura
+
+Softmax transforma logits em probabilidades:
+
+```
+softmax(x_i) = exp(x_i / T) / Σ exp(x_j / T)
+```
+
+Onde **T é a temperatura**:
+- `T → 0` → argmax (determinístico; sempre o token mais provável).
+- `T = 1` → distribuição nativa do modelo.
+- `T → ∞` → uniforme (ruído puro).
+
+**Intuição geométrica:** temperature achata (alto T) ou afia (baixo T) a distribuição. `top-p` corta a cauda; `top-k` limita a cardinalidade. Combinados, são os três botões principais de decodificação.
+
+### 1.5.3 Entropia cruzada: a função objetivo do pré-treinamento
+
+A LLM é treinada para minimizar:
+
+```
+L = -Σ log P_model(token_t | token_<t)
+```
+
+Isso é **entropia cruzada** entre a distribuição real (one-hot no token correto) e a predita. Minimizar loss = maximizar a probabilidade que o modelo atribui ao texto real.
+
+**Perplexidade** = `exp(L)`. Se perplexidade é 10, o modelo está "em dúvida entre 10 opções" por token em média. Métrica clássica de qualidade de language models (menor = melhor).
+
+### 1.5.4 Gradiente descendente em uma parábola
+
+Treinamento é basicamente:
+```
+θ ← θ - η · ∇L(θ)
+```
+Onde `η` é a learning rate. **Adam** (Kingma & Ba 2015, arXiv:1412.6980) e **AdamW** (Loshchilov & Hutter 2019) são as variantes usadas em LLMs — adicionam momento e normalização adaptativa.
+
+Não precisa derivar na mão. Precisa entender que:
+- LR muito alta → loss explode.
+- LR muito baixa → treinamento estagna.
+- **Warmup + cosine decay** é o schedule padrão de praticamente todo LLM moderno.
+
+### 1.5.5 Quantização: por que int4 funciona
+
+Um modelo treinado em fp16/bf16 pode ser **quantizado** para int8, int4 ou menos com perda pequena. `GPTQ`, `AWQ`, `GGUF` são algoritmos populares.
+
+**Por que funciona:** redes neurais são robustas a ruído; pesos redundantes absorvem a quantização. Uma Llama-70B em int4 cabe em ~40GB vs. ~140GB em fp16 — habilita inferência local.
+
+Ref: Dettmers, T. et al. (2022). *"LLM.int8()"*. arXiv:2208.07339; Frantar, E. et al. (2023). *"GPTQ"*. arXiv:2210.17323.
+
+### 1.5.6 Leituras para aprofundar
+
+- **3Blue1Brown** — *"Neural Networks"* e *"Transformers"* (YouTube). Melhor introdução visual existente.
+- Bishop, C. M. (2006). *Pattern Recognition and Machine Learning*. Springer. — Referência clássica em fundamentos estatísticos.
+- Murphy, K. (2022). *Probabilistic Machine Learning*. MIT Press. https://probml.github.io/pml-book/ — Mais moderno e abrangente.
+- Raschka, S. (2024). *Build a Large Language Model (From Scratch)*. Manning. — Implementação passo-a-passo em PyTorch.
+- Karpathy, A. — *"Neural Networks: Zero to Hero"* (YouTube). Série de code-alongs da atenção ao GPT.
 
 ---
 
@@ -373,15 +601,33 @@ Texto: [aa, a, ' ', bb, b, ' ', aa, b]
 
 Tokens são a **moeda** dos modelos de IA. Todo o modelo de precificação gira em torno deles:
 
-**Estrutura de custos típica (valores ilustrativos para referência — abril 2026):**
+**Estrutura de custos típica (valores ilustrativos — abril 2026; sempre verifique o site oficial):**
 
-| Modelo | Input (por 1M tokens) | Output (por 1M tokens) |
-|---|---|---|
-| Claude 3.5 Sonnet | $3.00 | $15.00 |
-| Claude 3.5 Haiku | $0.80 | $4.00 |
-| Claude Opus 4 | $15.00 | $75.00 |
-| GPT-4o | $2.50 | $10.00 |
-| GPT-4o-mini | $0.15 | $0.60 |
+| Modelo | Provedor | Input (/1M) | Output (/1M) | Cache hit (/1M) | Thinking? |
+|---|---|---|---|---|---|
+| Claude Opus 4.6 | Anthropic | $15.00 | $75.00 | $1.50 | Sim (extended) |
+| Claude Sonnet 4.6 | Anthropic | $3.00 | $15.00 | $0.30 | Sim (extended) |
+| Claude Haiku 4.5 | Anthropic | $1.00 | $5.00 | $0.10 | Sim (extended) |
+| GPT-5 | OpenAI | $5.00 | $20.00 | $0.50 | Sim (opcional) |
+| GPT-5-mini | OpenAI | $0.30 | $1.20 | $0.03 | Sim (opcional) |
+| o3 | OpenAI | $10.00 | $40.00 | — | Sim (nativo) |
+| o4-mini | OpenAI | $1.10 | $4.40 | — | Sim (nativo) |
+| Gemini 2.5 Pro | Google | $2.50 | $15.00 | $0.625 | Sim (Thinking) |
+| Gemini 2.5 Flash | Google | $0.30 | $2.50 | $0.075 | Sim (Thinking) |
+| Grok 4 | xAI | $5.00 | $15.00 | — | Sim |
+| DeepSeek-V3 | DeepSeek | $0.27 | $1.10 | $0.07 | Não |
+| DeepSeek-R1 | DeepSeek | $0.55 | $2.19 | — | Sim (reasoning) |
+| Llama 4 Maverick | Meta (open) | ~$0.50 | ~$2.00 | — | Não |
+| Mistral Large 2 | Mistral | $2.00 | $6.00 | — | Não |
+| Qwen 3 Max | Alibaba | $1.60 | $6.40 | — | Parcial |
+
+> **Fontes atualizadas:**
+> - Anthropic: https://docs.anthropic.com/en/docs/about-claude/models
+> - OpenAI: https://openai.com/api/pricing
+> - Google: https://ai.google.dev/pricing
+> - xAI: https://x.ai/api
+> - DeepSeek: https://api-docs.deepseek.com
+> - Artificial Analysis (comparativo independente): https://artificialanalysis.ai
 
 > **Nota:** Consulte sempre os sites oficiais para preços atualizados:
 > - Anthropic: https://docs.anthropic.com/en/docs/about-claude/models
@@ -504,7 +750,17 @@ A evolução das janelas de contexto é uma das histórias mais impressionantes 
 | Claude 3 | 2024 | 200.000 tokens | ~300 páginas |
 | Gemini 1.5 Pro | 2024 | 1.000.000 tokens | ~1.500 páginas |
 | Claude 3.5/4 | 2024-2025 | 200.000 tokens | ~300 páginas |
-| Claude Opus 4 (com extensão) | 2025 | 1.000.000 tokens | ~1.500 páginas |
+| Claude Opus 4 (estendido) | 2025 | 1.000.000 tokens | ~1.500 páginas |
+| GPT-5 | 2025 | 400.000 tokens | ~600 páginas |
+| o3 / o4-mini | 2025 | 200.000 tokens | ~300 páginas |
+| Gemini 2.5 Pro | 2025 | 2.000.000 tokens | ~3.000 páginas |
+| Llama 4 Scout | 2025 | 10.000.000 tokens | ~15.000 páginas |
+| Claude Opus 4.6 | 2026 | 1.000.000 tokens | ~1.500 páginas |
+| Claude Sonnet 4.6 | 2026 | 1.000.000 tokens | ~1.500 páginas |
+| Grok 4 | 2026 | 256.000 tokens | ~400 páginas |
+| DeepSeek-R1 | 2026 | 128.000 tokens | ~200 páginas |
+
+> **Nota crítica — contexto útil ≠ contexto anunciado:** um modelo anunciar 10M tokens de janela não significa que use todos com a mesma qualidade. O benchmark **RULER** (Hsieh et al. 2024, arXiv:2404.06654) mostra que a maioria dos modelos degrada significativamente muito antes do limite anunciado. Ver também o benchmark **NoLiMa** (Modarressi et al. 2025) para long-context reasoning sem literal matching.
 
 > **Sugestão de imagem para o site:** Gráfico de barras ou timeline interativo mostrando a evolução exponencial das janelas de contexto ao longo dos anos. Usar uma escala logarítmica para visualizar melhor. Implementável com Chart.js ou D3.js.
 
@@ -2174,6 +2430,298 @@ Tendências observadas e projetadas:
 
 ---
 
+## Módulo 12 — Deep Thinking e Reasoning Models
+
+> **O que você vai aprender:** o que diferencia modelos de raciocínio (o1, o3, Claude com extended thinking, DeepSeek-R1, Gemini 2.5 Thinking) dos modelos "normais", por que eles surgiram, quando usá-los, e como isso muda a economia da programação com IA.
+
+### 12.1 O problema: escala de pré-treinamento chegando ao limite
+
+Até ~2024, o caminho óbvio para melhorar LLMs era **escalar o pré-treinamento** (mais dados, mais parâmetros, mais compute). Mas:
+
+1. Dados de alta qualidade na internet são finitos (Villalobos et al. 2024, *"Will We Run Out of Data?"*, arXiv:2211.04325).
+2. Custo marginal explodiu (GPT-4 custou >$100M; a próxima ordem de magnitude é inviável).
+3. **Muitas tarefas se beneficiam mais de pensar mais na hora da resposta do que de um modelo maior.**
+
+A resposta: **test-time compute scaling** — deixar o modelo *pensar mais* durante a inferência.
+
+**Ref seminal:** Snell, C. et al. (2024). *"Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters"*. arXiv:2408.03314.
+
+### 12.2 Como um reasoning model funciona
+
+A ideia central: o modelo gera uma longa **chain-of-thought interna** (às vezes milhares de tokens) antes de produzir a resposta final. Esses "thinking tokens" são treinados via **reinforcement learning** com recompensas verificáveis.
+
+**Receita geral (simplificada):**
+
+1. **Base model** — LLM pré-treinada e SFT-ada normalmente.
+2. **CoT prompting** — força o modelo a pensar passo a passo.
+3. **RLVR (RL from Verifiable Rewards)** — usa tarefas com resposta checável (matemática, código com testes, lógica formal). O modelo recebe +1 se acerta, 0 se erra.
+4. **Emergência de comportamentos:** auto-correção, backtracking, verificação, planejamento. **Não foram programados** — emergem do RL.
+
+O paper técnico mais importante e aberto:
+- **DeepSeek-AI (2025).** *"DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning"*. arXiv:2501.12948 — demonstra que RL puro (sem SFT inicial) já induz reasoning emergente ("R1-Zero"). Leitura obrigatória.
+
+Outros marcos:
+- **OpenAI (2024).** *"Learning to Reason with LLMs"* (post técnico do o1). https://openai.com/index/learning-to-reason-with-llms/
+- **Anthropic (2025).** *"Claude Extended Thinking"*. https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking
+- **Google DeepMind (2025).** *"Gemini 2.5: Our most intelligent AI model"*. https://blog.google/technology/google-deepmind/gemini-model-thinking-updates-march-2025/
+- Kimi Team (2025). *"Kimi k1.5: Scaling RL with LLMs"*. arXiv:2501.12599
+
+### 12.3 Taxonomia de modelos de raciocínio (abril 2026)
+
+| Modelo | Tipo de thinking | Visível ao usuário? | Controle fino |
+|---|---|---|---|
+| OpenAI o3 / o4-mini | Nativo, obrigatório | Sumário (CoT oculto) | `reasoning_effort`: low/medium/high |
+| GPT-5 | Opcional, roteado | Sumário | Parâmetro `thinking` |
+| Claude Opus/Sonnet 4.6 | Extended thinking opt-in | Sim (tokens visíveis) | `budget_tokens` |
+| Gemini 2.5 Pro | Thinking integrado | Sim | `thinking_budget` |
+| DeepSeek-R1 | Nativo | Sim (tag `<think>`) | On/off |
+| Grok 4 | Nativo | Parcial | — |
+
+### 12.4 Quando usar thinking vs. resposta direta
+
+**Use reasoning quando:**
+- A tarefa é multi-passo e cada passo gera erro composto (matemática, prova, debugging).
+- A resposta errada custa caro (código de produção, análise legal).
+- Você quer o melhor possível e pode pagar 5–20× mais tokens.
+
+**Não use reasoning quando:**
+- Tarefa é de recuperação/formatação (extrair JSON, traduzir, resumir).
+- Latência é crítica (chat conversacional, autocomplete).
+- O modelo base já acerta (mede antes de pagar thinking).
+
+**Evidência:** McAleese et al. (2024, OpenAI) mostram que em tarefas fáceis thinking não ajuda e às vezes piora por **overthinking** (Chen et al. 2024, *"Do NOT Think That Much for 2+3=?"*, arXiv:2412.21187).
+
+### 12.5 Anatomia de uma resposta com thinking
+
+Exemplo (Claude extended thinking):
+
+```
+<thinking>
+O usuário quer X. Tenho que considerar:
+1. Caso A — funciona se ...
+2. Caso B — exige que ...
+Hm, espera. Revisei e o caso B quebra quando ...
+Vou propor a solução do caso A.
+</thinking>
+
+A solução é: ...
+```
+
+O token `<thinking>` ocupa contexto e custa (embora com desconto em alguns provedores). Esse é o **"thinking budget"** — quanto você está disposto a gastar.
+
+### 12.6 Implicações para programação
+
+- **Agentes de codificação (Claude Code, Cursor Agent, Devin) combinam** thinking + tool use + loops. O thinking decide *o que fazer a seguir*.
+- **SWE-Bench Verified** saltou de ~20% (modelos 2024) para >70% (reasoning + agentes, 2025). Ver: Jimenez et al. (2024), *"SWE-Bench: Can Language Models Resolve Real-World GitHub Issues?"*, ICLR, arXiv:2310.06770.
+- **Custo real de um agente** = (input tokens) + (output tokens) + **(thinking tokens × várias chamadas em loop)**. Fácil explodir orçamento. Monitore.
+
+### 12.7 Limitações honestas
+
+- Reasoning models **não são infalíveis** — ainda alucinam, ainda erram matemática simples ocasionalmente.
+- **Faithfulness of chain-of-thought:** Turpin et al. (2023, *"Language Models Don't Always Say What They Think"*, arXiv:2305.04388) — a CoT mostrada nem sempre reflete o que o modelo "realmente" computou. Anthropic (2025) *"Reasoning Models Don't Always Say What They Think"* confirma em modelos mais novos.
+- **Jailbreaks via thinking injection** são uma nova superfície de ataque.
+
+---
+
+## Módulo 13 — Alinhamento, Segurança e Red-Teaming
+
+> **Objetivo:** entender o *porquê* dos guardrails dos modelos, como são treinados para serem úteis+honestos+inofensivos, e quais falhas conhecer ao construir agentes que executam código.
+
+### 13.1 O problema do alinhamento
+
+Um modelo pré-treinado bruto é um **simulador de internet** — gera o que for plausível, incluindo conteúdo tóxico, errado ou perigoso. **Alinhamento** é o processo de fazer o modelo produzir outputs que humanos considerem úteis, honestos e inofensivos (**HHH**: Helpful, Honest, Harmless — Askell et al. 2021, arXiv:2112.00861).
+
+### 13.2 RLHF: base de tudo
+
+**Ouyang, L. et al. (2022).** *"Training language models to follow instructions with human feedback"* (InstructGPT). arXiv:2203.02155. Fluxo:
+
+1. **SFT** — humanos escrevem respostas exemplares.
+2. **Reward Model (RM)** — humanos rankeiam pares de respostas; um modelo aprende a prever a preferência.
+3. **PPO** — o LLM é otimizado para maximizar o RM via reinforcement learning (Schulman et al. 2017, arXiv:1707.06347).
+
+### 13.3 Evolução do RLHF
+
+- **RLAIF / Constitutional AI** — Bai, Y. et al. (2022), Anthropic, arXiv:2212.08073. A IA gera críticas baseadas numa **constituição** (lista de princípios). Reduz carga humana e é mais auditável. Base do Claude.
+- **DPO (Direct Preference Optimization)** — Rafailov et al. (2023), arXiv:2305.18290. Elimina o RM explícito: otimiza diretamente sobre pares preferidos. Mais simples, usado em muitos modelos abertos.
+- **RLVR (Verifiable Rewards)** — base dos reasoning models (Módulo 12).
+- **KTO, IPO, ORPO** — variantes que relaxam premissas do DPO.
+
+### 13.4 Falhas conhecidas de alinhamento
+
+1. **Sycophancy** — modelo concorda com o usuário mesmo quando este está errado (Sharma et al. 2023, *"Towards Understanding Sycophancy in Language Models"*, arXiv:2310.13548).
+2. **Reward hacking** — modelo explora a métrica sem resolver a tarefa.
+3. **Deception / Sandbagging** — modelo esconde capacidades em avaliação (Hubinger et al. 2024, *"Sleeper Agents"*, arXiv:2401.05566).
+4. **Jailbreaks** — prompts adversariais que desativam guardrails. Ver Zou et al. (2023), *"Universal and Transferable Adversarial Attacks"*, arXiv:2307.15043.
+5. **Prompt injection** — dados externos (emails, páginas web, resultados de tool) contendo instruções maliciosas. Greshake et al. (2023), *"Not what you've signed up for"*, arXiv:2302.12173. **Crítico para agentes de codificação com MCP.**
+6. **Hallucination** — erros de fato plausíveis. Ji et al. (2023), *"Survey of Hallucination in NLG"*, ACM Computing Surveys.
+
+### 13.5 Interpretabilidade mecanística
+
+Esforço para *abrir a caixa preta* — entender o que circuitos internos fazem.
+
+- **Anthropic — Transformer Circuits.** https://transformer-circuits.pub/
+- Olsson, C. et al. (2022). *"In-context Learning and Induction Heads"*. arXiv:2209.11895.
+- Templeton, A. et al. (2024). *"Scaling Monosemanticity"* (features interpretáveis em Claude 3 Sonnet). https://transformer-circuits.pub/2024/scaling-monosemanticity/
+
+### 13.6 AI Safety em produção
+
+Para quem constrói com agentes:
+
+- **Trate toda saída de tool como potencialmente adversarial.**
+- **Princípio do menor privilégio** — o agente só precisa dos escopos mínimos (aprovação humana para `git push`, para escrever em DBs, etc.).
+- **Sandbox e worktrees isolados** — Claude Code usa worktrees por padrão por essa razão.
+- **Logs auditáveis.** Tool calls, prompts e outputs devem ser persistidos.
+
+**Refs para leitura:**
+- Bender, E. et al. (2021). *"On the Dangers of Stochastic Parrots"*. FAccT. https://doi.org/10.1145/3442188.3445922
+- Anthropic. *"Core Views on AI Safety"*. https://www.anthropic.com/news/core-views-on-ai-safety
+- Hendrycks, D. et al. (2023). *"An Overview of Catastrophic AI Risks"*. arXiv:2306.12001
+- Ngo, R. et al. (2022). *"The Alignment Problem from a Deep Learning Perspective"*. arXiv:2209.00626
+
+---
+
+## Módulo 14 — Avaliação de Modelos e Benchmarks
+
+> **Por que importa:** escolher modelo errado é caro. Este módulo mostra como ler benchmarks com ceticismo calibrado e montar sua própria avaliação (**evals**) — a habilidade mais subestimada em engenharia com LLMs.
+
+### 14.1 Benchmarks canônicos
+
+| Benchmark | O que mede | Ref |
+|---|---|---|
+| **MMLU** | Conhecimento geral multi-disciplinar, 57 matérias | Hendrycks et al. 2021, arXiv:2009.03300 |
+| **MMLU-Pro** | Versão mais difícil, reduz shortcuts | Wang et al. 2024, arXiv:2406.01574 |
+| **GPQA** | Perguntas PhD-level em ciência, "Google-proof" | Rein et al. 2023, arXiv:2311.12022 |
+| **HumanEval** | Geração de funções Python | Chen et al. 2021, arXiv:2107.03374 |
+| **MBPP** | Problemas de programação básica | Austin et al. 2021, arXiv:2108.07732 |
+| **SWE-Bench / Verified** | Issues reais do GitHub resolvidos end-to-end | Jimenez et al. 2024, arXiv:2310.06770 |
+| **Terminal-Bench** | Agentes em CLI real | Stanford/Princeton, 2025 |
+| **AIME / MATH** | Matemática competitiva | Hendrycks et al. 2021, arXiv:2103.03874 |
+| **ARC-AGI** | Raciocínio abstrato, resistente a memorização | Chollet 2019, arXiv:1911.01547 |
+| **RULER** | Contexto longo real (vs. needle-in-haystack) | Hsieh et al. 2024, arXiv:2404.06654 |
+| **LiveCodeBench** | Código competitivo com contamination-free | Jain et al. 2024, arXiv:2403.07974 |
+| **Chatbot Arena** | Preferência humana via votação pareada | Chiang et al. 2024, arXiv:2403.04132 |
+
+### 14.2 Limitações dos benchmarks
+
+1. **Data contamination** — benchmarks vazam no treinamento. HumanEval em particular está saturado. Ver Balloccu et al. 2024, arXiv:2402.03927.
+2. **Gaming** — laboratórios otimizam para o leaderboard.
+3. **Single-task / single-turn** — não capturam comportamento agêntico.
+4. **Viés linguístico** — quase todos em inglês. Para PT-BR, usar **ENEM-Challenge**, **BLUEX**.
+5. **Saturação** — MMLU passou de 85% (humano expert) em 2024. Novos benchmarks (HLE — Humanity's Last Exam, 2025) existem justamente por isso.
+
+### 14.3 Como montar sua própria eval
+
+Regra #1: **a melhor eval é a mais próxima do seu caso de uso real**.
+
+**Framework mínimo:**
+
+1. **Golden set** — 30–100 exemplos representativos, com resposta esperada.
+2. **Métrica** — exact match (quando aplicável), LLM-as-judge (com cuidado, ver Zheng et al. 2023 arXiv:2306.05685), ou humano.
+3. **Regressão** — rode a eval em toda mudança de modelo/prompt/contexto.
+4. **Adversarial set** — casos que historicamente falharam.
+
+**Ferramentas:**
+- **Inspect** (UK AISI) — https://inspect.aisi.org.uk
+- **OpenAI Evals** — https://github.com/openai/evals
+- **Braintrust, LangSmith, Langfuse, Helicone** — plataformas pagas.
+- **promptfoo** — open source, CLI-first. https://www.promptfoo.dev
+
+### 14.4 Leaderboards úteis (com ceticismo)
+
+- **Artificial Analysis** — https://artificialanalysis.ai — comparativo agregado de qualidade, velocidade, preço.
+- **Chatbot Arena / LMArena** — https://lmarena.ai — preferência humana.
+- **Aider LLM Leaderboard** — https://aider.chat/docs/leaderboards/ — edição de código real.
+- **SWE-Bench Leaderboard** — https://www.swebench.com
+
+### 14.5 Referências fundamentais
+
+- Liang, P. et al. (2022). *"Holistic Evaluation of Language Models (HELM)"*. arXiv:2211.09110 — framework abrangente.
+- Chang, Y. et al. (2023). *"A Survey on Evaluation of Large Language Models"*. arXiv:2307.03109.
+- Anthropic. *"Challenges in Evaluating AI Systems"*. https://www.anthropic.com/news/evaluating-ai-systems
+
+---
+
+## Módulo 15 — Embeddings, Retrieval e RAG Avançado
+
+> **Objetivo:** ir além do "RAG ingênuo" (embed + cosine). Entender quando RAG supera long-context, como construir pipelines robustos, e onde o estado da arte está em 2026.
+
+### 15.1 De volta aos embeddings
+
+Modelos de embedding mapeiam texto em vetores onde similaridade semântica ≈ similaridade de cosseno.
+
+**Famílias em 2026:**
+
+| Família | Destaques | Uso típico |
+|---|---|---|
+| OpenAI `text-embedding-3-large` | 3072 dims, multilíngue | Geral |
+| Cohere Embed v4 | Multilíngue + multimodal | Enterprise |
+| Voyage AI (`voyage-3`) | Top MTEB, código | Alta qualidade |
+| `bge-m3` (BAAI) | Open source, multilíngue | Self-hosted |
+| `nomic-embed-text-v2` | Open source, 8k contexto | Self-hosted |
+| `gte-Qwen2-7B-instruct` | LLM-based embedding | Pesquisa |
+
+Benchmark de referência: **MTEB** (Muennighoff et al. 2022, arXiv:2210.07316) — https://huggingface.co/spaces/mteb/leaderboard
+
+### 15.2 Recuperação: dense, sparse e hybrid
+
+- **Dense retrieval (DPR)** — produto escalar de embeddings. Rápido com FAISS/HNSW. Karpukhin et al. 2020, arXiv:2004.04906.
+- **Sparse retrieval (BM25)** — TF-IDF tradicional; imbatível em exact match e nomes próprios.
+- **Hybrid** — combina ambos via reciprocal rank fusion (Cormack et al. 2009).
+- **Late interaction (ColBERT)** — Khattab & Zaharia 2020, arXiv:2004.12832 — representa cada token, não só o doc. Melhor qualidade, mais custo.
+- **Re-rankers** — segundo estágio. Cross-encoders (BGE reranker, Cohere rerank) pontuam query+doc juntos.
+
+### 15.3 Anatomia de um RAG de produção
+
+```
+query
+  → query rewriting (LLM expande, decompõe)
+  → retrieval (hybrid: BM25 + dense)
+  → re-ranking (cross-encoder)
+  → context packing (dedup, compressão)
+  → generation (LLM com citações forçadas)
+  → verification (groundedness check)
+```
+
+Cada caixa é um ponto de falha. **Avalie cada estágio separadamente** (ver Módulo 14).
+
+### 15.4 RAG vs. long-context vs. fine-tuning
+
+| Eixo | RAG | Long-context | Fine-tuning |
+|---|---|---|---|
+| Atualização de dados | Barato (reindex) | Barato (recarrega) | Caro (retrain) |
+| Volume de dados | Ilimitado | Limitado a janela | Ilimitado no treino |
+| Citabilidade | Nativa | Difícil | Impossível |
+| Latência por query | Média | Alta (context grande) | Baixa |
+| Custo por query | Baixo | Alto | Baixo |
+| Aprende *estilo/formato* | Fraco | Via few-shot | Forte |
+
+**Heurística:** dados mutáveis e auditáveis → RAG. Estilo/tom consistente → fine-tune. Tarefas one-shot com documento específico → long-context.
+
+**Ref crítica:** Li, T. et al. (2024). *"Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study"*. arXiv:2407.16833.
+
+### 15.5 Estado da arte (2025–2026)
+
+- **GraphRAG** — Microsoft (Edge et al. 2024, arXiv:2404.16130). Extrai knowledge graph do corpus; queries globais ("qual tema atravessa o dataset?") viram tratáveis.
+- **Agentic RAG** — o LLM decide quando e o que buscar em loop (Search-R1, DeepSeek-R1 variants).
+- **Late chunking** — Günther et al. 2024 (Jina AI). Embed o documento inteiro, depois pool por chunk — preserva contexto cross-chunk.
+- **Contextual retrieval** — Anthropic 2024. Prefixa cada chunk com resumo do documento antes de embedar. https://www.anthropic.com/news/contextual-retrieval
+
+### 15.6 Vector stores em 2026
+
+- **pgvector** (Postgres) — default pragmático.
+- **Qdrant, Weaviate, Milvus, LanceDB** — especializados.
+- **Turbopuffer, Pinecone** — serverless hospedado.
+- **FAISS / HNSWLib** — bibliotecas de ANN, não DBs.
+
+### 15.7 Referências consolidadas
+
+- Lewis, P. et al. (2020). *"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks"*. NeurIPS, arXiv:2005.11401. — Paper que cunhou "RAG".
+- Gao, Y. et al. (2023). *"Retrieval-Augmented Generation for Large Language Models: A Survey"*. arXiv:2312.10997.
+- Asai, A. et al. (2023). *"Self-RAG"*. arXiv:2310.11511 — o modelo decide quando recuperar.
+- Huyen, C. (2025). *AI Engineering*. O'Reilly. — livro prático, ótimo tratamento de RAG.
+
+---
+
 ## Apêndice A — Ferramentas Práticas e Simuladores
 
 ### A.1 Ferramentas para Experimentar com Tokens
@@ -2492,6 +3040,118 @@ Tendências observadas e projetadas:
 | **Transformer** | Arquitetura de rede neural baseada em atenção |
 | **Worktree** | Cópia isolada do repositório para trabalho seguro |
 | **Zero-Shot** | Prompting sem exemplos |
+| **BPE** | Byte Pair Encoding, algoritmo de tokenização |
+| **Constitutional AI** | Alinhamento baseado em princípios escritos (Anthropic) |
+| **DPO** | Direct Preference Optimization, alternativa ao RLHF |
+| **FlashAttention** | Algoritmo I/O-eficiente de atenção |
+| **GQA** | Grouped-Query Attention, variante que reduz KV cache |
+| **KV Cache** | Cache de Keys/Values já processados na inferência |
+| **MoE** | Mixture of Experts, arquitetura esparsa |
+| **Perplexidade** | exp(loss); métrica de qualidade de language model |
+| **PPO** | Proximal Policy Optimization, algoritmo de RL |
+| **Prompt Injection** | Ataque onde dados contêm instruções maliciosas |
+| **Quantização** | Reduzir precisão numérica dos pesos (fp16→int4) |
+| **RAG** | Retrieval-Augmented Generation |
+| **Reasoning Model** | Modelo que gera longa CoT antes de responder |
+| **Re-ranker** | Segundo estágio de retrieval, cross-encoder |
+| **RLAIF** | RL from AI Feedback (Constitutional AI) |
+| **RLVR** | RL from Verifiable Rewards (reasoning) |
+| **RoPE** | Rotary Positional Embedding |
+| **Scaling Laws** | Leis de potência entre params, dados, compute e loss |
+| **SFT** | Supervised Fine-Tuning |
+| **Test-time Compute** | Computação gasta na inferência (thinking) |
+| **Thinking Tokens** | Tokens de chain-of-thought interna em reasoning models |
+
+---
+
+## Apêndice D — Leitura Recomendada por Módulo
+
+> Seleção curada de 3–5 recursos por módulo, combinando paper fundacional + livro + blog/tutorial acessível.
+
+### Módulo 0 — História
+- Russell & Norvig. *AIMA* 4ª ed. (livro-texto).
+- Schmidhuber (2015), arXiv:1404.7828 (retrospectiva).
+- MIT 6.034 AI (curso aberto).
+
+### Módulo 1 — Fundamentos LLM
+- Vaswani et al. 2017, *"Attention Is All You Need"* (paper).
+- Alammar. *"The Illustrated Transformer"*. https://jalammar.github.io/illustrated-transformer/
+- Karpathy. *"Let's build GPT from scratch"* (YouTube).
+- Goodfellow et al. *Deep Learning* (livro, gratuito online).
+
+### Módulo 1.5 — Matemática
+- 3Blue1Brown. Séries de *Neural Networks* e *Transformers*.
+- Raschka (2024). *Build a Large Language Model (From Scratch)*. Manning.
+- Bishop (2006). *Pattern Recognition and Machine Learning*.
+
+### Módulo 2 — Tokens
+- Sennrich et al. 2016 (BPE), arXiv:1508.07909.
+- OpenAI tiktoken (repo). https://github.com/openai/tiktoken
+- Karpathy. *"Let's build the GPT Tokenizer"* (YouTube).
+
+### Módulo 3 — Janela de Contexto
+- Liu et al. 2023, *"Lost in the Middle"*, arXiv:2307.03172.
+- Hsieh et al. 2024, *"RULER"*, arXiv:2404.06654.
+- Anthropic. *"Prompt Caching"* docs.
+
+### Módulo 4 — Engenharia de Contexto
+- Anthropic. *"Contextual Retrieval"* (blog 2024).
+- Huyen, C. (2025). *AI Engineering*, O'Reilly.
+
+### Módulo 5 — Prompt Engineering
+- Wei et al. 2022, *"Chain-of-Thought Prompting"*, arXiv:2201.11903.
+- Yao et al. 2022, *"ReAct"*, arXiv:2210.03629.
+- Anthropic. *Prompt Engineering Guide* (docs).
+- OpenAI. *"GPT best practices"*.
+
+### Módulo 6 — Spec-Driven Design
+- GitHub Engineering blog — posts sobre spec-first development.
+- Anthropic. *"Building effective agents"* (blog 2024).
+
+### Módulos 7–10 — Ferramentas / Rules / MCP
+- Anthropic docs — Claude Code, Skills, Hooks.
+- MCP Spec — https://modelcontextprotocol.io
+- Cursor, Aider docs oficiais.
+
+### Módulo 11 — Agentes
+- Shinn et al. 2023, *"Reflexion"*, arXiv:2303.11366.
+- Park et al. 2023, *"Generative Agents"*, arXiv:2304.03442.
+- Jimenez et al. 2024, *"SWE-Bench"*, arXiv:2310.06770.
+- Anthropic. *"Building effective agents"*.
+
+### Módulo 12 — Reasoning
+- DeepSeek-AI 2025, *"DeepSeek-R1"*, arXiv:2501.12948 (essencial).
+- Snell et al. 2024, arXiv:2408.03314.
+- OpenAI. *"Learning to Reason with LLMs"* (o1 post).
+- Kimi Team 2025, *"k1.5"*, arXiv:2501.12599.
+
+### Módulo 13 — Alinhamento
+- Ouyang et al. 2022 (InstructGPT), arXiv:2203.02155.
+- Bai et al. 2022 (Constitutional AI), arXiv:2212.08073.
+- Rafailov et al. 2023 (DPO), arXiv:2305.18290.
+- Anthropic transformer-circuits.pub (interpretabilidade).
+- Hendrycks et al. 2023, *"Catastrophic AI Risks"*, arXiv:2306.12001.
+
+### Módulo 14 — Avaliação
+- Liang et al. 2022 (HELM), arXiv:2211.09110.
+- Chang et al. 2023 (survey), arXiv:2307.03109.
+- Zheng et al. 2023 (LLM-as-judge), arXiv:2306.05685.
+- Anthropic. *"Challenges in Evaluating AI Systems"*.
+
+### Módulo 15 — RAG
+- Lewis et al. 2020 (RAG original), arXiv:2005.11401.
+- Gao et al. 2023 (survey), arXiv:2312.10997.
+- Edge et al. 2024 (GraphRAG), arXiv:2404.16130.
+- Anthropic. *"Contextual Retrieval"*.
+- Huyen, C. *AI Engineering*.
+
+### Autores para seguir
+- **Lilian Weng** — https://lilianweng.github.io (posts técnicos densos).
+- **Sebastian Raschka** — https://magazine.sebastianraschka.com
+- **Chip Huyen** — https://huyenchip.com
+- **Simon Willison** — https://simonwillison.net (pragmatismo e prompt injection).
+- **Andrej Karpathy** — tutoriais de código.
+- **Nathan Lambert** — https://www.interconnects.ai (RLHF e reasoning).
 
 ---
 

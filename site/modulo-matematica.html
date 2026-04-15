@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo M — Matemática Essencial | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item active"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo M — Matemática Essencial</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">M</div>
+        <h1>Matemática Essencial para LLMs</h1>
+        <p class="module-desc">Embeddings, softmax, entropia cruzada, gradiente, quantização. O mínimo operacional para ler papers e não cair em marketing.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Intro</span>
+        <h2>Objetivo</h2>
+<p>Dar intuição numérica suficiente para ler um paper de LLM, entender debates técnicos e não cair em marketing. Não é um curso de álgebra linear — é o mínimo operacional.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 1</span>
+        <h2>Vetores, embeddings e similaridade</h2>
+<p>Um <strong>embedding</strong> é um ponto num espaço <code>R^d</code> (tipicamente d=768 a d=12288). Tokens semanticamente próximos ficam próximos nesse espaço.</p>
+        <p><strong>Produto escalar</strong> mede alinhamento:</p>
+        <pre><code>a · b = |a| |b| cos(θ)</code></pre>
+        <p><strong>Similaridade de cosseno</strong> (ignora magnitude):</p>
+        <pre><code>cos_sim(a, b) = (a · b) / (|a| |b|)</code></pre>
+        <p>Toda atenção, todo retrieval, todo RAG é — no fim — produto escalar em alta dimensão.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 2</span>
+        <h2>Softmax e temperatura</h2>
+<p>Softmax transforma logits em probabilidades:</p>
+        <pre><code>softmax(x_i) = exp(x_i / T) / Σ exp(x_j / T)</code></pre>
+        <p>Onde <strong>T é a temperatura</strong>:</p>
+        <ul>
+        <li><code>T → 0</code> → argmax (determinístico)</li>
+        <li><code>T = 1</code> → distribuição nativa do modelo</li>
+        <li><code>T → ∞</code> → uniforme (ruído puro)</li>
+        </ul>
+        <p>Combinado com <code>top-p</code> (corta cauda) e <code>top-k</code> (limita cardinalidade), são os três botões principais de decodificação.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 3</span>
+        <h2>Entropia cruzada e perplexidade</h2>
+<p>A LLM é treinada para minimizar:</p>
+        <pre><code>L = -Σ log P_model(token_t | token_&lt;t)</code></pre>
+        <p>Minimizar loss = maximizar a probabilidade que o modelo atribui ao texto real.</p>
+        <p><strong>Perplexidade</strong> = <code>exp(L)</code>. Se perplexidade é 10, o modelo está "em dúvida entre 10 opções" por token, em média. Métrica clássica de qualidade (menor = melhor).</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 4</span>
+        <h2>Gradiente descendente</h2>
+<p>Treinamento é basicamente:</p>
+        <pre><code>θ ← θ - η · ∇L(θ)</code></pre>
+        <p>Onde <code>η</code> é a <em>learning rate</em>. <strong>Adam/AdamW</strong> (Kingma &amp; Ba 2015; Loshchilov &amp; Hutter 2019) são as variantes usadas em LLMs.</p>
+        <p>O que importa saber:</p>
+        <ul>
+        <li>LR muito alta → loss explode</li>
+        <li>LR muito baixa → treinamento estagna</li>
+        <li><strong>Warmup + cosine decay</strong> é o schedule padrão</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 5</span>
+        <h2>Quantização</h2>
+<p>Um modelo treinado em fp16/bf16 pode ser <strong>quantizado</strong> para int8, int4 ou menos com perda pequena. <code>GPTQ</code>, <code>AWQ</code>, <code>GGUF</code> são algoritmos populares.</p>
+        <p>Uma Llama-70B em int4 cabe em ~40GB vs. ~140GB em fp16 — habilita inferência local.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Referências</span>
+        <h2>Leitura recomendada</h2>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Recursos</div>
+<p><strong>3Blue1Brown</strong> — séries <em>Neural Networks</em> e <em>Transformers</em> (YouTube). Melhor introdução visual existente.</p>
+        <p>Bishop, C. M. (2006). <em>Pattern Recognition and Machine Learning</em>. Springer.</p>
+        <p>Murphy, K. (2022). <em>Probabilistic Machine Learning</em>. MIT Press. <a href="https://probml.github.io/pml-book/" target="_blank" rel="noopener">probml.github.io/pml-book</a></p>
+        <p>Raschka, S. (2024). <em>Build a Large Language Model (From Scratch)</em>. Manning.</p>
+        <p>Karpathy, A. — <em>"Neural Networks: Zero to Hero"</em> (YouTube).</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-00.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">História da IA</span>
+        </a>
+        <a href="modulo-01.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 01 — Fundamentos LLM</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

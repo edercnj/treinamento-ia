@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 15 — Alinhamento | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item active"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 15 — Alinhamento</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">15</div>
+        <h1>Alinhamento, Segurança e Red-Teaming</h1>
+        <p class="module-desc">RLHF, Constitutional AI, DPO, jailbreaks, prompt injection. Por que existem guardrails e como falham em produção.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Seção 15.1</span>
+        <h2>O problema do alinhamento</h2>
+<p>Um modelo pré-treinado bruto é um <strong>simulador de internet</strong> — gera o que for plausível, incluindo conteúdo tóxico, errado ou perigoso. <strong>Alinhamento</strong> é o processo de fazer o modelo produzir outputs úteis, honestos e inofensivos — o princípio <strong>HHH</strong>.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referência</div>
+<p>Askell, A. et al. (2021). <em>"A General Language Assistant as a Laboratory for Alignment"</em>. arXiv:2112.00861 — define HHH (Helpful, Honest, Harmless).</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 15.2</span>
+        <h2>RLHF: base de tudo</h2>
+<ol>
+        <li><strong>SFT</strong> — humanos escrevem respostas exemplares</li>
+        <li><strong>Reward Model (RM)</strong> — humanos rankeiam pares; modelo aprende preferências</li>
+        <li><strong>PPO</strong> — LLM é otimizada para maximizar o RM via RL</li>
+        </ol>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Paper</div>
+<p>Ouyang, L. et al. (2022). <em>"Training language models to follow instructions with human feedback"</em> (InstructGPT). arXiv:2203.02155.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 15.3</span>
+        <h2>Evolução: RLAIF, DPO, RLVR</h2>
+<ul>
+        <li><strong>Constitutional AI / RLAIF</strong> — Anthropic. A IA gera críticas baseadas numa <em>constituição</em>. Bai et al. 2022, arXiv:2212.08073. Base do Claude.</li>
+        <li><strong>DPO</strong> — Rafailov et al. 2023, arXiv:2305.18290. Elimina o RM explícito. Muito usado em modelos abertos.</li>
+        <li><strong>RLVR</strong> — base dos reasoning models (ver Módulo 14).</li>
+        <li><strong>KTO, IPO, ORPO</strong> — variantes que relaxam premissas do DPO.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 15.4</span>
+        <h2>Falhas conhecidas de alinhamento</h2>
+<ol>
+        <li><strong>Sycophancy</strong> — modelo concorda com usuário mesmo quando errado (Sharma et al. 2023, arXiv:2310.13548).</li>
+        <li><strong>Reward hacking</strong> — modelo explora a métrica sem resolver a tarefa.</li>
+        <li><strong>Deception / Sandbagging</strong> — modelo esconde capacidades em avaliação (Hubinger et al. 2024, <em>"Sleeper Agents"</em>, arXiv:2401.05566).</li>
+        <li><strong>Jailbreaks</strong> — prompts adversariais que desativam guardrails (Zou et al. 2023, arXiv:2307.15043).</li>
+        <li><strong>Prompt injection</strong> — dados externos com instruções maliciosas. Greshake et al. 2023, arXiv:2302.12173. <strong>Crítico para agentes com MCP.</strong></li>
+        <li><strong>Hallucination</strong> — erros plausíveis. Ji et al. 2023, ACM.</li>
+        </ol>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 15.5</span>
+        <h2>Interpretabilidade mecanística</h2>
+<p>Esforço para <em>abrir a caixa preta</em> — entender o que circuitos internos fazem.</p>
+        <ul>
+        <li><strong>Anthropic — Transformer Circuits:</strong> <a href="https://transformer-circuits.pub/" target="_blank" rel="noopener">transformer-circuits.pub</a></li>
+        <li>Olsson et al. 2022 — <em>"In-context Learning and Induction Heads"</em>, arXiv:2209.11895.</li>
+        <li>Templeton et al. 2024 — <em>"Scaling Monosemanticity"</em> (features interpretáveis em Claude 3 Sonnet).</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 15.6</span>
+        <h2>Segurança em produção</h2>
+<div class="analogy">
+        <div class="analogy-title">Princípios para quem constrói agentes</div>
+        <ul>
+        <li><strong>Trate toda saída de tool como potencialmente adversarial.</strong></li>
+        <li><strong>Princípio do menor privilégio</strong> — aprovação humana para <code>git push</code>, escritas em DB, etc.</li>
+        <li><strong>Sandbox e worktrees isolados</strong> — Claude Code usa worktrees por padrão por essa razão.</li>
+        <li><strong>Logs auditáveis</strong> — persista tool calls, prompts e outputs.</li>
+        </ul>
+        </div>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Leitura adicional</div>
+<p>Bender et al. 2021 — <em>"On the Dangers of Stochastic Parrots"</em>. FAccT.</p>
+        <p>Anthropic — <em>"Core Views on AI Safety"</em>. <a href="https://www.anthropic.com/news/core-views-on-ai-safety" target="_blank" rel="noopener">anthropic.com</a></p>
+        <p>Hendrycks et al. 2023 — <em>"An Overview of Catastrophic AI Risks"</em>, arXiv:2306.12001.</p>
+        <p>Ngo et al. 2022 — <em>"The Alignment Problem from a Deep Learning Perspective"</em>, arXiv:2209.00626.</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-reasoning.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 14 — Deep Thinking</span>
+        </a>
+        <a href="modulo-avaliacao.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 16 — Avaliação</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

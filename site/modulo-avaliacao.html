@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 16 — Avaliação | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item active"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 16 — Avaliação</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">16</div>
+        <h1>Avaliação de Modelos e Benchmarks</h1>
+        <p class="module-desc">MMLU, SWE-Bench, RULER, ARC-AGI, HLE. Como ler leaderboards com ceticismo calibrado e montar sua própria eval.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.1</span>
+        <h2>Benchmarks canônicos</h2>
+<table>
+        <thead><tr><th>Benchmark</th><th>O que mede</th><th>Ref</th></tr></thead>
+        <tbody>
+        <tr><td><strong>MMLU / MMLU-Pro</strong></td><td>Conhecimento geral, 57 matérias</td><td>Hendrycks 2021; Wang 2024</td></tr>
+        <tr><td><strong>GPQA</strong></td><td>Perguntas PhD-level, "Google-proof"</td><td>Rein et al. 2023</td></tr>
+        <tr><td><strong>HumanEval / MBPP</strong></td><td>Geração de funções Python</td><td>Chen 2021; Austin 2021</td></tr>
+        <tr><td><strong>SWE-Bench / Verified</strong></td><td>Issues reais do GitHub resolvidos end-to-end</td><td>Jimenez 2024</td></tr>
+        <tr><td><strong>Terminal-Bench</strong></td><td>Agentes em CLI real</td><td>Stanford/Princeton 2025</td></tr>
+        <tr><td><strong>AIME / MATH</strong></td><td>Matemática competitiva</td><td>Hendrycks 2021</td></tr>
+        <tr><td><strong>ARC-AGI</strong></td><td>Raciocínio abstrato, resistente a memorização</td><td>Chollet 2019</td></tr>
+        <tr><td><strong>RULER</strong></td><td>Contexto longo real</td><td>Hsieh 2024</td></tr>
+        <tr><td><strong>LiveCodeBench</strong></td><td>Código competitivo contamination-free</td><td>Jain 2024</td></tr>
+        <tr><td><strong>Chatbot Arena</strong></td><td>Preferência humana via votação pareada</td><td>Chiang 2024</td></tr>
+        </tbody>
+        </table>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.2</span>
+        <h2>Limitações dos benchmarks</h2>
+<ol>
+        <li><strong>Data contamination</strong> — benchmarks vazam no treinamento. HumanEval em particular está saturado. Ver Balloccu 2024, arXiv:2402.03927.</li>
+        <li><strong>Gaming</strong> — laboratórios otimizam para o leaderboard.</li>
+        <li><strong>Single-task / single-turn</strong> — não capturam comportamento agêntico.</li>
+        <li><strong>Viés linguístico</strong> — quase todos em inglês. Para PT-BR: ENEM-Challenge, BLUEX.</li>
+        <li><strong>Saturação</strong> — MMLU passou 85% (humano expert) em 2024. Novos benchmarks (HLE — Humanity's Last Exam, 2025) existem por isso.</li>
+        </ol>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.3</span>
+        <h2>Como montar sua própria eval</h2>
+<p><strong>Regra #1:</strong> a melhor eval é a mais próxima do seu caso de uso real.</p>
+        <div class="analogy">
+        <div class="analogy-title">Framework mínimo</div>
+        <ol>
+        <li><strong>Golden set</strong> — 30–100 exemplos representativos com resposta esperada.</li>
+        <li><strong>Métrica</strong> — exact match, LLM-as-judge (com cuidado, Zheng 2023 arXiv:2306.05685) ou humano.</li>
+        <li><strong>Regressão</strong> — rode em toda mudança de modelo/prompt.</li>
+        <li><strong>Adversarial set</strong> — casos que historicamente falharam.</li>
+        </ol>
+        </div>
+        <p><strong>Ferramentas:</strong></p>
+        <ul>
+        <li><strong>Inspect</strong> (UK AISI) — <a href="https://inspect.aisi.org.uk" target="_blank" rel="noopener">inspect.aisi.org.uk</a></li>
+        <li><strong>OpenAI Evals</strong> — <a href="https://github.com/openai/evals" target="_blank" rel="noopener">github.com/openai/evals</a></li>
+        <li><strong>promptfoo</strong> — <a href="https://www.promptfoo.dev" target="_blank" rel="noopener">promptfoo.dev</a> (open source)</li>
+        <li>Braintrust, LangSmith, Langfuse, Helicone (pagas)</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.4</span>
+        <h2>Leaderboards úteis (com ceticismo)</h2>
+<ul>
+        <li><a href="https://artificialanalysis.ai" target="_blank" rel="noopener">Artificial Analysis</a> — comparativo de qualidade, velocidade, preço</li>
+        <li><a href="https://lmarena.ai" target="_blank" rel="noopener">Chatbot Arena / LMArena</a> — preferência humana</li>
+        <li><a href="https://aider.chat/docs/leaderboards/" target="_blank" rel="noopener">Aider LLM Leaderboard</a> — edição de código real</li>
+        <li><a href="https://www.swebench.com" target="_blank" rel="noopener">SWE-Bench Leaderboard</a></li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Referências</span>
+        <h2>Leitura fundamental</h2>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title"></div>
+<p>Liang et al. 2022 — <em>"Holistic Evaluation of Language Models (HELM)"</em>, arXiv:2211.09110.</p>
+        <p>Chang et al. 2023 — <em>"A Survey on Evaluation of LLMs"</em>, arXiv:2307.03109.</p>
+        <p>Anthropic — <em>"Challenges in Evaluating AI Systems"</em>. <a href="https://www.anthropic.com/news/evaluating-ai-systems" target="_blank" rel="noopener">anthropic.com</a></p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-alinhamento.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 15 — Alinhamento</span>
+        </a>
+        <a href="modulo-rag.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 17 — RAG</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -22,6 +22,10 @@
       </a>
     </div>
     <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
       <div class="nav-section-title">Fundamentos</div>
       <a href="modulo-01.html" class="nav-item active"><span class="nav-number">01</span> Como uma LLM Funciona</a>
       <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
@@ -42,6 +46,15 @@
       <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
       <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
       <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
 
       <div class="nav-section-title">Apêndices</div>
       <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
@@ -419,6 +432,84 @@
             <p>Holtzman, A. et al. (2020). <em>"The Curious Case of Neural Text Degeneration"</em>. University of Washington. arXiv:1904.09751. Disponível em: <a href="https://arxiv.org/abs/1904.09751" target="_blank" rel="noopener">https://arxiv.org/abs/1904.09751</a> — Paper que introduziu Nucleus Sampling (top-p).</p>
           </div>
         </div>
+
+        <!-- 1.3.3 Scaling Laws -->
+        <h3>1.3.3 Scaling Laws: Por que maior costuma ser melhor</h3>
+        <p>Kaplan et al. (2020) e depois Hoffmann et al. (2022, "Chinchilla") descobriram que a perda (loss) de um modelo segue uma <strong>lei de potência</strong> em relação a três variáveis: parâmetros (N), dataset (D) e compute (C).</p>
+        <p>Forma aproximada da lei de Chinchilla:</p>
+        <pre><code>L(N, D) ≈ E + A/N^α + B/D^β</code></pre>
+        <p>Onde <code>E</code> é a entropia irredutível do texto, e <code>α ≈ 0.34</code>, <code>β ≈ 0.28</code>. <strong>Para um orçamento de compute fixo, dobrar N e dobrar D juntos é ótimo</strong> — GPT-3 foi sub-treinado em dados; Chinchilla (70B params, 1.4T tokens) venceu com menos parâmetros.</p>
+        <div class="analogy">
+          <div class="analogy-title">Implicações práticas</div>
+          <ul>
+            <li>Modelos menores bem treinados (Llama, Mistral) competem com gigantes mal treinados.</li>
+            <li>"Quanto compute para um modelo de X parâmetros?" é uma pergunta respondível.</li>
+            <li><strong>Emergent abilities</strong> (Wei et al. 2022) são parcialmente um artefato de métricas (Schaeffer et al. 2023, <em>"Are Emergent Abilities a Mirage?"</em>, NeurIPS).</li>
+          </ul>
+        </div>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <p>Kaplan, J. et al. (2020). <em>"Scaling Laws for Neural Language Models"</em>. arXiv:2001.08361.</p>
+            <p>Hoffmann, J. et al. (2022). <em>"Training Compute-Optimal Large Language Models"</em> (Chinchilla). arXiv:2203.15556.</p>
+            <p>Wei, J. et al. (2022). <em>"Emergent Abilities of Large Language Models"</em>. arXiv:2206.07682.</p>
+            <p>Schaeffer, R. et al. (2023). arXiv:2304.15004.</p>
+          </div>
+        </div>
+
+        <!-- 1.3.4 KV Cache -->
+        <h3>1.3.4 KV Cache: Por que a inferência é rápida depois do primeiro token</h3>
+        <p>Na geração autoregressiva, a cada novo token o modelo precisaria recalcular atenção sobre <strong>toda</strong> a sequência. O <strong>KV Cache</strong> armazena Keys e Values de tokens já processados — apenas o Query do novo token precisa ser calculado.</p>
+        <div class="analogy">
+          <div class="analogy-title">Consequências operacionais</div>
+          <ul>
+            <li><strong>Prefill</strong> (processar prompt) é paralelo e rápido em FLOPs, mas pesado em memória.</li>
+            <li><strong>Decode</strong> (1 token por vez) é sequencial e limitado por <em>memory bandwidth</em>, não compute.</li>
+            <li>KV cache cresce linearmente com o contexto — para 1M tokens vira o gargalo principal.</li>
+            <li><strong>Prompt caching</strong> (Anthropic, Google, OpenAI) reutiliza o KV cache entre requisições — daí o desconto de até 90%.</li>
+          </ul>
+        </div>
+        <p>Variantes que reduzem o cache:</p>
+        <ul>
+          <li><strong>MQA</strong> (Multi-Query Attention) — Shazeer 2019: uma Key/Value para todas as heads.</li>
+          <li><strong>GQA</strong> (Grouped-Query) — Ainslie et al. 2023, arXiv:2305.13245. Usado em Llama 2/3/4.</li>
+          <li><strong>MLA</strong> (Multi-head Latent Attention) — DeepSeek-V2, 2024. Comprime KV via projeção de baixa dimensão.</li>
+        </ul>
+
+        <!-- 1.3.5 Positional Encodings -->
+        <h3>1.3.5 Positional Encodings: Como o modelo sabe a ordem</h3>
+        <p>Atenção é permutation-invariant por si só — precisa de sinal de posição externo.</p>
+        <ul>
+          <li><strong>Absolute (Vaswani 2017):</strong> <code>sin/cos</code>. Simples, não generaliza além do treinado.</li>
+          <li><strong>Learned:</strong> tabela aprendida. Mesma limitação.</li>
+          <li><strong>RoPE (Rotary Positional Embedding)</strong> — Su et al. 2021, arXiv:2104.09864. Rotaciona Q e K por ângulos dependentes da posição. Usado em Llama, Mistral, Qwen, DeepSeek. Permite extrapolação via <strong>Position Interpolation</strong> (Chen 2023) e <strong>YaRN</strong> (Peng 2023).</li>
+          <li><strong>ALiBi</strong> — Press et al. 2022: bias linear nas attention scores. Usado em Bloom, MPT.</li>
+        </ul>
+        <p>Entender isso é útil quando você vê um modelo "quebrar" em contextos muito longos: costuma ser degradação do positional encoding.</p>
+
+        <!-- 1.3.6 Mixture of Experts -->
+        <h3>1.3.6 Mixture of Experts (MoE)</h3>
+        <p>Modelos frontier modernos (GPT-4, Mixtral, DeepSeek-V3, Llama 4) são <strong>MoE</strong>: em vez de um FFN denso por camada, há N "experts" (ex: 8, 64, 256) e um <strong>roteador</strong> seleciona os top-k (geralmente 2) para cada token.</p>
+        <div class="analogy">
+          <div class="analogy-title">Total params vs. active params</div>
+          <p>DeepSeek-V3 tem 671B totais mas apenas ~37B ativos por token. Isso barateia inferência mantendo capacidade.</p>
+          <p><strong>Quando um provedor anuncia "2 trilhões de parâmetros", pergunte quantos são <em>ativos</em>.</strong> A métrica de custo/qualidade é compute por token, não total params.</p>
+        </div>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+            <p>Shazeer, N. et al. (2017). <em>"Outrageously Large Neural Networks"</em>. arXiv:1701.06538.</p>
+            <p>Fedus, W. et al. (2022). <em>"Switch Transformer"</em>. arXiv:2101.03961.</p>
+            <p>DeepSeek-AI (2024). <em>"DeepSeek-V3 Technical Report"</em>. arXiv:2412.19437.</p>
+          </div>
+        </div>
+
+        <!-- 1.3.7 FlashAttention -->
+        <h3>1.3.7 FlashAttention e eficiência de hardware</h3>
+        <p>Atenção padrão é O(N²) em memória. <strong>FlashAttention</strong> (Dao et al. 2022, arXiv:2205.14135; v2 2023; v3 2024) reorganiza o cálculo em blocos que cabem em SRAM da GPU, eliminando round-trips para HBM. Resultado: <strong>10–20× mais rápido</strong>, mesmo resultado matemático.</p>
+        <p>A diferença entre "contexto de 1M é viável" e "custa uma fortuna" frequentemente é FlashAttention + variante de atenção (GQA/MLA) + quantização. Isso explica por que modelos abertos alcançam provedores fechados.</p>
       </section>
 
       <!-- 1.4 -->

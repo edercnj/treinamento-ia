@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparador de Modelos e Simulador de Custo | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--color-surface, #1a1a2e);
+      border-radius: 8px;
+      border: 1px solid var(--color-border, rgba(255,255,255,0.1));
+    }
+    .filter-group { display: flex; align-items: center; gap: 0.5rem; }
+    .filter-group label { font-size: 0.875rem; color: var(--color-text-muted); }
+    .filter-group select, .filter-group input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--color-text, #e5e7eb);
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+    .filter-group input[type="text"] { width: 200px; }
+    #modelCount {
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+      margin-left: auto;
+      align-self: center;
+    }
+    .model-table th { cursor: pointer; user-select: none; position: relative; }
+    .model-table th:hover { background: rgba(99,102,241,0.15); }
+    .model-table th.sorted::after {
+      content: attr(data-dir);
+      position: absolute;
+      right: 8px;
+      color: #6366f1;
+    }
+    .badge-chip {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-think-yes { background: rgba(52,211,153,0.15); color: #6ee7b7; }
+    .badge-think-no { background: rgba(248,113,113,0.15); color: #fca5a5; }
+    .badge-think-partial { background: rgba(251,191,36,0.15); color: #fde68a; }
+    .simulator {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    @media (max-width: 820px) { .simulator { grid-template-columns: 1fr; } }
+    .sim-panel {
+      padding: 1.5rem;
+      background: var(--color-surface, #1a1a2e);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+    }
+    .sim-panel h3 { margin-top: 0; font-size: 1.125rem; color: #a5b4fc; }
+    .sim-field { margin-bottom: 1rem; }
+    .sim-field label {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .sim-field input, .sim-field select {
+      width: 100%;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--color-text, #e5e7eb);
+      padding: 0.6rem 0.75rem;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+    .sim-output {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.15));
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 10px;
+    }
+    .sim-output h3 {
+      margin-top: 0;
+      color: #c7d2fe;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cost-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.1);
+    }
+    .cost-line:last-child { border-bottom: none; }
+    .cost-line.total {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 2px solid rgba(99,102,241,0.4);
+      border-bottom: none;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #fbbf24;
+    }
+    .cost-value { font-family: 'JetBrains Mono', monospace; }
+    .comparison-diff {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      background: rgba(251,191,36,0.1);
+      border-left: 3px solid #fbbf24;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item active"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Comparador &amp; Simulador</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">&#128202;</div>
+        <h1>Comparador de Modelos e Simulador de Custo</h1>
+        <p class="module-desc">Compare modelos de IA lado-a-lado com filtros e ordenação, e simule o custo real de uma chamada incluindo thinking tokens. Dados atualizados abril/2026.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Ferramenta 1</span>
+        <h2>Comparador de Modelos Filtrável</h2>
+        <p>Filtre por provedor, thinking e faixa de preço. Clique nos cabeçalhos para ordenar.</p>
+
+        <div class="filters">
+          <div class="filter-group">
+            <label for="f-provider">Provedor:</label>
+            <select id="f-provider">
+              <option value="">Todos</option>
+              <option>Anthropic</option>
+              <option>OpenAI</option>
+              <option>Google</option>
+              <option>xAI</option>
+              <option>DeepSeek</option>
+              <option>Meta</option>
+              <option>Mistral</option>
+              <option>Alibaba</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="f-thinking">Thinking:</label>
+            <select id="f-thinking">
+              <option value="">Todos</option>
+              <option value="yes">Sim</option>
+              <option value="no">Não</option>
+              <option value="partial">Parcial</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="f-max-input">Input máx ($/1M):</label>
+            <input type="number" id="f-max-input" step="0.5" min="0" placeholder="ex: 5">
+          </div>
+          <div class="filter-group">
+            <label for="f-search">Buscar:</label>
+            <input type="text" id="f-search" placeholder="nome do modelo...">
+          </div>
+          <div id="modelCount"></div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="model-table" id="tbl">
+            <thead>
+              <tr>
+                <th data-key="name">Modelo</th>
+                <th data-key="provider">Provedor</th>
+                <th data-key="context">Contexto</th>
+                <th data-key="input">Input /1M</th>
+                <th data-key="output">Output /1M</th>
+                <th data-key="cache">Cache hit</th>
+                <th data-key="thinking">Thinking</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr>
+
+      <section class="fade-in">
+        <span class="section-badge">Ferramenta 2</span>
+        <h2>Simulador de Custo (Thinking vs. Direto)</h2>
+        <p>Modele o custo de uma chamada típica. Útil para decidir se vale a pena pagar reasoning tokens.</p>
+
+        <div class="simulator">
+          <div class="sim-panel">
+            <h3>Parâmetros</h3>
+            <div class="sim-field">
+              <label for="s-model">Modelo</label>
+              <select id="s-model"></select>
+            </div>
+            <div class="sim-field">
+              <label for="s-input">Tokens de input (prompt)</label>
+              <input type="number" id="s-input" value="4000" min="0">
+            </div>
+            <div class="sim-field">
+              <label for="s-output">Tokens de output (resposta)</label>
+              <input type="number" id="s-output" value="500" min="0">
+            </div>
+            <div class="sim-field">
+              <label for="s-thinking">Thinking tokens (se aplicável)</label>
+              <input type="number" id="s-thinking" value="3000" min="0">
+            </div>
+            <div class="sim-field">
+              <label for="s-cache">% do input cacheado (0-100)</label>
+              <input type="number" id="s-cache" value="0" min="0" max="100">
+            </div>
+            <div class="sim-field">
+              <label for="s-calls">Chamadas (ex: loop de agente)</label>
+              <input type="number" id="s-calls" value="1" min="1">
+            </div>
+          </div>
+
+          <div class="sim-output">
+            <h3>Custo Estimado</h3>
+            <div class="cost-line"><span>Input (não-cache)</span><span class="cost-value" id="o-input">$0.0000</span></div>
+            <div class="cost-line"><span>Input (cache hit)</span><span class="cost-value" id="o-cache">$0.0000</span></div>
+            <div class="cost-line"><span>Output</span><span class="cost-value" id="o-output">$0.0000</span></div>
+            <div class="cost-line" id="thinking-row"><span>Thinking tokens</span><span class="cost-value" id="o-thinking">$0.0000</span></div>
+            <div class="cost-line total"><span>Total por chamada</span><span class="cost-value" id="o-per-call">$0.0000</span></div>
+            <div class="cost-line total"><span>Total (× N chamadas)</span><span class="cost-value" id="o-total">$0.0000</span></div>
+            <div class="comparison-diff" id="o-compare"></div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">&#8505;&#65039;</span>
+          <div class="callout-content">
+            <div class="callout-title">Como interpretar</div>
+            <p>Thinking tokens contam como <strong>output</strong> na precificação (na prática, Anthropic, OpenAI e Google cobram thinking como output). Por isso um agente que faz 10 chamadas com 3K thinking cada pode custar <strong>10–30× mais</strong> que o mesmo prompt sem thinking — verifique se a tarefa realmente se beneficia antes de ativar extended thinking em loop.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+      <nav class="page-nav">
+        <a href="index.html" class="prev">
+          <span class="nav-label">&larr; Voltar</span>
+          <span class="nav-title">Início</span>
+        </a>
+        <a href="modulo-reasoning.html" class="next">
+          <span class="nav-label">Leia também &rarr;</span>
+          <span class="nav-title">Módulo 14 — Deep Thinking</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; 2026 &middot; Preços ilustrativos, verifique os sites oficiais
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+  <script>
+    // Dados dos modelos (abril/2026)
+    const MODELS = [
+      { name: "Claude Opus 4.6",   provider: "Anthropic", context: 1000000, input: 15.00, output: 75.00, cache: 1.50,   thinking: "yes" },
+      { name: "Claude Sonnet 4.6", provider: "Anthropic", context: 1000000, input: 3.00,  output: 15.00, cache: 0.30,   thinking: "yes" },
+      { name: "Claude Haiku 4.5",  provider: "Anthropic", context: 200000,  input: 1.00,  output: 5.00,  cache: 0.10,   thinking: "yes" },
+      { name: "GPT-5",             provider: "OpenAI",    context: 400000,  input: 5.00,  output: 20.00, cache: 0.50,   thinking: "yes" },
+      { name: "GPT-5-mini",        provider: "OpenAI",    context: 400000,  input: 0.30,  output: 1.20,  cache: 0.03,   thinking: "yes" },
+      { name: "o3",                provider: "OpenAI",    context: 200000,  input: 10.00, output: 40.00, cache: null,   thinking: "yes" },
+      { name: "o4-mini",           provider: "OpenAI",    context: 200000,  input: 1.10,  output: 4.40,  cache: null,   thinking: "yes" },
+      { name: "Gemini 2.5 Pro",    provider: "Google",    context: 2000000, input: 2.50,  output: 15.00, cache: 0.625,  thinking: "yes" },
+      { name: "Gemini 2.5 Flash",  provider: "Google",    context: 1000000, input: 0.30,  output: 2.50,  cache: 0.075,  thinking: "yes" },
+      { name: "Grok 4",            provider: "xAI",       context: 256000,  input: 5.00,  output: 15.00, cache: null,   thinking: "yes" },
+      { name: "DeepSeek-V3",       provider: "DeepSeek",  context: 128000,  input: 0.27,  output: 1.10,  cache: 0.07,   thinking: "no" },
+      { name: "DeepSeek-R1",       provider: "DeepSeek",  context: 128000,  input: 0.55,  output: 2.19,  cache: null,   thinking: "yes" },
+      { name: "Llama 4 Scout",     provider: "Meta",      context: 10000000,input: 0.40,  output: 1.60,  cache: null,   thinking: "no" },
+      { name: "Llama 4 Maverick",  provider: "Meta",      context: 1000000, input: 0.50,  output: 2.00,  cache: null,   thinking: "no" },
+      { name: "Mistral Large 2",   provider: "Mistral",   context: 128000,  input: 2.00,  output: 6.00,  cache: null,   thinking: "no" },
+      { name: "Qwen 3 Max",        provider: "Alibaba",   context: 128000,  input: 1.60,  output: 6.40,  cache: null,   thinking: "partial" },
+    ];
+
+    // Format helpers
+    const fmtCtx = n => n >= 1000000 ? (n/1000000) + "M" : (n/1000) + "K";
+    const fmtUSD = n => "$" + n.toFixed(4);
+    const fmtUSDshort = n => "$" + n.toFixed(2);
+    const thinkBadge = t => {
+      if (t === "yes")     return '<span class="badge-chip badge-think-yes">Sim</span>';
+      if (t === "no")      return '<span class="badge-chip badge-think-no">Não</span>';
+      return '<span class="badge-chip badge-think-partial">Parcial</span>';
+    };
+
+    // --- Comparator ---
+    let sortKey = "input", sortDir = 1;
+    const tbody = document.getElementById("tbody");
+
+    function render() {
+      const fp = document.getElementById("f-provider").value;
+      const ft = document.getElementById("f-thinking").value;
+      const fmax = parseFloat(document.getElementById("f-max-input").value);
+      const fs = document.getElementById("f-search").value.toLowerCase();
+
+      let rows = MODELS.filter(m => {
+        if (fp && m.provider !== fp) return false;
+        if (ft && m.thinking !== ft) return false;
+        if (!isNaN(fmax) && m.input > fmax) return false;
+        if (fs && !m.name.toLowerCase().includes(fs)) return false;
+        return true;
+      });
+
+      rows.sort((a, b) => {
+        let va = a[sortKey], vb = b[sortKey];
+        if (va === null) va = Infinity;
+        if (vb === null) vb = Infinity;
+        if (typeof va === "string") return sortDir * va.localeCompare(vb);
+        return sortDir * (va - vb);
+      });
+
+      tbody.innerHTML = rows.map(m => `
+        <tr>
+          <td><strong>${m.name}</strong></td>
+          <td>${m.provider}</td>
+          <td>${fmtCtx(m.context)}</td>
+          <td>${fmtUSDshort(m.input)}</td>
+          <td>${fmtUSDshort(m.output)}</td>
+          <td>${m.cache !== null ? fmtUSDshort(m.cache) : "—"}</td>
+          <td>${thinkBadge(m.thinking)}</td>
+        </tr>
+      `).join("");
+
+      document.getElementById("modelCount").textContent =
+        `${rows.length} de ${MODELS.length} modelos`;
+
+      document.querySelectorAll("th[data-key]").forEach(th => {
+        th.classList.remove("sorted");
+        th.removeAttribute("data-dir");
+        if (th.dataset.key === sortKey) {
+          th.classList.add("sorted");
+          th.setAttribute("data-dir", sortDir === 1 ? " ▲" : " ▼");
+        }
+      });
+    }
+
+    document.querySelectorAll("th[data-key]").forEach(th => {
+      th.addEventListener("click", () => {
+        if (sortKey === th.dataset.key) sortDir *= -1;
+        else { sortKey = th.dataset.key; sortDir = 1; }
+        render();
+      });
+    });
+    ["f-provider","f-thinking","f-max-input","f-search"].forEach(id => {
+      document.getElementById(id).addEventListener("input", render);
+    });
+
+    // --- Simulator ---
+    const modelSelect = document.getElementById("s-model");
+    MODELS.forEach((m, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = m.name + " (" + m.provider + ")";
+      modelSelect.appendChild(opt);
+    });
+    modelSelect.value = 1; // Sonnet 4.6 default
+
+    function calc() {
+      const m = MODELS[+modelSelect.value];
+      const inp = +document.getElementById("s-input").value || 0;
+      const out = +document.getElementById("s-output").value || 0;
+      const thk = +document.getElementById("s-thinking").value || 0;
+      const cachePct = Math.max(0, Math.min(100, +document.getElementById("s-cache").value || 0));
+      const calls = Math.max(1, +document.getElementById("s-calls").value || 1);
+
+      const cachedTokens = inp * (cachePct / 100);
+      const freshTokens = inp - cachedTokens;
+
+      const costFresh = (freshTokens / 1e6) * m.input;
+      const costCache = m.cache !== null ? (cachedTokens / 1e6) * m.cache : (cachedTokens / 1e6) * m.input;
+      const costOut = (out / 1e6) * m.output;
+      // Thinking tokens priced as output
+      const costThink = m.thinking !== "no" ? (thk / 1e6) * m.output : 0;
+
+      const perCall = costFresh + costCache + costOut + costThink;
+      const total = perCall * calls;
+
+      document.getElementById("o-input").textContent = fmtUSD(costFresh);
+      document.getElementById("o-cache").textContent = fmtUSD(costCache);
+      document.getElementById("o-output").textContent = fmtUSD(costOut);
+      document.getElementById("o-thinking").textContent = fmtUSD(costThink);
+      document.getElementById("o-per-call").textContent = fmtUSD(perCall);
+      document.getElementById("o-total").textContent = fmtUSD(total);
+
+      const thinkingRow = document.getElementById("thinking-row");
+      thinkingRow.style.opacity = m.thinking === "no" ? 0.4 : 1;
+
+      // Comparison
+      const withoutThinking = costFresh + costCache + costOut;
+      const withThinking = perCall;
+      const ratio = withoutThinking > 0 ? (withThinking / withoutThinking) : 1;
+      const diffEl = document.getElementById("o-compare");
+      if (m.thinking === "no") {
+        diffEl.innerHTML = `<strong>Modelo sem thinking.</strong> Para comparar o custo com thinking, selecione um reasoning model (Claude 4.6, o3, DeepSeek-R1, Gemini 2.5, etc.).`;
+      } else if (thk === 0) {
+        diffEl.innerHTML = `<strong>Sem thinking.</strong> Aumente os thinking tokens para ver o impacto no custo.`;
+      } else {
+        const pct = ((ratio - 1) * 100).toFixed(0);
+        diffEl.innerHTML = `Com ${thk.toLocaleString()} thinking tokens, o custo sobe <strong>${pct}%</strong> (${ratio.toFixed(2)}×) em relação a uma chamada sem thinking. Em um loop de ${calls} chamadas, isso representa <strong>${fmtUSD(total - (withoutThinking * calls))}</strong> a mais no total.`;
+      }
+    }
+
+    ["s-model","s-input","s-output","s-thinking","s-cache","s-calls"].forEach(id => {
+      document.getElementById(id).addEventListener("input", calc);
+    });
+
+    render();
+    calc();
+  </script>
+</body>
+</html>

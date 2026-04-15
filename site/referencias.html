@@ -22,6 +22,10 @@
       </a>
     </div>
     <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
       <div class="nav-section-title">Fundamentos</div>
       <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
       <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
@@ -43,9 +47,18 @@
       <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
       <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
 
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+
       <div class="nav-section-title">Apêndices</div>
       <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
-      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="referencias.html" class="nav-item active"><span class="nav-number">B</span> Referências</a>
       <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
     </nav>
   </aside>
@@ -157,6 +170,119 @@
             arXiv:2302.06590 &mdash; <a href="https://arxiv.org/abs/2302.06590" target="_blank">https://arxiv.org/abs/2302.06590</a>
           </li>
         </ol>
+      </section>
+
+      <hr>
+
+      <!-- Papers da Trilha Avançada v2.0 -->
+      <section class="fade-in">
+        <span class="section-badge">Trilha Avançada &middot; v2.0</span>
+        <h2>Papers Adicionais (Reasoning, Alinhamento, Avaliação, RAG, Arquitetura)</h2>
+
+        <h3>Reasoning e Test-time Compute</h3>
+        <ol>
+          <li><strong>DeepSeek-AI</strong> (2025). "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL". arXiv:2501.12948 &mdash; <a href="https://arxiv.org/abs/2501.12948" target="_blank">arxiv.org/abs/2501.12948</a> — Paper seminal aberto sobre reasoning via RL puro.</li>
+          <li><strong>Snell, C. et al.</strong> (2024). "Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters". arXiv:2408.03314</li>
+          <li><strong>OpenAI</strong> (2024). "Learning to Reason with LLMs" (post técnico do o1). <a href="https://openai.com/index/learning-to-reason-with-llms/" target="_blank">openai.com</a></li>
+          <li><strong>Kimi Team</strong> (2025). "Kimi k1.5: Scaling RL with LLMs". arXiv:2501.12599</li>
+          <li><strong>Turpin, M. et al.</strong> (2023). "Language Models Don't Always Say What They Think". arXiv:2305.04388 — sobre faithfulness of chain-of-thought.</li>
+          <li><strong>Chen, X. et al.</strong> (2024). "Do NOT Think That Much for 2+3=? On the Overthinking of o1-Like LLMs". arXiv:2412.21187</li>
+        </ol>
+
+        <h3>Alinhamento e Segurança</h3>
+        <ol>
+          <li><strong>Askell, A. et al.</strong> (2021). "A General Language Assistant as a Laboratory for Alignment" (princípio HHH). arXiv:2112.00861</li>
+          <li><strong>Rafailov, R. et al.</strong> (2023). "Direct Preference Optimization" (DPO). arXiv:2305.18290</li>
+          <li><strong>Schulman, J. et al.</strong> (2017). "Proximal Policy Optimization Algorithms" (PPO). arXiv:1707.06347</li>
+          <li><strong>Sharma, M. et al.</strong> (2023). "Towards Understanding Sycophancy in Language Models". arXiv:2310.13548</li>
+          <li><strong>Hubinger, E. et al.</strong> (2024). "Sleeper Agents: Training Deceptive LLMs that Persist Through Safety Training". arXiv:2401.05566</li>
+          <li><strong>Zou, A. et al.</strong> (2023). "Universal and Transferable Adversarial Attacks on Aligned Language Models". arXiv:2307.15043</li>
+          <li><strong>Greshake, K. et al.</strong> (2023). "Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection". arXiv:2302.12173</li>
+          <li><strong>Hendrycks, D. et al.</strong> (2023). "An Overview of Catastrophic AI Risks". arXiv:2306.12001</li>
+          <li><strong>Ngo, R. et al.</strong> (2022). "The Alignment Problem from a Deep Learning Perspective". arXiv:2209.00626</li>
+          <li><strong>Bender, E. et al.</strong> (2021). "On the Dangers of Stochastic Parrots". FAccT.</li>
+          <li><strong>Olsson, C. et al.</strong> (2022). "In-context Learning and Induction Heads". arXiv:2209.11895</li>
+          <li><strong>Templeton, A. et al.</strong> (2024). "Scaling Monosemanticity" (Anthropic Transformer Circuits). <a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" target="_blank">transformer-circuits.pub</a></li>
+        </ol>
+
+        <h3>Avaliação e Benchmarks</h3>
+        <ol>
+          <li><strong>Liang, P. et al.</strong> (2022). "Holistic Evaluation of Language Models (HELM)". arXiv:2211.09110</li>
+          <li><strong>Chang, Y. et al.</strong> (2023). "A Survey on Evaluation of Large Language Models". arXiv:2307.03109</li>
+          <li><strong>Zheng, L. et al.</strong> (2023). "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena". arXiv:2306.05685</li>
+          <li><strong>Chiang, W. et al.</strong> (2024). "Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference". arXiv:2403.04132</li>
+          <li><strong>Wang, Y. et al.</strong> (2024). "MMLU-Pro". arXiv:2406.01574</li>
+          <li><strong>Rein, D. et al.</strong> (2023). "GPQA: A Graduate-Level Google-Proof Q&amp;A Benchmark". arXiv:2311.12022</li>
+          <li><strong>Jimenez, C. et al.</strong> (2024). "SWE-Bench: Can Language Models Resolve Real-World GitHub Issues?". ICLR, arXiv:2310.06770</li>
+          <li><strong>Hsieh, C. et al.</strong> (2024). "RULER: What's the Real Context Size of Your Long-Context Language Models?". arXiv:2404.06654</li>
+          <li><strong>Jain, N. et al.</strong> (2024). "LiveCodeBench: Holistic and Contamination Free Evaluation of Large Language Models for Code". arXiv:2403.07974</li>
+          <li><strong>Chollet, F.</strong> (2019). "On the Measure of Intelligence" (ARC). arXiv:1911.01547</li>
+          <li><strong>Balloccu, S. et al.</strong> (2024). "Leak, Cheat, Repeat: Data Contamination and Evaluation Malpractices in Closed-Source LLMs". arXiv:2402.03927</li>
+          <li><strong>Schaeffer, R. et al.</strong> (2023). "Are Emergent Abilities of Large Language Models a Mirage?". NeurIPS, arXiv:2304.15004</li>
+        </ol>
+
+        <h3>Embeddings, Retrieval e RAG</h3>
+        <ol>
+          <li><strong>Lewis, P. et al.</strong> (2020). "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks". NeurIPS, arXiv:2005.11401</li>
+          <li><strong>Karpukhin, V. et al.</strong> (2020). "Dense Passage Retrieval for Open-Domain Question Answering". arXiv:2004.04906</li>
+          <li><strong>Khattab, O. &amp; Zaharia, M.</strong> (2020). "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT". arXiv:2004.12832</li>
+          <li><strong>Reimers, N. &amp; Gurevych, I.</strong> (2019). "Sentence-BERT". arXiv:1908.10084</li>
+          <li><strong>Muennighoff, N. et al.</strong> (2022). "MTEB: Massive Text Embedding Benchmark". arXiv:2210.07316</li>
+          <li><strong>Asai, A. et al.</strong> (2023). "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection". arXiv:2310.11511</li>
+          <li><strong>Edge, D. et al.</strong> (2024). "From Local to Global: A Graph RAG Approach to Query-Focused Summarization". arXiv:2404.16130</li>
+          <li><strong>Li, T. et al.</strong> (2024). "Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study". arXiv:2407.16833</li>
+          <li><strong>Anthropic</strong> (2024). "Introducing Contextual Retrieval". <a href="https://www.anthropic.com/news/contextual-retrieval" target="_blank">anthropic.com</a></li>
+          <li><strong>Mikolov, T. et al.</strong> (2013). "Efficient Estimation of Word Representations in Vector Space" (word2vec). arXiv:1301.3781</li>
+        </ol>
+
+        <h3>Arquitetura e Eficiência</h3>
+        <ol>
+          <li><strong>Kaplan, J. et al.</strong> (2020). "Scaling Laws for Neural Language Models". arXiv:2001.08361</li>
+          <li><strong>Hoffmann, J. et al.</strong> (2022). "Training Compute-Optimal Large Language Models" (Chinchilla). arXiv:2203.15556</li>
+          <li><strong>Wei, J. et al.</strong> (2022). "Emergent Abilities of Large Language Models". arXiv:2206.07682</li>
+          <li><strong>Dao, T. et al.</strong> (2022). "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness". arXiv:2205.14135</li>
+          <li><strong>Su, J. et al.</strong> (2021). "RoFormer: Enhanced Transformer with Rotary Position Embedding" (RoPE). arXiv:2104.09864</li>
+          <li><strong>Press, O. et al.</strong> (2022). "Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation" (ALiBi). arXiv:2108.12409</li>
+          <li><strong>Peng, B. et al.</strong> (2023). "YaRN: Efficient Context Window Extension of Large Language Models". arXiv:2309.00071</li>
+          <li><strong>Ainslie, J. et al.</strong> (2023). "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints". arXiv:2305.13245</li>
+          <li><strong>Shazeer, N. et al.</strong> (2017). "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer". arXiv:1701.06538</li>
+          <li><strong>Fedus, W. et al.</strong> (2022). "Switch Transformer: Scaling to Trillion Parameter Models". arXiv:2101.03961</li>
+          <li><strong>DeepSeek-AI</strong> (2024). "DeepSeek-V3 Technical Report". arXiv:2412.19437</li>
+          <li><strong>Kingma, D. &amp; Ba, J.</strong> (2015). "Adam: A Method for Stochastic Optimization". arXiv:1412.6980</li>
+          <li><strong>Dettmers, T. et al.</strong> (2022). "LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale". arXiv:2208.07339</li>
+          <li><strong>Frantar, E. et al.</strong> (2023). "GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers". arXiv:2210.17323</li>
+          <li><strong>Villalobos, P. et al.</strong> (2024). "Will We Run Out of Data? Limits of LLM Scaling". arXiv:2211.04325</li>
+        </ol>
+
+        <h3>História da IA (Módulo 00)</h3>
+        <ol>
+          <li><strong>Turing, A. M.</strong> (1950). "Computing Machinery and Intelligence". Mind 59(236).</li>
+          <li><strong>Rosenblatt, F.</strong> (1958). "The perceptron: A probabilistic model for information storage and organization in the brain". Psychological Review 65(6).</li>
+          <li><strong>Rumelhart, D., Hinton, G. &amp; Williams, R.</strong> (1986). "Learning representations by back-propagating errors". Nature 323.</li>
+          <li><strong>Hochreiter, S. &amp; Schmidhuber, J.</strong> (1997). "Long Short-Term Memory". Neural Computation 9(8).</li>
+          <li><strong>Schmidhuber, J.</strong> (2015). "Deep Learning in Neural Networks: An Overview". arXiv:1404.7828</li>
+          <li><strong>Krizhevsky, A., Sutskever, I. &amp; Hinton, G.</strong> (2012). "ImageNet Classification with Deep Convolutional Neural Networks" (AlexNet). NeurIPS.</li>
+        </ol>
+
+        <h3>Autores para seguir</h3>
+        <ul>
+          <li><strong>Lilian Weng</strong> — <a href="https://lilianweng.github.io" target="_blank">lilianweng.github.io</a> — posts técnicos densos.</li>
+          <li><strong>Sebastian Raschka</strong> — <a href="https://magazine.sebastianraschka.com" target="_blank">magazine.sebastianraschka.com</a></li>
+          <li><strong>Chip Huyen</strong> — <a href="https://huyenchip.com" target="_blank">huyenchip.com</a> — autora de <em>AI Engineering</em> (O'Reilly 2025).</li>
+          <li><strong>Simon Willison</strong> — <a href="https://simonwillison.net" target="_blank">simonwillison.net</a> — pragmatismo e prompt injection.</li>
+          <li><strong>Andrej Karpathy</strong> — tutoriais de código em YouTube (série <em>Zero to Hero</em>).</li>
+          <li><strong>Nathan Lambert</strong> — <a href="https://www.interconnects.ai" target="_blank">interconnects.ai</a> — RLHF e reasoning.</li>
+        </ul>
+
+        <h3>Livros adicionais recomendados</h3>
+        <ul>
+          <li><strong>Russell, S. &amp; Norvig, P.</strong> (2020). <em>Artificial Intelligence: A Modern Approach</em> (4ª ed.). Pearson.</li>
+          <li><strong>Goodfellow, I., Bengio, Y. &amp; Courville, A.</strong> (2016). <em>Deep Learning</em>. MIT Press. Gratuito em <a href="https://www.deeplearningbook.org" target="_blank">deeplearningbook.org</a></li>
+          <li><strong>Bishop, C. M.</strong> (2006). <em>Pattern Recognition and Machine Learning</em>. Springer.</li>
+          <li><strong>Murphy, K.</strong> (2022). <em>Probabilistic Machine Learning</em>. MIT Press. <a href="https://probml.github.io/pml-book/" target="_blank">probml.github.io/pml-book</a></li>
+          <li><strong>Raschka, S.</strong> (2024). <em>Build a Large Language Model (From Scratch)</em>. Manning.</li>
+          <li><strong>Huyen, C.</strong> (2025). <em>AI Engineering</em>. O'Reilly.</li>
+        </ul>
       </section>
 
       <hr>

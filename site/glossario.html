@@ -22,6 +22,10 @@
       </a>
     </div>
     <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
       <div class="nav-section-title">Fundamentos</div>
       <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
       <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
@@ -43,10 +47,19 @@
       <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
       <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
 
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+
       <div class="nav-section-title">Apêndices</div>
       <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
       <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
-      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+      <a href="glossario.html" class="nav-item active"><span class="nav-number">C</span> Glossário</a>
     </nav>
   </aside>
 
@@ -196,6 +209,39 @@
                 <td><strong>Zero-Shot</strong></td>
                 <td>Prompting sem exemplos</td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 style="margin-top: 3rem;">Termos adicionados na v2.0 (Trilha Avançada)</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Termo</th><th>Definição</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Constitutional AI</strong></td><td>Alinhamento baseado em princípios escritos (Anthropic). Alternativa escalável ao RLHF.</td></tr>
+              <tr><td><strong>DPO</strong></td><td>Direct Preference Optimization — otimiza sobre pares preferidos sem reward model explícito.</td></tr>
+              <tr><td><strong>FlashAttention</strong></td><td>Algoritmo I/O-eficiente de atenção. Reorganiza cálculo em blocos para caber em SRAM da GPU.</td></tr>
+              <tr><td><strong>GQA</strong></td><td>Grouped-Query Attention — variante que reduz KV cache. Usado em Llama 2/3/4.</td></tr>
+              <tr><td><strong>KV Cache</strong></td><td>Cache de Keys/Values já processados na inferência. Habilita prompt caching.</td></tr>
+              <tr><td><strong>MLA</strong></td><td>Multi-head Latent Attention — comprime KV via projeção de baixa dimensão (DeepSeek).</td></tr>
+              <tr><td><strong>MoE</strong></td><td>Mixture of Experts — arquitetura esparsa com roteador + N experts. Total params ≠ active params.</td></tr>
+              <tr><td><strong>Perplexidade</strong></td><td>exp(loss); métrica de qualidade de language model. Menor = melhor.</td></tr>
+              <tr><td><strong>PPO</strong></td><td>Proximal Policy Optimization — algoritmo de RL usado no RLHF.</td></tr>
+              <tr><td><strong>Prompt Injection</strong></td><td>Ataque onde dados externos (emails, páginas, tool outputs) contêm instruções maliciosas.</td></tr>
+              <tr><td><strong>Quantização</strong></td><td>Reduzir precisão numérica dos pesos (fp16→int4). Habilita inferência local.</td></tr>
+              <tr><td><strong>Reasoning Model</strong></td><td>Modelo que gera longa CoT interna antes de responder. Ex: o1, o3, DeepSeek-R1.</td></tr>
+              <tr><td><strong>Re-ranker</strong></td><td>Segundo estágio de retrieval; cross-encoder pontua query+doc juntos.</td></tr>
+              <tr><td><strong>RLAIF</strong></td><td>Reinforcement Learning from AI Feedback (Constitutional AI).</td></tr>
+              <tr><td><strong>RLVR</strong></td><td>RL from Verifiable Rewards — base dos reasoning models.</td></tr>
+              <tr><td><strong>RoPE</strong></td><td>Rotary Positional Embedding — rotaciona Q e K por ângulos dependentes da posição.</td></tr>
+              <tr><td><strong>Scaling Laws</strong></td><td>Leis de potência entre params, dados, compute e loss. Chinchilla-optimal = dobrar N e D juntos.</td></tr>
+              <tr><td><strong>SFT</strong></td><td>Supervised Fine-Tuning — primeira fase do alinhamento após pré-treinamento.</td></tr>
+              <tr><td><strong>Test-time Compute</strong></td><td>Computação gasta na inferência (thinking). Alternativa ao scaling de pré-treino.</td></tr>
+              <tr><td><strong>Thinking Tokens</strong></td><td>Tokens de chain-of-thought interna em reasoning models.</td></tr>
+              <tr><td><strong>ColBERT</strong></td><td>Late interaction retrieval — representa cada token, não só o doc inteiro.</td></tr>
+              <tr><td><strong>GraphRAG</strong></td><td>RAG com knowledge graph extraído do corpus para queries globais.</td></tr>
+              <tr><td><strong>Jailbreak</strong></td><td>Prompt adversarial que desativa guardrails do modelo.</td></tr>
+              <tr><td><strong>Sycophancy</strong></td><td>Tendência do modelo a concordar com o usuário mesmo quando este está errado.</td></tr>
             </tbody>
           </table>
         </div>
