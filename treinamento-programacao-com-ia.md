@@ -1,6 +1,6 @@
 # Programação com Agentes de IA: Treinamento Completo
 
-> **Versão:** 2.0 (Edição Profunda) | **Data:** Abril 2026
+> **Versão:** 3.0 (Edição Engenharia) | **Data:** Abril 2026 | **Última atualização:** 2026-04-15
 > **Público-alvo:** Desenvolvedores de software que desejam dominar a programação assistida por IA
 > **Formato de entrega:** Site interativo (gerado a partir deste documento)
 >
@@ -34,6 +34,15 @@
 - [Módulo 13 — Alinhamento, Segurança e Red-Teaming](#módulo-13--alinhamento-segurança-e-red-teaming)
 - [Módulo 14 — Avaliação de Modelos e Benchmarks](#módulo-14--avaliação-de-modelos-e-benchmarks)
 - [Módulo 15 — Embeddings, Retrieval e RAG Avançado](#módulo-15--embeddings-retrieval-e-rag-avançado)
+
+**Trilha de Engenharia (novos na v3.0)**
+- [Módulo 16 — Tool Calling e Structured Outputs](#módulo-16--tool-calling-e-structured-outputs)
+- [Módulo 17 — LLMOps e Observabilidade em Produção](#módulo-17--llmops-e-observabilidade-em-produção)
+- [Módulo 18 — Multimodalidade: Visão, Áudio e Além](#módulo-18--multimodalidade-visão-áudio-e-além)
+- [Módulo 19 — Otimização de Custo e Eficiência](#módulo-19--otimização-de-custo-e-eficiência)
+- [Módulo 20 — Fine-tuning, LoRA e Adaptação](#módulo-20--fine-tuning-lora-e-adaptação)
+- [Módulo 21 — IA com Português Brasileiro](#módulo-21--ia-com-português-brasileiro)
+- [Módulo 22 — Projeto Capstone](#módulo-22--projeto-capstone-agente-de-revisão-de-prs)
 
 **Apêndices**
 - [Apêndice A — Ferramentas Práticas e Simuladores](#apêndice-a--ferramentas-práticas-e-simuladores)
@@ -2719,6 +2728,808 @@ Cada caixa é um ponto de falha. **Avalie cada estágio separadamente** (ver Mó
 - Gao, Y. et al. (2023). *"Retrieval-Augmented Generation for Large Language Models: A Survey"*. arXiv:2312.10997.
 - Asai, A. et al. (2023). *"Self-RAG"*. arXiv:2310.11511 — o modelo decide quando recuperar.
 - Huyen, C. (2025). *AI Engineering*. O'Reilly. — livro prático, ótimo tratamento de RAG.
+
+---
+
+## Módulo 16 — Tool Calling e Structured Outputs
+
+> **Por que este módulo existe:** um agente de IA *é* um loop de chamadas de ferramenta. Os módulos anteriores falam de agentes abstratamente — este ensina a mecânica real da API: schemas JSON, `tool_use` blocks, parallel tool calls e decodificação restrita.
+
+### 16.1 Anatomia de uma chamada com tools
+
+O fluxo canônico, comum a Anthropic, OpenAI e Google:
+
+```
+1. Cliente envia: mensagem do usuário + lista de tools disponíveis (JSON schema)
+2. Modelo responde: ou texto puro, ou um tool_use block (nome + argumentos JSON)
+3. Cliente executa a tool e envia de volta um tool_result com o output
+4. Modelo integra o resultado e responde (ou chama mais tools em loop)
+```
+
+**Exemplo (Anthropic Messages API, simplificado):**
+
+```python
+tools = [{
+    "name": "get_weather",
+    "description": "Retorna tempo atual para uma localização",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "location": {"type": "string"},
+            "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]}
+        },
+        "required": ["location"]
+    }
+}]
+
+response = client.messages.create(
+    model="claude-opus-4-6",
+    tools=tools,
+    messages=[{"role": "user", "content": "Como está o tempo em Salvador?"}]
+)
+# response.content conterá um tool_use block:
+# {"type": "tool_use", "name": "get_weather", "input": {"location": "Salvador, BA"}}
+```
+
+**Ref canônica:**
+- Anthropic. *"Tool use with Claude"*. https://docs.anthropic.com/en/docs/build-with-claude/tool-use
+- OpenAI. *"Function calling"*. https://platform.openai.com/docs/guides/function-calling
+- Google. *"Function calling with Gemini"*. https://ai.google.dev/gemini-api/docs/function-calling
+
+### 16.2 Schemas: a linguagem que os modelos falam
+
+**JSON Schema** (Draft 2020-12) é o denominador comum. Boas práticas aprendidas em produção:
+
+1. **Descrições importam mais que nomes.** O modelo lê o campo `description` — escreva como documentação para um humano júnior.
+2. **Use `enum` sempre que puder.** Reduz alucinação de valores inválidos drasticamente.
+3. **Evite schemas profundos.** Estruturas além de 3 níveis de aninhamento degradam qualidade. Achate quando possível.
+4. **`required` não é uma sugestão.** Marque explicitamente campos obrigatórios — modelos omitirão campos opcionais às vezes.
+5. **Exemplos no `description`.** Few-shot dentro do schema melhora adesão ao formato.
+
+### 16.3 Parallel tool calls
+
+Modelos modernos (Claude 3.5+, GPT-4+, Gemini 1.5+) podem retornar **múltiplas tool calls na mesma resposta** quando são independentes:
+
+```python
+# User: "Qual o tempo em SP, RJ e BH agora?"
+# Modelo retorna 3 tool_use blocks em paralelo
+# Cliente executa os 3 em paralelo (asyncio.gather) e retorna 3 tool_results juntos
+```
+
+Isso reduz latência drasticamente em agentes. **Sempre implemente execução paralela no cliente** — o modelo já fez o trabalho cognitivo de decidir a independência.
+
+**Ref:** OpenAI. *"Parallel function calling"*. https://platform.openai.com/docs/guides/function-calling#parallel-function-calling
+
+### 16.4 `tool_choice`: forçando comportamento
+
+| Valor | Efeito |
+|---|---|
+| `auto` (default) | Modelo decide se usa tool ou responde direto |
+| `none` | Proíbe uso de tools, apenas texto |
+| `required` / `any` | Obriga uso de alguma tool |
+| `{"type": "tool", "name": "X"}` | Força tool específica |
+
+Útil para pipelines determinísticos onde a primeira etapa deve ser sempre um tool call (ex: classificação antes de resposta).
+
+### 16.5 Structured Outputs: além de tool calling
+
+Nem toda necessidade de JSON é uma "ferramenta". Às vezes você só quer **resposta estruturada**:
+
+- **JSON mode** (OpenAI `response_format: json_object`) — garante JSON válido, não necessariamente conforme schema.
+- **Strict schema mode** (OpenAI `json_schema` strict) — JSON conforme schema exato, 100% garantido via constrained decoding.
+- **Anthropic**: sem modo JSON dedicado; use tool calling com uma única tool como workaround (padrão bem documentado).
+- **Google Gemini**: `response_mime_type="application/json"` + `response_schema`.
+
+### 16.6 Decodificação restrita (constrained decoding)
+
+Como é possível garantir **100% de conformidade ao schema**? Via modificação da etapa de amostragem (Seção 1.3.2):
+
+```
+A cada token, antes de softmax:
+  1. Computar quais tokens são válidos dado o estado atual do parser
+  2. Zerar a probabilidade dos inválidos
+  3. Amostrar apenas dos válidos
+```
+
+Isso é **decodificação restrita** e garante que a saída seja sintaticamente válida.
+
+**Frameworks open-source:**
+- **Outlines** (Willard & Louf, 2023) — regex, JSON Schema, Pydantic, CFG. arXiv:2307.09702. https://github.com/dottxt-ai/outlines
+- **XGrammar** (Dong et al. 2024) — grammars eficientes, usado em vLLM. arXiv:2411.15100
+- **GBNF** (llama.cpp) — grammar-based Naur form para llama.cpp.
+- **LMQL** (Beurer-Kellner et al. 2023) — linguagem de query para LLMs.
+- **BAML** (Boundary ML) — schema-first DX focado em TypeScript/Python.
+- **Instructor** (Python) — wrapper Pydantic-first sobre OpenAI/Anthropic.
+
+**Papers fundamentais:**
+- Willard, B. T. & Louf, R. (2023). *"Efficient Guided Generation for Large Language Models"*. arXiv:2307.09702 — formaliza constrained decoding como FSM masking.
+- Dong, Y. et al. (2024). *"XGrammar: Flexible and Efficient Structured Generation Engine"*. arXiv:2411.15100 — estado da arte em performance.
+- Scholak, T. et al. (2021). *"PICARD: Parsing Incrementally for Constrained Auto-Regressive Decoding"*. EMNLP, arXiv:2109.05093 — trabalho fundacional em text-to-SQL.
+
+### 16.7 Padrões de erro e recuperação
+
+Produção tem edge cases que tutoriais não mostram:
+
+1. **Tool name hallucinated** — modelo chama tool que não existe. Validação + mensagem de erro explícita ao modelo ajuda ele a se corrigir.
+2. **Argumentos malformados** — JSON inválido ou schema violado. Use structured outputs ou valide + pergunte novamente.
+3. **Loop infinito de tool calls** — limite de iterações, timeout total, detecção de repetição.
+4. **Tool timeout** — modelo ficou esperando resultado que nunca veio. Implementar timeout + retorno de `tool_result` com `is_error: true`.
+5. **Output muito grande** — resultado de tool exaurindo contexto. Truncar + resumir antes de retornar ao modelo.
+
+### 16.8 Toolformer e a evolução do tool use
+
+O paper que sistematizou o tema antes da padronização das APIs:
+
+**Schick, T. et al. (2023).** *"Toolformer: Language Models Can Teach Themselves to Use Tools"*. Meta AI. arXiv:2302.04761. — modelo aprende *quando* e *como* chamar tools a partir de auto-supervisão.
+
+**Qin, Y. et al. (2023).** *"ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs"*. arXiv:2307.16789 — benchmark e dataset de tool calling em larga escala.
+
+### 16.9 Leitura recomendada
+
+- Anthropic — *"Building effective agents"* (blog 2024). https://www.anthropic.com/research/building-effective-agents
+- Huyen, C. (2025). *AI Engineering*, O'Reilly. Capítulos sobre tools e structured outputs.
+- Willison, S. (blog) — posts sobre Toolformer, prompt injection em tool use.
+
+---
+
+## Módulo 17 — LLMOps e Observabilidade em Produção
+
+> **A maioria dos projetos de IA não falha na escolha do modelo — falha na operação.** Este módulo cobre o que acontece depois do deploy: tracing, versionamento de prompts, guardrails em runtime, rate limits, fallbacks e migração entre modelos.
+
+### 17.1 LLMOps vs. MLOps
+
+MLOps clássico lida com modelos próprios, treinados e versionados como artefatos. **LLMOps** adiciona complicações específicas:
+
+- O "modelo" é uma API externa que o provedor muda sem avisar.
+- O artefato mais importante é o **prompt**, não o modelo.
+- Custo varia por token, não por compute alocado.
+- Latência é imprevisível (modelos de reasoning podem levar minutos).
+- Deprecação de modelos é frequente (3–12 meses).
+
+**Ref consolidada:** Huyen, C. (2025). *AI Engineering*. O'Reilly — único livro sério cobrindo LLMOps end-to-end em 2026.
+
+### 17.2 Tracing: entender o que aconteceu
+
+Um trace captura a árvore completa de chamadas:
+
+```
+Request X
+├── LLM call #1 (planning)      [claude-opus-4-6, 1.2s, 1240 tokens, $0.019]
+├── Tool: search_docs           [280ms]
+├── LLM call #2 (synthesis)     [claude-sonnet-4-6, 0.8s, 890 tokens, $0.003]
+└── Output validation           [12ms]
+```
+
+**OpenTelemetry GenAI Semantic Conventions** (2024+) padronizou nomes de campos (`gen_ai.request.model`, `gen_ai.usage.input_tokens`, etc.). Usar isso permite trocar a plataforma sem reescrever instrumentação.
+
+**Ref:** OpenTelemetry. *"Semantic Conventions for Generative AI"*. https://opentelemetry.io/docs/specs/semconv/gen-ai/
+
+**Plataformas:**
+| Plataforma | Pontos fortes |
+|---|---|
+| **LangSmith** | Integração profunda com LangChain/LangGraph |
+| **Langfuse** | Open source, self-hostable, OpenTelemetry-native |
+| **Helicone** | Proxy simples, boa análise de custo |
+| **Braintrust** | Strong evals + observability combinados |
+| **Arize Phoenix** | Open source, foco em ML observability |
+| **Weights & Biases Weave** | Ecossistema W&B |
+
+### 17.3 Prompt Registry e versionamento
+
+Prompts em código-fonte dificultam iteração. Alternativas:
+
+- **Prompt registry externo** (LangSmith Prompts, Langfuse Prompts) — armazena versões, permite rollback sem deploy.
+- **MDX/YAML no repo** — versionamento via git, diff legível, revisável em PR. Funciona bem até certa escala.
+- **BAML / DSPy** — declarativo, compila prompts a partir de schemas e exemplos.
+
+**Ref:**
+- DSPy — Khattab, O. et al. (2023). *"DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines"*. Stanford, arXiv:2310.03714. https://github.com/stanfordnlp/dspy
+
+### 17.4 Guardrails em runtime
+
+Além do alinhamento do modelo (Módulo 13), guardrails externos protegem em casos adversariais:
+
+- **Llama Guard** — Meta, classificador open source para input/output. Inan et al. 2023, arXiv:2312.06674. https://github.com/meta-llama/PurpleLlama
+- **NVIDIA NeMo Guardrails** — Colang DSL para políticas. Rebedea et al. 2023, arXiv:2310.10501.
+- **Guardrails AI** — validadores composáveis em Python.
+- **Anthropic Constitutional Classifiers** — filtros especializados.
+- **OpenAI Moderation API** — classificador gratuito para categorias de risco.
+- **Promptfoo red-teaming** — adversarial testing automatizado.
+
+### 17.5 Rate limits, fallbacks e resiliência
+
+Todo provedor tem rate limits. Padrões essenciais:
+
+1. **Exponential backoff com jitter** — nunca retry imediato.
+2. **Circuit breakers** — após N falhas, pare de tentar por T segundos.
+3. **Cascata de provedores** — tente Anthropic; se falhar, OpenAI; se falhar, open source local.
+4. **Roteamento inteligente** — LiteLLM, OpenRouter abstraem isso.
+5. **Provisioned throughput** — contratos que garantem capacidade (Anthropic, Google, AWS Bedrock).
+
+**Lib de referência:** LiteLLM — https://github.com/BerriAI/litellm. Wrapper unificado para 100+ modelos com fallback nativo.
+
+### 17.6 SLOs, latência e p99
+
+Usuários não percebem média — percebem p99. Modelos de reasoning têm distribuição de latência com cauda pesada (10–60s de thinking tokens).
+
+**Métricas essenciais:**
+- **TTFT** (Time To First Token) — quando o stream começa.
+- **TPS** (Tokens Per Second) — velocidade de geração após TTFT.
+- **E2E latency** — prompt in a resposta out.
+- **Error rate** por categoria (timeout, 429, 5xx, guardrail block).
+
+**Streaming** mitiga latência percebida — o usuário vê progresso mesmo que a resposta completa demore.
+
+### 17.7 Migração entre modelos
+
+Modelos são descontinuados. Checklist de migração segura:
+
+1. **Eval suite completo** no modelo antigo (baseline).
+2. Rodar o mesmo eval no modelo novo.
+3. Identificar regressões por categoria.
+4. A/B test com tráfego real (5% → 50% → 100%).
+5. Manter o modelo antigo como fallback por 1 ciclo.
+6. Atualizar prompts se necessário — **prompts de um modelo raramente são ótimos em outro**.
+
+**Ref:** Anthropic. *"Migrating from Claude 3 to Claude 4"* docs. Sempre há guia específico por transição.
+
+### 17.8 Custo em produção
+
+Visibilidade de custo exige:
+
+- Atribuição por request/usuário/feature/tenant.
+- Alertas por desvio (ex: request usou 10× o p95 de tokens).
+- Budget enforcement (hard caps por org).
+- Reporting semanal/mensal com breakdown por modelo.
+
+Helicone e Langfuse fazem isso nativo; se for rolar próprio, instrumente `gen_ai.usage.*` e agregue em uma TSDB (ClickHouse, Prometheus).
+
+### 17.9 Referências consolidadas
+
+- Huyen, C. (2025). *AI Engineering*. O'Reilly — referência canônica em LLMOps.
+- Huyen, C. (2023). *"Building LLM applications for production"* (blog). https://huyenchip.com/2023/04/11/llm-engineering.html
+- Inan, H. et al. (2023). *"Llama Guard"*. arXiv:2312.06674
+- Rebedea, T. et al. (2023). *"NeMo Guardrails"*. arXiv:2310.10501
+- Khattab, O. et al. (2023). *"DSPy"*. arXiv:2310.03714
+
+---
+
+## Módulo 18 — Multimodalidade: Visão, Áudio e Além
+
+> **Contexto:** em 2026, todos os frontier models são multimodais. Este módulo explica como funciona (ViT patches, audio tokens, late fusion), quando usar, custos e aplicações para desenvolvedores.
+
+### 18.1 Visão: do ViT ao Claude que "enxerga"
+
+O tratamento moderno de imagens em LLMs começa com o **Vision Transformer**:
+
+**Dosovitskiy, A. et al. (2021).** *"An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale"* (ViT). Google Brain, arXiv:2010.11929.
+
+Ideia central: dividir a imagem em **patches** (ex: 16×16 pixels), tratar cada patch como um "token" e rodar o Transformer padrão.
+
+```
+Imagem 224×224 → 196 patches de 16×16 → 196 tokens → Transformer
+```
+
+### 18.2 Alinhamento de modalidades: CLIP
+
+**Radford, A. et al. (2021).** *"Learning Transferable Visual Models From Natural Language Supervision"* (CLIP). OpenAI, arXiv:2103.00020.
+
+Treinamento contrastivo: aproximar embedding de imagem e embedding da legenda correspondente em um espaço compartilhado. Permite zero-shot classification e é a fundação de sistemas de busca visual.
+
+### 18.3 LLMs multimodais: como funciona
+
+Três abordagens principais:
+
+1. **Late fusion (Flamingo, LLaVA)** — encoder de visão separado, tokens visuais injetados no LLM via cross-attention ou simples concatenação. Alaiyaci et al. (Flamingo, 2022, arXiv:2204.14198); Liu et al. (LLaVA, 2023, arXiv:2304.08485).
+2. **Early / native fusion (GPT-4o, Claude 3, Gemini nativo)** — treinamento conjunto em texto + imagens desde o pré-treino; mesma arquitetura processa tudo.
+3. **Any-to-any (Gemini 2.0/2.5, GPT-4o realtime)** — áudio, imagem, vídeo, texto in e out unified.
+
+**Refs fundacionais adicionais:**
+- Li, J. et al. (2023). *"BLIP-2"*. arXiv:2301.12597
+- Chen, X. et al. (2022). *"PaLI"*. arXiv:2209.06794
+- OpenAI. *"GPT-4V System Card"* (2023). https://openai.com/research/gpt-4v-system-card
+- Anthropic. *"Claude 3 Model Card"* (2024). https://www-cdn.anthropic.com/f2986af8d052f26236f6251da62d16172cfabd6e/claude-3-model-card.pdf
+
+### 18.4 Áudio: Whisper e além
+
+**Radford, A. et al. (2022).** *"Robust Speech Recognition via Large-Scale Weak Supervision"* (Whisper). OpenAI, arXiv:2212.04356.
+
+Whisper demonstrou que ASR (reconhecimento de fala) escala com dados fracamente supervisionados. Modelos **speech-to-speech** (GPT-4o realtime, Gemini Live) eliminam o pipeline ASR→LLM→TTS — tokens de áudio direto.
+
+### 18.5 Geração de imagens: diffusion
+
+Complementar a compreensão, há **geração**. Base: diffusion models.
+
+**Ho, J., Jain, A. & Abbeel, P. (2020).** *"Denoising Diffusion Probabilistic Models"* (DDPM). UC Berkeley, arXiv:2006.11239.
+
+Ideia: aprender a reverter ruído gaussiano em imagens. Progressão: DDPM → Imagen (Saharia 2022) → Stable Diffusion (Rombach 2022, arXiv:2112.10752) → DALL-E 3 → Flux → Nano Banana.
+
+**Para desenvolvedores:** integração típica é via API (OpenAI Images, Google Imagen, Stability). Latência 5–15s, custo $0.02–$0.08 por imagem.
+
+### 18.6 Vídeo e modelos espaço-temporais
+
+Sora (OpenAI 2024), Veo 2/3 (Google), Runway Gen-3, Luma Dream Machine — diffusion transformers com patches espaço-temporais (pacotes de N frames × H × W).
+
+**Ref:** Brooks, T. et al. (2024). *"Video generation models as world simulators"* (Sora technical report). https://openai.com/research/video-generation-models-as-world-simulators
+
+### 18.7 Embodied AI: LLMs em robôs
+
+- **PaLM-E** (Driess et al. 2023, arXiv:2303.03378) — LLM condicionado em sensores robóticos.
+- **RT-2** (Google DeepMind 2023) — Vision-Language-Action models.
+- **Pi0 / Pi0.5** (Physical Intelligence, 2024–2025) — modelos para manipulação robótica genérica.
+- **Helix** (Figure AI, 2025) — dual-system hierarquia.
+
+Fora do escopo de dev típico, mas contextualiza para onde a IA vai.
+
+### 18.8 Aplicações práticas para programação
+
+| Caso de uso | Modelo típico |
+|---|---|
+| Screenshot debugging (mostrar erro de UI) | Claude Opus/Sonnet, GPT-5 |
+| OCR de documentos (NFs, contratos) | Gemini, Claude (tabelas) |
+| UI-to-code (mockup → React/HTML) | Claude, v0, Bolt |
+| Code review visual (diagramas) | Claude, GPT-5 |
+| Análise de gráficos em specs | Todos multimodais |
+| Geração de ícones/ilustrações | Flux, DALL-E 3, Nano Banana |
+| Transcrição de reuniões técnicas | Whisper, Gemini Live |
+
+### 18.9 Benchmarks multimodais
+
+- **MMBench** (Liu et al. 2023, arXiv:2307.06281) — visão geral.
+- **MME** (Fu et al. 2023, arXiv:2306.13394) — perception + cognition.
+- **Video-MME** (Fu et al. 2024, arXiv:2405.21075) — compreensão de vídeo.
+- **ChartQA** (Masry et al. 2022, arXiv:2203.10244) — gráficos.
+- **DocVQA** (Mathew et al. 2020, arXiv:2007.00398) — documentos.
+
+### 18.10 Leitura recomendada
+
+- Yin, S. et al. (2023). *"A Survey on Multimodal Large Language Models"*. arXiv:2306.13549 — survey atualizado.
+- Anthropic. *"Vision"* docs. https://docs.anthropic.com/en/docs/build-with-claude/vision
+- OpenAI. *"Vision"* docs. https://platform.openai.com/docs/guides/vision
+- Karpathy, A. — *"Let's build GPT-2"* video touches multimodal.
+
+---
+
+## Módulo 19 — Otimização de Custo e Eficiência
+
+> **Meta:** reduzir custo em 5–10× sem sacrificar qualidade percebida. Cobre cascading, caching, speculative decoding, batch APIs, prompt compression e distillation.
+
+### 19.1 Model cascading: "small first, escalate"
+
+**Chen, L. et al. (2023).** *"FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance"*. Stanford, arXiv:2305.05176. — prova que cascatear modelos pode **reduzir custo em até 98%** sem perda de qualidade em tarefas específicas.
+
+Padrão:
+```
+1. Classifier pequeno (ou heurística) decide complexidade
+2. Se fácil → Haiku 4.5 / GPT-5-mini ($0.30/1M)
+3. Se médio → Sonnet 4.6 / GPT-5 ($3-5/1M)
+4. Se difícil → Opus 4.6 / o3 ($15/1M)
+```
+
+**Na prática:** OpenAI GPT-5 já faz isso internamente (router model). Mas você deve fazer no seu próprio pipeline — economia é enorme.
+
+### 19.2 Semantic caching
+
+Cache exato (hash do prompt) não serve para queries variadas. **Semantic cache** compara embeddings — se a similaridade de cosseno > threshold, serve resposta cacheada.
+
+- **GPTCache** — https://github.com/zilliztech/GPTCache — lib canônica.
+- **Redis Vector** — solução integrada.
+- **Momento** — cache serverless com vetor.
+
+**Cuidados:**
+- Threshold alto (≥0.95) para não servir respostas erradas.
+- Invalidação baseada em TTL + freshness da base.
+- Considere que respostas incluem contexto variável (data, usuário) — cacheie só quando apropriado.
+
+### 19.3 Prompt caching (provider-side)
+
+Já coberto no Módulo 2, mas vale reforçar o padrão operacional:
+
+- Coloque o **conteúdo estático primeiro** (system prompt, docs, exemplos, ferramentas).
+- Coloque o **variável por último** (mensagem do usuário).
+- Anthropic, OpenAI, Google todos oferecem desconto de 50–90% em cache hits.
+- TTL típico: 5 minutos (estendido para 1 hora em alguns provedores).
+
+### 19.4 Speculative decoding
+
+**Leviathan, Y., Kalman, M. & Matias, Y. (2023).** *"Fast Inference from Transformers via Speculative Decoding"*. Google Research, arXiv:2211.17192.
+
+Ideia: um **modelo pequeno (draft)** propõe N tokens; o **modelo grande (target)** valida em paralelo. Se aceitar, ganhou N tokens pelo preço de um forward pass.
+
+**Na prática:** implementado pelos provedores internamente (vLLM, TensorRT-LLM). Você não implementa, mas **saber que existe** explica por que latência de modelos maiores não é linear com tamanho.
+
+### 19.5 Batch APIs
+
+Para workloads não-síncronos (embeddings em massa, classificação overnight, geração de dataset):
+
+| Provedor | Desconto | Prazo |
+|---|---|---|
+| Anthropic Message Batches | 50% | 24h |
+| OpenAI Batch API | 50% | 24h |
+| Google Gemini Batch | 50% | 24h |
+
+**Ref:** Anthropic. *"Message Batches"*. https://docs.anthropic.com/en/docs/build-with-claude/batch-processing
+
+### 19.6 Prompt compression
+
+Comprimir o prompt mantendo informação: contexto longo fica mais barato e mais rápido.
+
+**Jiang, H. et al. (2023).** *"LLMLingua: Compressing Prompts for Accelerated Inference"*. Microsoft, arXiv:2310.05736.
+**Jiang, H. et al. (2023).** *"LongLLMLingua: Accelerating and Enhancing LLMs in Long Context Scenarios"*. arXiv:2310.06839.
+
+Técnica: usar um modelo pequeno para identificar tokens "descartáveis" (preenchimento, redundância) e remover. Compressão de 2–20× com perda mínima.
+
+### 19.7 Context compression via summarization
+
+Abordagem pragmática: periodicamente resumir histórico de conversa. Claude Code faz isso automaticamente (auto-compact). Reduz contexto ativo mantendo memória semântica.
+
+### 19.8 Knowledge distillation
+
+**Hinton, G., Vinyals, O. & Dean, J. (2015).** *"Distilling the Knowledge in a Neural Network"*. Google, arXiv:1503.02531. — paper fundacional.
+
+Treinar modelo pequeno (student) para imitar modelo grande (teacher) em tarefa específica. Em 2026, populares:
+
+- Gerar dataset de alta qualidade com Opus/o3 (teacher).
+- Fine-tunar Haiku/GPT-5-mini ou Llama 4 Scout no dataset (student).
+- Resultado: custo 10–50× menor, qualidade competitiva *na tarefa alvo*.
+
+Ref para implementação prática: Alpaca (Taori et al. 2023), Orca (Mukherjee et al. 2023, arXiv:2306.02707), Zephyr (Tunstall et al. 2023, arXiv:2310.16944).
+
+### 19.9 Roteamento inteligente entre provedores
+
+- **OpenRouter** — https://openrouter.ai — proxy unificado, escolhe provedor por preço/latência.
+- **LiteLLM** — self-hosted, mesma ideia.
+- **Martian** — roteamento baseado em modelo otimizado.
+
+### 19.10 Checklist de otimização
+
+Antes de ativar reasoning extendido ou comprar capacity adicional:
+
+1. O prompt está usando prompt caching corretamente?
+2. O conteúdo variável vem no final?
+3. Consigo rotear para um modelo menor em 70% dos casos?
+4. Tenho batch workload que pode ir para Batch API?
+5. Uso streaming para melhorar latência percebida?
+6. Cache semântico cobre queries repetitivas?
+7. Output tokens estão otimizados? (respostas curtas quando possível)
+
+---
+
+## Módulo 20 — Fine-tuning, LoRA e Adaptação
+
+> **Quando modelos prontos não bastam.** Este módulo cobre PEFT (Parameter-Efficient Fine-Tuning), LoRA/QLoRA, provider-managed fine-tuning e a decisão crítica: fine-tune vs. RAG vs. prompt.
+
+### 20.1 A decisão crítica: fine-tune ou não?
+
+Heurísticas:
+
+| Sintoma | Solução |
+|---|---|
+| "O modelo não sabe fato X específico" | **RAG** (Módulo 15) |
+| "O modelo conhece mas responde fora do formato" | **Prompt engineering** (Módulo 5) + structured outputs |
+| "Preciso de estilo/tom consistente e denso" | **Fine-tuning** (este módulo) |
+| "Preciso de latência baixa numa tarefa repetitiva" | **Fine-tune modelo pequeno** (distillation, Módulo 19) |
+| "Dado proprietário que não pode sair da empresa" | **Fine-tune open source self-hosted** |
+
+**Regra de ouro:** tente na ordem: prompt → few-shot → RAG → fine-tuning. Cada passo só se os anteriores não resolveram.
+
+### 20.2 Full fine-tuning vs. PEFT
+
+**Full fine-tuning** atualiza todos os pesos do modelo. Proibitivo:
+- Llama 4 Scout 17B: precisa ~70GB VRAM em fp16 só para pesos + gradientes.
+- Catastrophic forgetting — modelo esquece habilidades gerais.
+- Cópia completa por tarefa — armazenamento explode.
+
+**PEFT (Parameter-Efficient Fine-Tuning)** congela o modelo base e treina apenas uma fração pequena de parâmetros adicionais.
+
+### 20.3 LoRA: Low-Rank Adaptation
+
+**Hu, E. J. et al. (2021).** *"LoRA: Low-Rank Adaptation of Large Language Models"*. Microsoft, arXiv:2106.09685.
+
+Ideia: em vez de atualizar `W` (matriz de pesos, d×d), aprender `A` (d×r) e `B` (r×d) tais que `ΔW = BA` (rank baixo, tipicamente r=8 ou 16). O delta é somado a `W` em inferência.
+
+**Benefícios:**
+- Treina ~0.1% dos parâmetros.
+- Múltiplos LoRAs na mesma GPU (diferentes tarefas).
+- Fácil de hot-swap em runtime.
+
+### 20.4 QLoRA: quantização + LoRA
+
+**Dettmers, T. et al. (2023).** *"QLoRA: Efficient Finetuning of Quantized LLMs"*. UW, arXiv:2305.14314.
+
+Combina:
+- Modelo base quantizado em 4-bit (NF4).
+- Gradient checkpointing.
+- LoRA por cima.
+
+Permite fine-tunar Llama 70B em **uma única GPU de 48GB**. Mudou o jogo para hobbyistas e pequenas equipes.
+
+### 20.5 Variantes e evolução
+
+- **DoRA** (Meng et al. 2024, arXiv:2402.09353) — decompõe em magnitude + direção; ganho de performance sobre LoRA.
+- **AdaLoRA** (Zhang et al. 2023, arXiv:2303.10512) — rank adaptativo por camada.
+- **IA³** (Liu et al. 2022, arXiv:2205.05638) — ainda mais compacto que LoRA.
+- **VeRA** (Kopiczko et al. 2023) — rank ainda menor via projeções aleatórias.
+
+### 20.6 Datasets de instruction tuning
+
+Modelos pré-treinados são transformados em assistentes via datasets curados:
+
+- **Alpaca** (Taori et al. 2023) — 52K exemplos gerados pelo GPT-3.5. https://github.com/tatsu-lab/stanford_alpaca
+- **Dolly 15K** (Databricks 2023) — 100% human-generated, licença comercial.
+- **UltraFeedback** (Cui et al. 2024, arXiv:2310.01377) — 64K prompts com preferências.
+- **LIMA** (Zhou et al. 2023, arXiv:2305.11206) — "Less Is More for Alignment", 1000 exemplos bem curados.
+
+**Técnica: Self-Instruct** (Wang et al. 2022, arXiv:2212.10560) — gerar dataset de instruction tuning a partir do próprio modelo.
+
+### 20.7 Preference tuning: DPO e sucessores
+
+Além de SFT, alinhar com preferências:
+
+- **DPO** (Rafailov et al. 2023, arXiv:2305.18290) — já citado no Módulo 13.
+- **KTO** (Ethayarajh et al. 2024, arXiv:2402.01306) — Kahneman-Tversky Optimization, precisa só de sinais binários.
+- **ORPO** (Hong et al. 2024, arXiv:2403.07691) — combina SFT e preferências em uma única etapa.
+- **SimPO** (Meng et al. 2024, arXiv:2405.14734) — simple preference optimization, sem reference model.
+
+### 20.8 Frameworks práticos
+
+- **Hugging Face TRL** — https://github.com/huggingface/trl — SFT, DPO, PPO, KTO. Padrão da indústria.
+- **Axolotl** — https://github.com/axolotl-ai-cloud/axolotl — YAML-configurable, popular.
+- **Unsloth** — https://github.com/unslothai/unsloth — 2× mais rápido, menor uso de memória.
+- **LLaMA-Factory** — https://github.com/hiyouga/LLaMA-Factory — UI + CLI.
+- **torchtune** — https://github.com/pytorch/torchtune — oficial da PyTorch.
+
+### 20.9 Provider-managed fine-tuning
+
+Quando dados não são sensíveis:
+
+- **OpenAI Fine-tuning** — GPT-4o-mini, GPT-5-mini, embeddings. $25/1M tokens treino.
+- **Google Vertex AI Tuning** — Gemini Pro/Flash.
+- **Anthropic** — fine-tuning limitado, via Bedrock (Haiku).
+- **AWS Bedrock Custom Models** — Llama, Mistral, Titan.
+- **Fireworks, Together AI, Replicate** — fine-tuning de modelos abertos.
+
+### 20.10 Avaliação pós-fine-tuning
+
+**Regressão é o risco #1.** Sempre rode:
+1. Eval de tarefa alvo (melhora esperada).
+2. Eval de capabilities gerais (MMLU, GSM8K) — check de regressão.
+3. Eval de safety (toxicity, hallucination) — fine-tuning pode quebrar alinhamento.
+4. A/B test com usuários reais.
+
+### 20.11 Leitura recomendada
+
+- Raschka, S. (2023). *"Practical Tips for Finetuning LLMs Using LoRA"*. https://magazine.sebastianraschka.com/p/practical-tips-for-finetuning-llms
+- Hugging Face. *PEFT documentation*. https://huggingface.co/docs/peft
+- Chip Huyen — *AI Engineering* Cap. 7.
+- Eldan, R. & Li, Y. (2023). *"TinyStories"*. arXiv:2305.07759 — exemplo canônico de distillation para modelos pequenos.
+
+---
+
+## Módulo 21 — IA com Português Brasileiro
+
+> **Contexto específico:** este treinamento é em PT-BR, e há particularidades importantes de tokenização, modelos, benchmarks e domínios locais que merecem tratamento dedicado.
+
+### 21.1 Tokenização em português é menos eficiente
+
+Como vimos no Módulo 2, tokenizers foram treinados predominantemente em inglês. Resultado: texto em português consome **30–40% mais tokens** em tokenizers antigos.
+
+Ordem aproximada de eficiência para PT-BR (melhor → pior):
+
+| Tokenizer | Razão tokens PT-BR / EN |
+|---|---|
+| **o200k_base** (GPT-4o+) | ~1.3× |
+| **Claude (proprietário)** | ~1.3× |
+| **Gemini (proprietário)** | ~1.3× |
+| **cl100k_base** (GPT-4) | ~1.5× |
+| **tiktoken GPT-2** | ~1.8× |
+| **Llama 2** | ~2.0× |
+| **Llama 3/4** | ~1.4× |
+
+**Implicação prática:** custos reais em PT-BR são maiores que os anunciados (geralmente calculados em inglês). Conte antes, especialmente para sistemas de alto volume.
+
+### 21.2 Modelos com forte desempenho em PT-BR (abril 2026)
+
+**Frontier multilingual:**
+- **Claude Opus 4.6 / Sonnet 4.6** — tratamento de PT-BR comparável a EN.
+- **GPT-5 / o3** — idem.
+- **Gemini 2.5 Pro / Flash** — excelente, especialmente com conteúdo brasileiro.
+- **Grok 4** — bom, menos testado em benchmarks PT-BR.
+- **Llama 4** — melhor PT-BR em modelos abertos.
+
+**Modelos PT-BR-first (Maritaca AI):**
+- **Sabiá-3** — série treinada especificamente para PT-BR; competitivo com frontier em tarefas locais (jurídico, ENEM).
+- Ref: Pires, R., Abonizio, H., Almeida, T. S. & Nogueira, R. (2023). *"Sabiá: Portuguese Large Language Models"*. BRACIS, arXiv:2304.07880. https://arxiv.org/abs/2304.07880
+- Site: https://www.maritaca.ai
+
+**Open source PT-BR:**
+- **Bode** (Nicolas Garcia, 2023) — Llama fine-tuned em PT-BR.
+- **Cabrita** — fine-tune de Llama com Alpaca-PT.
+- **Canarim** — outra iniciativa open.
+- **Juru (Jurisbras)** — especialista em direito brasileiro.
+
+### 21.3 Benchmarks PT-BR
+
+- **ENEM-Challenge** (Nunes et al. 2023, arXiv:2303.17003) — prova do ENEM 2022 como benchmark.
+- **BLUEX** (Almeida et al. 2023, arXiv:2307.05410) — vestibular FUVEST + UNICAMP, com questões recentes (reduz contamination).
+- **Poeta** (Pires et al. 2023) — benchmark agregado PT-BR.
+- **ENEM 2022/2023/2024** — rodado por Maritaca e outros.
+- **FaQuAD** — question answering em domínio acadêmico.
+- **Assin 2** — similaridade textual e implicação.
+- **Pirá** — Q&A sobre o oceano brasileiro.
+
+Ver leaderboard: **Open Portuguese LLM Leaderboard** — https://huggingface.co/spaces/eduagarcia/open_pt_llm_leaderboard
+
+### 21.4 Domínios críticos brasileiros
+
+Modelos frontier ainda falham em áreas de conhecimento denso local. Áreas a testar explicitamente:
+
+**Direito:**
+- Código de Processo Civil (CPC), Código de Defesa do Consumidor (CDC), Lei Geral de Proteção de Dados (LGPD).
+- Jurisprudência do STF/STJ.
+- Prazos processuais, recursos — área propensa a alucinação.
+
+**Saúde:**
+- Tabelas SUS (procedimentos, CIDs).
+- RDCs da ANVISA.
+- Política nacional de medicamentos.
+
+**Fiscal/Contábil:**
+- ICMS (varia por estado), IR, Simples Nacional.
+- SPED, NF-e, CFOPs.
+- IFRS adaptado ao Brasil (CPCs).
+
+**Educação:**
+- BNCC, Enem, vestibulares específicos.
+- PCNs obsoletos vs. atuais.
+
+**Recomendação:** sempre use RAG com fontes oficiais para essas áreas. Não confie em conhecimento paramétrico do modelo.
+
+### 21.5 Considerações culturais
+
+- **Regionalismos** — português do nordeste vs. sul tem vocabulário e construções diferentes.
+- **Formalidade** — você/tu, linguagem técnica vs. coloquial.
+- **Feriados e calendário** — modelos estrangeiros confundem dia/mês.
+- **Moedas e formatação numérica** — vírgula decimal, R$ 1.234,56.
+- **CEP, CPF, CNPJ** — validação e formatação específicas.
+
+### 21.6 Ferramentas e comunidades
+
+- **Maritaca AI** — https://www.maritaca.ai — provedor nacional.
+- **Open Portuguese LLM Leaderboard** — https://huggingface.co/spaces/eduagarcia/open_pt_llm_leaderboard
+- **PUCRS NLP Group** — referência acadêmica.
+- **USP NILC** — Núcleo Interinstitucional de Linguística Computacional.
+
+### 21.7 Dicas operacionais para desenvolvedores BR
+
+1. **Teste PT-BR explicitamente** em sua suite de evals (Módulo 14). Não assuma que inglês → português.
+2. **Use RAG para conhecimento local** (leis, normas, dados governamentais).
+3. **Monitore contagem real de tokens em produção** — custo em PT-BR pode surpreender.
+4. **Considere modelos nacionais** (Sabiá) para casos onde soberania de dados importa.
+5. **Audite alucinações em domínios brasileiros** (direito, saúde) com especialistas.
+
+### 21.8 Referências específicas
+
+- Pires, R. et al. (2023). *"Sabiá: Portuguese Large Language Models"*. BRACIS, arXiv:2304.07880.
+- Nunes, D. et al. (2023). *"Evaluating GPT-3.5 and GPT-4 Models on Brazilian University Admission Exams"*. arXiv:2303.17003.
+- Almeida, T. S. et al. (2023). *"BLUEX: A Benchmark based on Brazilian Leading Universities Entrance eXams"*. BRACIS, arXiv:2307.05410.
+- Lopes, F. & Nogueira, R. (2024). *"Sabiá-2: A New Generation of Portuguese Large Language Models"*. arXiv:2403.09887.
+
+---
+
+## Módulo 22 — Projeto Capstone: Agente de Revisão de PRs
+
+> **Objetivo:** amarrar tudo o que foi aprendido em um sistema real. Este módulo descreve a arquitetura e iterações de um agente que recebe um Pull Request, analisa o diff, executa testes, sugere melhorias e posta review no GitHub.
+
+### 22.1 Requisitos e escopo
+
+**Funcional:**
+- Receber webhook de PR aberto no GitHub.
+- Buscar o diff, contexto de arquivos modificados e descrição do PR.
+- Executar análise multi-passo: segurança, performance, legibilidade, testes.
+- Postar comentários in-line e sumário geral.
+- Sugerir edições concretas quando aplicável.
+
+**Não-funcional:**
+- Custo ≤ $0.30 por PR analisado.
+- Latência ≤ 2 min para PRs pequenos (< 300 LOC).
+- Zero credenciais expostas; operar via GitHub App.
+- Eval contínua: 50 PRs históricos como golden set.
+
+### 22.2 Arquitetura (aplicando módulos)
+
+```
+GitHub webhook
+    ↓
+[Roteador]     ← Módulo 19 (cascata: triagem com modelo pequeno)
+    ↓
+[Contexto]     ← Módulo 4 (Eng. de Contexto) + Módulo 15 (RAG de código)
+    ↓
+[Thinking]     ← Módulo 12 (planejar análise)
+    ↓
+[Tool loop]    ← Módulo 16 (Tool Calling)
+    ├── read_file, grep, run_tests
+    ├── search_similar_code (via RAG)
+    └── check_security_patterns
+    ↓
+[Review draft] ← Módulo 6 (Spec-Driven) + Módulo 5 (Prompt Eng.)
+    ↓
+[Guardrails]   ← Módulo 17 (LLMOps) + Módulo 13 (Alinhamento)
+    ↓
+[Post to GitHub]
+    ↓
+[Telemetry]    ← Módulo 17 (tracing, custo)
+```
+
+### 22.3 Stack sugerido
+
+- **Orquestração:** LangGraph ou código Python direto (para transparência).
+- **LLMs:** Haiku 4.5 (triagem), Sonnet 4.6 (review principal), Opus 4.6 opcional para PRs críticos.
+- **Observability:** Langfuse ou LangSmith.
+- **MCP servers:** GitHub MCP (leitura/escrita), filesystem MCP (sandbox).
+- **Guardrails:** Llama Guard + validação custom.
+- **Evals:** Inspect ou promptfoo com 50 PRs rotulados.
+
+### 22.4 Iterações propostas
+
+**Iteração 1 — MVP** (1 dia)
+- Um prompt, um modelo, análise monolítica.
+- Baseline de qualidade e custo.
+
+**Iteração 2 — Tool calling** (2 dias)
+- Decompor em `read_file`, `run_tests`, `search_code`.
+- Medir diferença em custo e qualidade.
+
+**Iteração 3 — Reasoning opcional** (1 dia)
+- Ativar extended thinking para PRs com complexidade > threshold.
+- A/B test vs. sem thinking.
+
+**Iteração 4 — RAG do codebase** (3 dias)
+- Indexar repositório em pgvector.
+- Buscar padrões similares antes de sugerir mudanças.
+
+**Iteração 5 — Guardrails** (1 dia)
+- Bloqueio de vazamento de secrets.
+- Rate limit por repo.
+- Aprovação humana para edits sugeridas auto-aplicáveis.
+
+**Iteração 6 — Multimodal** (opcional)
+- Analisar screenshots em PRs de UI.
+- Comparar before/after visualmente.
+
+### 22.5 Golden set de avaliação
+
+Selecione 50 PRs históricos com labels:
+- **True positive:** problemas reais que foram corrigidos pós-review.
+- **True negative:** PRs limpos aprovados sem alteração.
+- **False positive** (alvo: < 15%): sugestões ignoradas pelo autor.
+- **Latência** e **custo** por PR.
+
+Rode o eval a cada mudança de prompt/modelo/tool.
+
+### 22.6 Riscos e mitigações
+
+| Risco | Mitigação |
+|---|---|
+| Prompt injection em PR malicioso | Sandbox, guardrails, nunca executar código do PR sem isolamento |
+| Vazamento de código para LLM externo | Claude/OpenAI zero-retention tier OU Bedrock OU self-hosted Llama 4 |
+| Custo descontrolado | Cap por repo/dia, alertas, circuit breaker |
+| Sugestões ruins geram ruído | Threshold de confiança, revisor humano antes de auto-apply |
+| Modelo deprecado | LiteLLM/OpenRouter, fallback configurado |
+
+### 22.7 Entrega e iteração
+
+- Dogfooding: use em seu próprio repositório por 2 semanas.
+- Colete feedback dos desenvolvedores (survey NPS após cada review).
+- Compare produtividade antes/depois (referência: Peng et al. 2023 sobre Copilot, arXiv:2302.06590).
+
+### 22.8 Evolução sugerida
+
+Depois que o capstone básico funcionar:
+
+- Multi-agente: um agente para segurança, outro para performance, orquestrador.
+- Aprendizado contínuo: reviews aceitas alimentam fine-tuning do Haiku.
+- Expansão: revisão de RFCs, de specs (Módulo 6), de docs.
 
 ---
 

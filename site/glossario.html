@@ -51,10 +51,21 @@
       <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
       <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
       <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
-      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item"><span class="nav-number">&#127942;</span> Capstone</a>
 
       <div class="nav-section-title">Ferramentas Interativas</div>
       <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
 
       <div class="nav-section-title">Apêndices</div>
       <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
@@ -242,6 +253,52 @@
               <tr><td><strong>GraphRAG</strong></td><td>RAG com knowledge graph extraído do corpus para queries globais.</td></tr>
               <tr><td><strong>Jailbreak</strong></td><td>Prompt adversarial que desativa guardrails do modelo.</td></tr>
               <tr><td><strong>Sycophancy</strong></td><td>Tendência do modelo a concordar com o usuário mesmo quando este está errado.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 style="margin-top: 3rem;">Termos adicionados na v3.0 (Trilha de Engenharia)</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Termo</th><th>Definição</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Tool Calling</strong></td><td>Mecânica pela qual LLMs chamam funções externas via tool_use blocks com JSON schema.</td></tr>
+              <tr><td><strong>Structured Outputs</strong></td><td>Resposta do modelo conforme schema JSON exato (JSON mode, strict mode).</td></tr>
+              <tr><td><strong>Constrained Decoding</strong></td><td>Modificação da amostragem para garantir 100% de conformidade sintática (Outlines, XGrammar).</td></tr>
+              <tr><td><strong>Parallel Tool Calls</strong></td><td>Modelo retorna múltiplas tool calls independentes na mesma resposta.</td></tr>
+              <tr><td><strong>JSON Schema</strong></td><td>Padrão Draft 2020-12 usado para descrever tools e outputs.</td></tr>
+              <tr><td><strong>LLMOps</strong></td><td>Operação de LLMs em produção: tracing, versionamento, guardrails, migração.</td></tr>
+              <tr><td><strong>OpenTelemetry GenAI</strong></td><td>Padrão de semantic conventions para tracing de chamadas LLM.</td></tr>
+              <tr><td><strong>TTFT</strong></td><td>Time To First Token — latência até o streaming começar.</td></tr>
+              <tr><td><strong>TPS</strong></td><td>Tokens Per Second — velocidade de geração após TTFT.</td></tr>
+              <tr><td><strong>Llama Guard</strong></td><td>Classificador open source da Meta para input/output (Inan 2023).</td></tr>
+              <tr><td><strong>NeMo Guardrails</strong></td><td>Framework NVIDIA com DSL Colang para políticas em runtime.</td></tr>
+              <tr><td><strong>DSPy</strong></td><td>Framework Stanford para compilar prompts declarativamente.</td></tr>
+              <tr><td><strong>LiteLLM / OpenRouter</strong></td><td>Proxies unificados para 100+ modelos com fallback nativo.</td></tr>
+              <tr><td><strong>ViT</strong></td><td>Vision Transformer — arquitetura base da visão moderna em LLMs.</td></tr>
+              <tr><td><strong>CLIP</strong></td><td>Contrastive Language-Image Pretraining — alinha embeddings imagem-texto.</td></tr>
+              <tr><td><strong>LLaVA</strong></td><td>Visual Instruction Tuning — LLM multimodal open source.</td></tr>
+              <tr><td><strong>Whisper</strong></td><td>Modelo ASR (speech-to-text) da OpenAI.</td></tr>
+              <tr><td><strong>DDPM</strong></td><td>Denoising Diffusion Probabilistic Models — base de geração de imagens.</td></tr>
+              <tr><td><strong>Speech-to-Speech</strong></td><td>Modelo que gera áudio direto de tokens de áudio, sem pipeline ASR→LLM→TTS.</td></tr>
+              <tr><td><strong>Late/Early Fusion</strong></td><td>Estratégias de combinação de modalidades em LLMs multimodais.</td></tr>
+              <tr><td><strong>FrugalGPT</strong></td><td>Paper Stanford que demonstrou até 98% de redução de custo via cascading.</td></tr>
+              <tr><td><strong>Model Cascading</strong></td><td>"Small first, escalate" — tentar modelo barato, escalar só se necessário.</td></tr>
+              <tr><td><strong>Semantic Cache</strong></td><td>Cache baseado em similaridade de embeddings. Ex: GPTCache.</td></tr>
+              <tr><td><strong>Speculative Decoding</strong></td><td>Modelo pequeno propõe tokens, modelo grande valida em paralelo.</td></tr>
+              <tr><td><strong>Prompt Compression</strong></td><td>LLMLingua — compressão 2–20× do prompt com perda mínima.</td></tr>
+              <tr><td><strong>Batch API</strong></td><td>Workload async com 50% de desconto (Anthropic, OpenAI, Google).</td></tr>
+              <tr><td><strong>Knowledge Distillation</strong></td><td>Modelo pequeno (student) imita modelo grande (teacher) em tarefa específica.</td></tr>
+              <tr><td><strong>PEFT</strong></td><td>Parameter-Efficient Fine-Tuning — família que congela o modelo base.</td></tr>
+              <tr><td><strong>LoRA</strong></td><td>Low-Rank Adaptation — treina ΔW = BA com rank baixo. ~0.1% dos params.</td></tr>
+              <tr><td><strong>QLoRA</strong></td><td>LoRA sobre modelo base quantizado em 4-bit (NF4).</td></tr>
+              <tr><td><strong>DoRA</strong></td><td>Decompõe LoRA em magnitude + direção (Meng 2024).</td></tr>
+              <tr><td><strong>KTO / ORPO / SimPO</strong></td><td>Variantes modernas de DPO para preference tuning.</td></tr>
+              <tr><td><strong>Self-Instruct</strong></td><td>Gerar dataset de instruction tuning a partir do próprio modelo (Wang 2022).</td></tr>
+              <tr><td><strong>Sabiá</strong></td><td>LLMs PT-BR-first da Maritaca AI (Pires 2023, arXiv:2304.07880).</td></tr>
+              <tr><td><strong>ENEM-Challenge</strong></td><td>Benchmark PT-BR baseado em provas do ENEM (Nunes 2023).</td></tr>
+              <tr><td><strong>BLUEX</strong></td><td>Benchmark PT-BR com FUVEST + UNICAMP recentes (Almeida 2023).</td></tr>
+              <tr><td><strong>Capstone</strong></td><td>Projeto integrativo que amarra todos os módulos em um sistema real.</td></tr>
             </tbody>
           </table>
         </div>

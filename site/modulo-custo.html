@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 21 — Otimização de Custo | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item active"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item"><span class="nav-number">&#127942;</span> Capstone</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 21 — Otimização de Custo</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">21</div>
+        <h1>Otimização de Custo e Eficiência</h1>
+        <p class="module-desc">Reduzir custo em 5–10× sem sacrificar qualidade. Cascading (FrugalGPT), caching semântico, speculative decoding, batch APIs, prompt compression e distillation.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Seção 19.1</span>
+        <h2>Model cascading: small first, escalate</h2>
+<p>FrugalGPT provou que cascatear modelos pode <strong>reduzir custo em até 98%</strong> sem perda de qualidade.</p>
+        <pre><code>1. Classifier pequeno decide complexidade
+2. Fácil → Haiku 4.5 / GPT-5-mini ($0.30/1M)
+3. Médio → Sonnet 4.6 / GPT-5 ($3-5/1M)
+4. Difícil → Opus 4.6 / o3 ($15/1M)</code></pre>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Chen, L. et al. (2023). <em>"FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance"</em>. Stanford, arXiv:2305.05176.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 19.2</span>
+        <h2>Semantic caching</h2>
+<p>Cache exato (hash do prompt) não serve para queries variadas. <strong>Semantic cache</strong> compara embeddings — se cos sim &gt; threshold, serve resposta cacheada.</p>
+        <ul>
+        <li><strong>GPTCache</strong> — <a href="https://github.com/zilliztech/GPTCache" target="_blank">github</a></li>
+        <li><strong>Redis Vector</strong> — integrado.</li>
+        <li><strong>Momento</strong> — serverless com vetor.</li>
+        </ul>
+        <div class="analogy">
+        <div class="analogy-title">Cuidados</div>
+        <ul>
+        <li>Threshold alto (≥0.95) para não servir respostas erradas.</li>
+        <li>Invalidação via TTL + freshness.</li>
+        <li>Cacheie só quando contexto variável não afetar a resposta.</li>
+        </ul>
+        </div>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 19.3</span>
+        <h2>Prompt caching provider-side</h2>
+<ul>
+        <li>Conteúdo <strong>estático primeiro</strong> (system prompt, docs, tools).</li>
+        <li>Conteúdo <strong>variável por último</strong> (mensagem do usuário).</li>
+        <li>Desconto de 50–90% em cache hits (Anthropic, OpenAI, Google).</li>
+        <li>TTL típico: 5 min (estendido para 1h em alguns provedores).</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 19.4</span>
+        <h2>Speculative decoding</h2>
+<p>Modelo pequeno (draft) propõe N tokens; modelo grande (target) valida em paralelo. Ganho: N tokens pelo preço de um forward pass.</p>
+        <p><strong>Implementado pelos provedores internamente</strong> (vLLM, TensorRT-LLM). Saber que existe explica por que latência não é linear com tamanho do modelo.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Leviathan, Y., Kalman, M. &amp; Matias, Y. (2023). <em>"Fast Inference from Transformers via Speculative Decoding"</em>. Google Research, arXiv:2211.17192.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 19.5</span>
+        <h2>Batch APIs</h2>
+<table>
+        <thead><tr><th>Provedor</th><th>Desconto</th><th>Prazo</th></tr></thead>
+        <tbody>
+        <tr><td>Anthropic Message Batches</td><td>50%</td><td>24h</td></tr>
+        <tr><td>OpenAI Batch API</td><td>50%</td><td>24h</td></tr>
+        <tr><td>Google Gemini Batch</td><td>50%</td><td>24h</td></tr>
+        </tbody>
+        </table>
+        <p>Para workloads não-síncronos: embeddings em massa, classificação overnight, geração de dataset.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 19.6</span>
+        <h2>Prompt compression</h2>
+<p>Comprimir prompt mantendo informação. Técnica: modelo pequeno identifica tokens descartáveis e remove. Compressão 2–20× com perda mínima.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Jiang, H. et al. (2023). <em>"LLMLingua"</em>. Microsoft, arXiv:2310.05736.</p>
+        <p>Jiang, H. et al. (2023). <em>"LongLLMLingua"</em>. arXiv:2310.06839.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 19.7</span>
+        <h2>Knowledge distillation</h2>
+<p>Treinar modelo pequeno (student) para imitar modelo grande (teacher) em tarefa específica.</p>
+        <p>Padrão 2026: gerar dataset de alta qualidade com Opus/o3, fine-tunar Haiku/GPT-5-mini no dataset. Custo 10–50× menor, qualidade competitiva <em>na tarefa alvo</em>.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Hinton, G., Vinyals, O. &amp; Dean, J. (2015). <em>"Distilling the Knowledge in a Neural Network"</em>. arXiv:1503.02531.</p>
+        <p>Taori, R. et al. (2023). <em>"Alpaca"</em>. Stanford.</p>
+        <p>Mukherjee, S. et al. (2023). <em>"Orca"</em>. arXiv:2306.02707</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 19.8</span>
+        <h2>Roteamento entre provedores</h2>
+<ul>
+        <li><strong>OpenRouter</strong> — <a href="https://openrouter.ai" target="_blank">openrouter.ai</a> — proxy unificado.</li>
+        <li><strong>LiteLLM</strong> — self-hosted, mesma ideia.</li>
+        <li><strong>Martian</strong> — roteamento ML-otimizado.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Checklist</span>
+        <h2>Antes de ativar reasoning extendido ou comprar capacity</h2>
+<ol>
+        <li>O prompt está usando prompt caching corretamente?</li>
+        <li>Conteúdo variável vem no final?</li>
+        <li>Consigo rotear para modelo menor em 70% dos casos?</li>
+        <li>Tenho batch workload que pode ir para Batch API?</li>
+        <li>Uso streaming para melhorar latência percebida?</li>
+        <li>Cache semântico cobre queries repetitivas?</li>
+        <li>Output tokens otimizados? (respostas curtas quando possível)</li>
+        </ol>
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-multimodal.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 20 — Multimodalidade</span>
+        </a>
+        <a href="modulo-finetuning.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 22 — Fine-tuning</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; v3.0 &middot; Última atualização: 2026-04-15
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

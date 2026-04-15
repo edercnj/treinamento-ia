@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto Capstone | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item active"><span class="nav-number">&#127942;</span> Capstone</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Projeto Capstone</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">🏆</div>
+        <h1>Capstone: Agente de Revisão de PRs</h1>
+        <p class="module-desc">Projeto integrativo que amarra todos os módulos anteriores. Arquitetura, iterações, golden set, riscos e evolução de um agente de revisão de Pull Requests.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Objetivo</span>
+        <h2>Amarrar tudo em um sistema real</h2>
+<p>Este módulo descreve a arquitetura e iterações de um agente que recebe um Pull Request, analisa o diff, executa testes, sugere melhorias e posta review no GitHub. Integra os 21 módulos anteriores.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">22.1</span>
+        <h2>Requisitos e escopo</h2>
+<div class="analogy">
+        <div class="analogy-title">Funcional</div>
+        <ul>
+        <li>Receber webhook de PR aberto no GitHub.</li>
+        <li>Buscar diff, contexto de arquivos modificados e descrição.</li>
+        <li>Análise multi-passo: segurança, performance, legibilidade, testes.</li>
+        <li>Postar comentários in-line e sumário geral.</li>
+        <li>Sugerir edições concretas quando aplicável.</li>
+        </ul>
+        </div>
+        <div class="analogy">
+        <div class="analogy-title">Não-funcional</div>
+        <ul>
+        <li>Custo ≤ $0.30 por PR.</li>
+        <li>Latência ≤ 2 min para PRs &lt; 300 LOC.</li>
+        <li>Zero credenciais expostas; GitHub App.</li>
+        <li>Eval contínua: 50 PRs históricos como golden set.</li>
+        </ul>
+        </div>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">22.2</span>
+        <h2>Arquitetura aplicando os módulos</h2>
+<pre><code>GitHub webhook
+    ↓
+[Roteador]     ← Módulo 21 (cascata: triagem com modelo pequeno)
+    ↓
+[Contexto]     ← Módulo 04 + Módulo 17 (RAG de código)
+    ↓
+[Thinking]     ← Módulo 14 (planejar análise)
+    ↓
+[Tool loop]    ← Módulo 18 (Tool Calling)
+    ├── read_file, grep, run_tests
+    ├── search_similar_code (via RAG)
+    └── check_security_patterns
+    ↓
+[Review draft] ← Módulo 06 + Módulo 05
+    ↓
+[Guardrails]   ← Módulo 19 (LLMOps) + Módulo 15 (Alinhamento)
+    ↓
+[Post to GitHub]
+    ↓
+[Telemetry]    ← Módulo 19 (tracing, custo)</code></pre>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">22.3</span>
+        <h2>Stack sugerido</h2>
+<ul>
+        <li><strong>Orquestração:</strong> LangGraph ou Python direto (transparência).</li>
+        <li><strong>LLMs:</strong> Haiku 4.5 (triagem), Sonnet 4.6 (review), Opus 4.6 opcional para críticos.</li>
+        <li><strong>Observability:</strong> Langfuse ou LangSmith.</li>
+        <li><strong>MCP servers:</strong> GitHub MCP, filesystem MCP (sandbox).</li>
+        <li><strong>Guardrails:</strong> Llama Guard + validação custom.</li>
+        <li><strong>Evals:</strong> Inspect ou promptfoo com 50 PRs rotulados.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">22.4</span>
+        <h2>Iterações propostas</h2>
+<table>
+        <thead><tr><th>Iteração</th><th>Duração</th><th>Entrega</th></tr></thead>
+        <tbody>
+        <tr><td><strong>1 — MVP</strong></td><td>1 dia</td><td>Um prompt, um modelo. Baseline.</td></tr>
+        <tr><td><strong>2 — Tool calling</strong></td><td>2 dias</td><td>Decompor em <code>read_file</code>, <code>run_tests</code>, <code>search_code</code>.</td></tr>
+        <tr><td><strong>3 — Reasoning opcional</strong></td><td>1 dia</td><td>Extended thinking para PRs complexos. A/B.</td></tr>
+        <tr><td><strong>4 — RAG do codebase</strong></td><td>3 dias</td><td>Indexar em pgvector. Buscar padrões similares.</td></tr>
+        <tr><td><strong>5 — Guardrails</strong></td><td>1 dia</td><td>Bloqueio de vazamento, rate limit, aprovação humana.</td></tr>
+        <tr><td><strong>6 — Multimodal</strong></td><td>opcional</td><td>Analisar screenshots em PRs de UI.</td></tr>
+        </tbody>
+        </table>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">22.5</span>
+        <h2>Golden set de avaliação</h2>
+<p>50 PRs históricos com labels:</p>
+        <ul>
+        <li><strong>True positive:</strong> problemas reais corrigidos pós-review.</li>
+        <li><strong>True negative:</strong> PRs limpos aprovados sem alteração.</li>
+        <li><strong>False positive</strong> (alvo: &lt; 15%): sugestões ignoradas pelo autor.</li>
+        <li><strong>Latência</strong> e <strong>custo</strong> por PR.</li>
+        </ul>
+        <p>Rode o eval a cada mudança de prompt/modelo/tool.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">22.6</span>
+        <h2>Riscos e mitigações</h2>
+<table>
+        <thead><tr><th>Risco</th><th>Mitigação</th></tr></thead>
+        <tbody>
+        <tr><td>Prompt injection em PR malicioso</td><td>Sandbox, guardrails, isolamento</td></tr>
+        <tr><td>Vazamento de código</td><td>Zero-retention tier OU Bedrock OU self-hosted Llama 4</td></tr>
+        <tr><td>Custo descontrolado</td><td>Cap por repo/dia, alertas, circuit breaker</td></tr>
+        <tr><td>Sugestões ruins geram ruído</td><td>Threshold de confiança, revisor humano</td></tr>
+        <tr><td>Modelo deprecado</td><td>LiteLLM/OpenRouter, fallback configurado</td></tr>
+        </tbody>
+        </table>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">22.7</span>
+        <h2>Entrega e iteração</h2>
+<ol>
+        <li><strong>Dogfooding</strong> — use em seu próprio repo por 2 semanas.</li>
+        <li><strong>Feedback</strong> — survey NPS após cada review.</li>
+        <li><strong>Medição</strong> — produtividade antes/depois (ref: Peng et al. 2023 sobre Copilot, arXiv:2302.06590).</li>
+        </ol>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">22.8</span>
+        <h2>Evolução sugerida</h2>
+<p>Depois que o capstone básico funcionar:</p>
+        <ul>
+        <li><strong>Multi-agente:</strong> um agente para segurança, outro para performance, orquestrador.</li>
+        <li><strong>Aprendizado contínuo:</strong> reviews aceitas alimentam fine-tuning do Haiku.</li>
+        <li><strong>Expansão:</strong> revisão de RFCs, specs, docs.</li>
+        </ul>
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-ptbr.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 23 — PT-BR</span>
+        </a>
+        <a href="comparador.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Ferramentas Interativas</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; v3.0 &middot; Última atualização: 2026-04-15
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

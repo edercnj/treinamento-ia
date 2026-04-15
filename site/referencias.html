@@ -51,10 +51,21 @@
       <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
       <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
       <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
-      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings & RAG</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item"><span class="nav-number">&#127942;</span> Capstone</a>
 
       <div class="nav-section-title">Ferramentas Interativas</div>
       <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
 
       <div class="nav-section-title">Apêndices</div>
       <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
@@ -282,6 +293,100 @@
           <li><strong>Murphy, K.</strong> (2022). <em>Probabilistic Machine Learning</em>. MIT Press. <a href="https://probml.github.io/pml-book/" target="_blank">probml.github.io/pml-book</a></li>
           <li><strong>Raschka, S.</strong> (2024). <em>Build a Large Language Model (From Scratch)</em>. Manning.</li>
           <li><strong>Huyen, C.</strong> (2025). <em>AI Engineering</em>. O'Reilly.</li>
+        </ul>
+      </section>
+
+      <hr>
+
+      <!-- Papers da Trilha de Engenharia v3.0 -->
+      <section class="fade-in">
+        <span class="section-badge">Trilha de Engenharia &middot; v3.0</span>
+        <h2>Papers Adicionais (Tool Calling, LLMOps, Multimodal, Custo, Fine-tuning, PT-BR)</h2>
+
+        <h3>Tool Calling e Structured Outputs</h3>
+        <ol>
+          <li><strong>Schick, T. et al.</strong> (2023). "Toolformer: Language Models Can Teach Themselves to Use Tools". Meta AI. arXiv:2302.04761 &mdash; <a href="https://arxiv.org/abs/2302.04761" target="_blank">arxiv.org/abs/2302.04761</a></li>
+          <li><strong>Qin, Y. et al.</strong> (2023). "ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs". arXiv:2307.16789</li>
+          <li><strong>Willard, B. T. &amp; Louf, R.</strong> (2023). "Efficient Guided Generation for Large Language Models" (Outlines). arXiv:2307.09702</li>
+          <li><strong>Dong, Y. et al.</strong> (2024). "XGrammar: Flexible and Efficient Structured Generation Engine". arXiv:2411.15100</li>
+          <li><strong>Scholak, T. et al.</strong> (2021). "PICARD: Parsing Incrementally for Constrained Auto-Regressive Decoding". EMNLP, arXiv:2109.05093</li>
+          <li><strong>Beurer-Kellner, L. et al.</strong> (2023). "LMQL: Large Model Query Language". arXiv:2212.06094</li>
+          <li><strong>Anthropic</strong> (2024). "Building effective agents". <a href="https://www.anthropic.com/research/building-effective-agents" target="_blank">anthropic.com</a></li>
+        </ol>
+
+        <h3>LLMOps e Observabilidade</h3>
+        <ol>
+          <li><strong>Khattab, O. et al.</strong> (2023). "DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines". Stanford. arXiv:2310.03714</li>
+          <li><strong>Inan, H. et al.</strong> (2023). "Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations". Meta. arXiv:2312.06674</li>
+          <li><strong>Rebedea, T. et al.</strong> (2023). "NeMo Guardrails: A Toolkit for Controllable and Safe LLM Applications with Programmable Rails". NVIDIA. arXiv:2310.10501</li>
+          <li><strong>OpenTelemetry</strong> (2024). "Semantic Conventions for Generative AI". <a href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" target="_blank">opentelemetry.io</a></li>
+          <li><strong>Huyen, C.</strong> (2023). "Building LLM applications for production". <a href="https://huyenchip.com/2023/04/11/llm-engineering.html" target="_blank">huyenchip.com</a></li>
+        </ol>
+
+        <h3>Multimodalidade</h3>
+        <ol>
+          <li><strong>Dosovitskiy, A. et al.</strong> (2021). "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale" (ViT). Google Brain. arXiv:2010.11929</li>
+          <li><strong>Radford, A. et al.</strong> (2021). "Learning Transferable Visual Models From Natural Language Supervision" (CLIP). OpenAI. arXiv:2103.00020</li>
+          <li><strong>Alayrac, J.-B. et al.</strong> (2022). "Flamingo: a Visual Language Model for Few-Shot Learning". DeepMind. arXiv:2204.14198</li>
+          <li><strong>Liu, H. et al.</strong> (2023). "Visual Instruction Tuning" (LLaVA). arXiv:2304.08485</li>
+          <li><strong>Li, J. et al.</strong> (2023). "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models". arXiv:2301.12597</li>
+          <li><strong>Radford, A. et al.</strong> (2022). "Robust Speech Recognition via Large-Scale Weak Supervision" (Whisper). OpenAI. arXiv:2212.04356</li>
+          <li><strong>Ho, J., Jain, A. &amp; Abbeel, P.</strong> (2020). "Denoising Diffusion Probabilistic Models" (DDPM). UC Berkeley. arXiv:2006.11239</li>
+          <li><strong>Rombach, R. et al.</strong> (2022). "High-Resolution Image Synthesis with Latent Diffusion Models" (Stable Diffusion). arXiv:2112.10752</li>
+          <li><strong>Driess, D. et al.</strong> (2023). "PaLM-E: An Embodied Multimodal Language Model". Google. arXiv:2303.03378</li>
+          <li><strong>Brooks, T. et al.</strong> (2024). "Video generation models as world simulators" (Sora). OpenAI. <a href="https://openai.com/research/video-generation-models-as-world-simulators" target="_blank">openai.com</a></li>
+          <li><strong>Yin, S. et al.</strong> (2023). "A Survey on Multimodal Large Language Models". arXiv:2306.13549 &mdash; survey canônico.</li>
+          <li><strong>Liu, Y. et al.</strong> (2023). "MMBench: Is Your Multi-modal Model an All-around Player?". arXiv:2307.06281</li>
+          <li><strong>Fu, C. et al.</strong> (2024). "Video-MME: The First-Ever Comprehensive Evaluation Benchmark of Multi-modal LLMs in Video Analysis". arXiv:2405.21075</li>
+        </ol>
+
+        <h3>Otimização de Custo</h3>
+        <ol>
+          <li><strong>Chen, L. et al.</strong> (2023). "FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance". Stanford. arXiv:2305.05176</li>
+          <li><strong>Leviathan, Y., Kalman, M. &amp; Matias, Y.</strong> (2023). "Fast Inference from Transformers via Speculative Decoding". Google Research. arXiv:2211.17192</li>
+          <li><strong>Jiang, H. et al.</strong> (2023). "LLMLingua: Compressing Prompts for Accelerated Inference of Large Language Models". Microsoft. arXiv:2310.05736</li>
+          <li><strong>Jiang, H. et al.</strong> (2023). "LongLLMLingua: Accelerating and Enhancing LLMs in Long Context Scenarios via Prompt Compression". arXiv:2310.06839</li>
+          <li><strong>Hinton, G., Vinyals, O. &amp; Dean, J.</strong> (2015). "Distilling the Knowledge in a Neural Network". Google. arXiv:1503.02531</li>
+          <li><strong>Taori, R. et al.</strong> (2023). "Alpaca: A Strong, Replicable Instruction-Following Model". Stanford CRFM.</li>
+          <li><strong>Mukherjee, S. et al.</strong> (2023). "Orca: Progressive Learning from Complex Explanation Traces of GPT-4". Microsoft. arXiv:2306.02707</li>
+          <li><strong>Tunstall, L. et al.</strong> (2023). "Zephyr: Direct Distillation of LM Alignment". Hugging Face. arXiv:2310.16944</li>
+        </ol>
+
+        <h3>Fine-tuning, LoRA e PEFT</h3>
+        <ol>
+          <li><strong>Hu, E. J. et al.</strong> (2021). "LoRA: Low-Rank Adaptation of Large Language Models". Microsoft. arXiv:2106.09685</li>
+          <li><strong>Dettmers, T. et al.</strong> (2023). "QLoRA: Efficient Finetuning of Quantized LLMs". UW. arXiv:2305.14314</li>
+          <li><strong>Meng, X. et al.</strong> (2024). "DoRA: Weight-Decomposed Low-Rank Adaptation". arXiv:2402.09353</li>
+          <li><strong>Zhang, Q. et al.</strong> (2023). "AdaLoRA: Adaptive Budget Allocation for Parameter-Efficient Fine-Tuning". arXiv:2303.10512</li>
+          <li><strong>Liu, H. et al.</strong> (2022). "Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than In-Context Learning" (IA³). arXiv:2205.05638</li>
+          <li><strong>Kopiczko, D. J. et al.</strong> (2023). "VeRA: Vector-based Random Matrix Adaptation". arXiv:2310.11454</li>
+          <li><strong>Wang, Y. et al.</strong> (2022). "Self-Instruct: Aligning Language Models with Self-Generated Instructions". arXiv:2212.10560</li>
+          <li><strong>Zhou, C. et al.</strong> (2023). "LIMA: Less Is More for Alignment". Meta. arXiv:2305.11206</li>
+          <li><strong>Cui, G. et al.</strong> (2024). "UltraFeedback: Boosting Language Models with Scaled AI Feedback". arXiv:2310.01377</li>
+          <li><strong>Ethayarajh, K. et al.</strong> (2024). "KTO: Model Alignment as Prospect Theoretic Optimization". arXiv:2402.01306</li>
+          <li><strong>Hong, J. et al.</strong> (2024). "ORPO: Monolithic Preference Optimization without Reference Model". arXiv:2403.07691</li>
+          <li><strong>Meng, Y. et al.</strong> (2024). "SimPO: Simple Preference Optimization with a Reference-Free Reward". arXiv:2405.14734</li>
+          <li><strong>Eldan, R. &amp; Li, Y.</strong> (2023). "TinyStories: How Small Can Language Models Be and Still Speak Coherent English?". arXiv:2305.07759</li>
+          <li><strong>Raschka, S.</strong> (2023). "Practical Tips for Finetuning LLMs Using LoRA". <a href="https://magazine.sebastianraschka.com/p/practical-tips-for-finetuning-llms" target="_blank">magazine</a></li>
+        </ol>
+
+        <h3>IA com Português Brasileiro</h3>
+        <ol>
+          <li><strong>Pires, R., Abonizio, H., Almeida, T. S. &amp; Nogueira, R.</strong> (2023). "Sabiá: Portuguese Large Language Models". BRACIS. arXiv:2304.07880</li>
+          <li><strong>Lopes, F. &amp; Nogueira, R.</strong> (2024). "Sabiá-2: A New Generation of Portuguese Large Language Models". arXiv:2403.09887</li>
+          <li><strong>Nunes, D., Primi, R., Pires, R., Lotufo, R. &amp; Nogueira, R.</strong> (2023). "Evaluating GPT-3.5 and GPT-4 Models on Brazilian University Admission Exams" (ENEM-Challenge). arXiv:2303.17003</li>
+          <li><strong>Almeida, T. S., Abonizio, H. &amp; Nogueira, R.</strong> (2023). "BLUEX: A Benchmark based on Brazilian Leading Universities Entrance eXams". BRACIS. arXiv:2307.05410</li>
+          <li><strong>Maritaca AI.</strong> <a href="https://www.maritaca.ai" target="_blank">maritaca.ai</a> &mdash; documentação técnica dos modelos Sabiá.</li>
+          <li><strong>Open Portuguese LLM Leaderboard</strong>. <a href="https://huggingface.co/spaces/eduagarcia/open_pt_llm_leaderboard" target="_blank">HuggingFace</a></li>
+        </ol>
+
+        <h3>Recursos práticos adicionais</h3>
+        <ul>
+          <li><strong>Huyen, C.</strong> (2025). <em>AI Engineering</em>. O'Reilly — referência canônica de 2026 em engenharia com LLMs. Cobre LLMOps, fine-tuning, RAG, evals, custo.</li>
+          <li><strong>Hugging Face.</strong> <em>PEFT documentation</em>. <a href="https://huggingface.co/docs/peft" target="_blank">huggingface.co/docs/peft</a></li>
+          <li><strong>Hugging Face.</strong> <em>TRL: Transformer Reinforcement Learning</em>. <a href="https://github.com/huggingface/trl" target="_blank">github.com/huggingface/trl</a></li>
+          <li><strong>Unsloth.</strong> <a href="https://github.com/unslothai/unsloth" target="_blank">github.com/unslothai/unsloth</a> &mdash; fine-tuning 2× mais rápido.</li>
+          <li><strong>Axolotl.</strong> <a href="https://github.com/axolotl-ai-cloud/axolotl" target="_blank">github</a> &mdash; YAML-configurable.</li>
         </ul>
       </section>
 

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 22 — Fine-tuning e LoRA | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item active"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item"><span class="nav-number">&#127942;</span> Capstone</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 22 — Fine-tuning e LoRA</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">22</div>
+        <h1>Fine-tuning, LoRA e Adaptação</h1>
+        <p class="module-desc">Quando modelos prontos não bastam. LoRA, QLoRA, PEFT, DoRA, preference tuning, frameworks práticos e provider-managed fine-tuning.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.1</span>
+        <h2>A decisão crítica: fine-tunar ou não?</h2>
+<table>
+        <thead><tr><th>Sintoma</th><th>Solução</th></tr></thead>
+        <tbody>
+        <tr><td>"Modelo não sabe fato X"</td><td><strong>RAG</strong> (Módulo 17)</td></tr>
+        <tr><td>"Conhece mas responde fora do formato"</td><td><strong>Prompt</strong> + structured outputs</td></tr>
+        <tr><td>"Preciso de estilo/tom consistente"</td><td><strong>Fine-tuning</strong></td></tr>
+        <tr><td>"Latência baixa em tarefa repetitiva"</td><td><strong>Fine-tune + distillation</strong></td></tr>
+        <tr><td>"Dado não pode sair da empresa"</td><td><strong>Fine-tune open source self-hosted</strong></td></tr>
+        </tbody>
+        </table>
+        <div class="analogy">
+        <div class="analogy-title">Regra de ouro</div>
+        <p>Tente na ordem: prompt → few-shot → RAG → fine-tuning. Cada passo só se os anteriores não resolveram.</p>
+        </div>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.2</span>
+        <h2>Full fine-tuning vs. PEFT</h2>
+<p><strong>Full fine-tuning</strong> atualiza todos os pesos. Proibitivo:</p>
+        <ul>
+        <li>Llama 4 Scout 17B: ~70GB VRAM só para pesos + gradientes em fp16.</li>
+        <li>Catastrophic forgetting — esquece habilidades gerais.</li>
+        <li>Cópia completa por tarefa — storage explode.</li>
+        </ul>
+        <p><strong>PEFT (Parameter-Efficient Fine-Tuning)</strong> congela o modelo base e treina apenas uma fração pequena de parâmetros adicionais.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.3</span>
+        <h2>LoRA: Low-Rank Adaptation</h2>
+<p>Em vez de atualizar <code>W</code> (d×d), aprender <code>A</code> (d×r) e <code>B</code> (r×d) tais que <code>ΔW = BA</code> (rank baixo, tipicamente r=8 ou 16). O delta é somado a <code>W</code> em inferência.</p>
+        <div class="analogy">
+        <div class="analogy-title">Benefícios</div>
+        <ul>
+        <li>Treina ~0.1% dos parâmetros.</li>
+        <li>Múltiplos LoRAs na mesma GPU.</li>
+        <li>Fácil hot-swap em runtime.</li>
+        </ul>
+        </div>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Hu, E. J. et al. (2021). <em>"LoRA: Low-Rank Adaptation of Large Language Models"</em>. Microsoft, arXiv:2106.09685.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.4</span>
+        <h2>QLoRA: quantização + LoRA</h2>
+<p>Combina modelo base quantizado em 4-bit (NF4), gradient checkpointing e LoRA. Permite fine-tunar Llama 70B em <strong>uma GPU de 48GB</strong>.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Dettmers, T. et al. (2023). <em>"QLoRA: Efficient Finetuning of Quantized LLMs"</em>. UW, arXiv:2305.14314.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.5</span>
+        <h2>Variantes e evolução</h2>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Meng, X. et al. (2024). <em>"DoRA"</em>. arXiv:2402.09353 — decompõe em magnitude + direção.</p>
+        <p>Zhang, Q. et al. (2023). <em>"AdaLoRA"</em>. arXiv:2303.10512 — rank adaptativo.</p>
+        <p>Liu, H. et al. (2022). <em>"IA³"</em>. arXiv:2205.05638 — ainda mais compacto.</p>
+        <p>Kopiczko, D. J. et al. (2023). <em>"VeRA"</em>. arXiv:2310.11454</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.6</span>
+        <h2>Datasets de instruction tuning</h2>
+<ul>
+        <li><strong>Alpaca</strong> (Taori 2023) — 52K exemplos GPT-3.5-gerados.</li>
+        <li><strong>Dolly 15K</strong> (Databricks 2023) — 100% human, licença comercial.</li>
+        <li><strong>UltraFeedback</strong> (Cui 2024, arXiv:2310.01377) — 64K prompts com preferências.</li>
+        <li><strong>LIMA</strong> (Zhou 2023, arXiv:2305.11206) — "Less Is More", 1000 exemplos.</li>
+        </ul>
+        <p><strong>Self-Instruct</strong> (Wang 2022, arXiv:2212.10560) — gerar dataset a partir do próprio modelo.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.7</span>
+        <h2>Preference tuning: além do DPO</h2>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Ethayarajh, K. et al. (2024). <em>"KTO: Model Alignment as Prospect Theoretic Optimization"</em>. arXiv:2402.01306</p>
+        <p>Hong, J. et al. (2024). <em>"ORPO"</em>. arXiv:2403.07691</p>
+        <p>Meng, Y. et al. (2024). <em>"SimPO"</em>. arXiv:2405.14734</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.8</span>
+        <h2>Frameworks práticos</h2>
+<ul>
+        <li><strong>Hugging Face TRL</strong> — SFT, DPO, PPO, KTO. Padrão da indústria.</li>
+        <li><strong>Axolotl</strong> — YAML-configurable.</li>
+        <li><strong>Unsloth</strong> — 2× mais rápido, menor memória.</li>
+        <li><strong>LLaMA-Factory</strong> — UI + CLI.</li>
+        <li><strong>torchtune</strong> — oficial PyTorch.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.9</span>
+        <h2>Provider-managed fine-tuning</h2>
+<ul>
+        <li><strong>OpenAI</strong> — GPT-4o-mini, GPT-5-mini. $25/1M tokens treino.</li>
+        <li><strong>Google Vertex AI</strong> — Gemini Pro/Flash.</li>
+        <li><strong>Anthropic</strong> — via Bedrock (Haiku).</li>
+        <li><strong>AWS Bedrock Custom Models</strong> — Llama, Mistral, Titan.</li>
+        <li><strong>Fireworks, Together, Replicate</strong> — fine-tuning de open source.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 20.10</span>
+        <h2>Avaliação pós-fine-tuning</h2>
+<div class="callout callout-warn">
+        <div class="callout-content">
+        <div class="callout-title">Regressão é o risco #1</div>
+        <ol>
+        <li>Eval de tarefa alvo (melhora esperada).</li>
+        <li>Eval de capabilities gerais (MMLU, GSM8K) — check de regressão.</li>
+        <li>Eval de safety (toxicity, hallucination) — fine-tuning pode quebrar alinhamento.</li>
+        <li>A/B test com usuários reais.</li>
+        </ol>
+        </div>
+        </div>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Leitura</span>
+        <h2>Recomendada</h2>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Raschka, S. (2023). <em>"Practical Tips for Finetuning LLMs Using LoRA"</em>. <a href="https://magazine.sebastianraschka.com/p/practical-tips-for-finetuning-llms" target="_blank">blog</a></p>
+        <p>Hugging Face. <em>PEFT documentation</em>.</p>
+        <p>Huyen, C. (2025). <em>AI Engineering</em>, Cap. 7.</p>
+        <p>Eldan, R. &amp; Li, Y. (2023). <em>"TinyStories"</em>. arXiv:2305.07759 — distillation para modelos pequenos.</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-custo.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 21 — Custo</span>
+        </a>
+        <a href="modulo-ptbr.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 23 — PT-BR</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; v3.0 &middot; Última atualização: 2026-04-15
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 19 — LLMOps | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item active"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item"><span class="nav-number">&#127942;</span> Capstone</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 19 — LLMOps</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">19</div>
+        <h1>LLMOps e Observabilidade em Produção</h1>
+        <p class="module-desc">A maioria dos projetos de IA falha na operação, não na escolha do modelo. Tracing, prompt versioning, guardrails em runtime, rate limits, fallbacks e migração de modelos.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Seção 17.1</span>
+        <h2>LLMOps vs. MLOps</h2>
+<p>MLOps clássico lida com modelos próprios, treinados e versionados como artefatos. <strong>LLMOps</strong> adiciona complicações específicas:</p>
+        <ul>
+        <li>O "modelo" é uma API externa que o provedor muda sem avisar.</li>
+        <li>O artefato mais importante é o <strong>prompt</strong>, não o modelo.</li>
+        <li>Custo varia por token, não por compute alocado.</li>
+        <li>Latência é imprevisível (reasoning pode levar minutos).</li>
+        <li>Deprecação de modelos é frequente (3–12 meses).</li>
+        </ul>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Huyen, C. (2025). <em>AI Engineering</em>. O'Reilly — referência canônica.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 17.2</span>
+        <h2>Tracing: entender o que aconteceu</h2>
+<pre><code>Request X
+├── LLM call #1 (planning)      [claude-opus-4-6, 1.2s, 1240 tokens, $0.019]
+├── Tool: search_docs           [280ms]
+├── LLM call #2 (synthesis)     [claude-sonnet-4-6, 0.8s, 890 tokens, $0.003]
+└── Output validation           [12ms]</code></pre>
+        <p><strong>OpenTelemetry GenAI Semantic Conventions</strong> (2024+) padronizou nomes de campos. Usar isso permite trocar plataforma sem reescrever instrumentação.</p>
+        <table>
+        <thead><tr><th>Plataforma</th><th>Pontos fortes</th></tr></thead>
+        <tbody>
+        <tr><td>LangSmith</td><td>Integração profunda com LangChain/LangGraph</td></tr>
+        <tr><td>Langfuse</td><td>Open source, self-hostable, OpenTelemetry-native</td></tr>
+        <tr><td>Helicone</td><td>Proxy simples, análise de custo</td></tr>
+        <tr><td>Braintrust</td><td>Evals + observability combinados</td></tr>
+        <tr><td>Arize Phoenix</td><td>Open source, foco em ML observability</td></tr>
+        </tbody>
+        </table>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>OpenTelemetry. <em>"Semantic Conventions for Generative AI"</em>. <a href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" target="_blank">docs</a></p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 17.3</span>
+        <h2>Prompt Registry e versionamento</h2>
+<ul>
+        <li><strong>Prompt registry externo</strong> (LangSmith Prompts, Langfuse Prompts) — rollback sem deploy.</li>
+        <li><strong>MDX/YAML no repo</strong> — versionamento via git, diff legível.</li>
+        <li><strong>BAML / DSPy</strong> — declarativo, compila prompts de schemas e exemplos.</li>
+        </ul>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Khattab, O. et al. (2023). <em>"DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines"</em>. Stanford, arXiv:2310.03714.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 17.4</span>
+        <h2>Guardrails em runtime</h2>
+<ul>
+        <li><strong>Llama Guard</strong> — Meta, classificador open source. Inan 2023, arXiv:2312.06674.</li>
+        <li><strong>NVIDIA NeMo Guardrails</strong> — Colang DSL. Rebedea 2023, arXiv:2310.10501.</li>
+        <li><strong>Guardrails AI</strong> — validadores composáveis em Python.</li>
+        <li><strong>Anthropic Constitutional Classifiers</strong> — filtros especializados.</li>
+        <li><strong>OpenAI Moderation API</strong> — classificador gratuito.</li>
+        <li><strong>Promptfoo red-teaming</strong> — adversarial testing automatizado.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 17.5</span>
+        <h2>Rate limits, fallbacks e resiliência</h2>
+<ol>
+        <li><strong>Exponential backoff com jitter</strong> — nunca retry imediato.</li>
+        <li><strong>Circuit breakers</strong> — após N falhas, pare por T segundos.</li>
+        <li><strong>Cascata de provedores</strong> — Anthropic → OpenAI → self-hosted.</li>
+        <li><strong>Roteamento inteligente</strong> — LiteLLM, OpenRouter.</li>
+        <li><strong>Provisioned throughput</strong> — Anthropic, Google, AWS Bedrock.</li>
+        </ol>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 17.6</span>
+        <h2>SLOs, latência e p99</h2>
+<div class="analogy">
+        <div class="analogy-title">Métricas essenciais</div>
+        <ul>
+        <li><strong>TTFT</strong> (Time To First Token) — quando o stream começa.</li>
+        <li><strong>TPS</strong> (Tokens Per Second) — velocidade após TTFT.</li>
+        <li><strong>E2E latency</strong> — prompt in a resposta out.</li>
+        <li><strong>Error rate</strong> por categoria (timeout, 429, 5xx, guardrail block).</li>
+        </ul>
+        </div>
+        <p>Modelos de reasoning têm cauda pesada de latência (10–60s). <strong>Streaming</strong> mitiga latência percebida.</p>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 17.7</span>
+        <h2>Migração entre modelos</h2>
+<ol>
+        <li>Eval suite completo no modelo antigo (baseline).</li>
+        <li>Mesmo eval no modelo novo.</li>
+        <li>Identificar regressões por categoria.</li>
+        <li>A/B test com tráfego real (5% → 50% → 100%).</li>
+        <li>Manter modelo antigo como fallback por 1 ciclo.</li>
+        <li><strong>Atualize prompts</strong> — prompts de um modelo raramente são ótimos em outro.</li>
+        </ol>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 17.8</span>
+        <h2>Custo em produção</h2>
+<ul>
+        <li>Atribuição por request/usuário/feature/tenant.</li>
+        <li>Alertas por desvio (ex: request usou 10× o p95 de tokens).</li>
+        <li>Budget enforcement (hard caps por org).</li>
+        <li>Reporting semanal/mensal com breakdown por modelo.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Referências</span>
+        <h2>Leitura consolidada</h2>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Huyen, C. (2025). <em>AI Engineering</em>. O'Reilly — referência canônica em LLMOps.</p>
+        <p>Huyen, C. (2023). <em>"Building LLM applications for production"</em>. <a href="https://huyenchip.com/2023/04/11/llm-engineering.html" target="_blank">blog</a></p>
+        <p>Inan, H. et al. (2023). <em>"Llama Guard"</em>. arXiv:2312.06674</p>
+        <p>Rebedea, T. et al. (2023). <em>"NeMo Guardrails"</em>. arXiv:2310.10501</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-tool-calling.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 18 — Tool Calling</span>
+        </a>
+        <a href="modulo-multimodal.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 20 — Multimodalidade</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; v3.0 &middot; Última atualização: 2026-04-15
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

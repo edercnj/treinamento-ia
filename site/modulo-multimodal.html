@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 20 — Multimodalidade | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item active"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item"><span class="nav-number">&#127942;</span> Capstone</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 20 — Multimodalidade</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">20</div>
+        <h1>Multimodalidade: Visão, Áudio e Além</h1>
+        <p class="module-desc">ViT, CLIP, LLaVA, Whisper, diffusion. Como funciona o processamento de imagens, áudio e vídeo em LLMs modernos, e quando usar.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Seção 18.1</span>
+        <h2>Visão: do ViT ao Claude que enxerga</h2>
+<p>O tratamento moderno de imagens em LLMs começa com o <strong>Vision Transformer</strong>.</p>
+        <p>Ideia central: dividir a imagem em <strong>patches</strong> (ex: 16×16 pixels), tratar cada patch como um "token" e rodar o Transformer padrão.</p>
+        <pre><code>Imagem 224×224 → 196 patches de 16×16 → 196 tokens → Transformer</code></pre>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Dosovitskiy, A. et al. (2021). <em>"An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale"</em> (ViT). Google Brain, arXiv:2010.11929.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 18.2</span>
+        <h2>Alinhamento de modalidades: CLIP</h2>
+<p>Treinamento contrastivo: aproximar embedding de imagem e embedding da legenda em um espaço compartilhado. Permite zero-shot classification e é fundação de busca visual.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Radford, A. et al. (2021). <em>"Learning Transferable Visual Models From Natural Language Supervision"</em> (CLIP). OpenAI, arXiv:2103.00020.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 18.3</span>
+        <h2>LLMs multimodais: arquiteturas</h2>
+<ol>
+        <li><strong>Late fusion (Flamingo, LLaVA)</strong> — encoder de visão separado, tokens visuais injetados via cross-attention.</li>
+        <li><strong>Early / native fusion (GPT-4o, Claude 3, Gemini)</strong> — treinamento conjunto em texto + imagens desde pré-treino.</li>
+        <li><strong>Any-to-any (Gemini 2.0/2.5, GPT-4o realtime)</strong> — áudio, imagem, vídeo, texto in e out unified.</li>
+        </ol>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Alayrac, J.-B. et al. (2022). <em>"Flamingo: a Visual Language Model for Few-Shot Learning"</em>. arXiv:2204.14198</p>
+        <p>Liu, H. et al. (2023). <em>"Visual Instruction Tuning"</em> (LLaVA). arXiv:2304.08485</p>
+        <p>Li, J. et al. (2023). <em>"BLIP-2"</em>. arXiv:2301.12597</p>
+        <p>OpenAI. <em>"GPT-4V System Card"</em> (2023).</p>
+        <p>Anthropic. <em>"Claude 3 Model Card"</em> (2024).</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 18.4</span>
+        <h2>Áudio: Whisper e speech-to-speech</h2>
+<p>Whisper demonstrou que ASR (reconhecimento de fala) escala com dados fracamente supervisionados. Modelos <strong>speech-to-speech</strong> (GPT-4o realtime, Gemini Live) eliminam o pipeline ASR→LLM→TTS — tokens de áudio direto.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Radford, A. et al. (2022). <em>"Robust Speech Recognition via Large-Scale Weak Supervision"</em> (Whisper). OpenAI, arXiv:2212.04356.</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 18.5</span>
+        <h2>Geração de imagens: diffusion</h2>
+<p>Ideia: aprender a reverter ruído gaussiano em imagens. Progressão: DDPM → Imagen → Stable Diffusion → DALL-E 3 → Flux → Nano Banana.</p>
+        <p><strong>Para devs:</strong> integração via API (OpenAI Images, Google Imagen, Stability). Latência 5–15s, custo $0.02–$0.08 por imagem.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Ho, J., Jain, A. &amp; Abbeel, P. (2020). <em>"Denoising Diffusion Probabilistic Models"</em> (DDPM). UC Berkeley, arXiv:2006.11239.</p>
+        <p>Rombach, R. et al. (2022). <em>"High-Resolution Image Synthesis with Latent Diffusion Models"</em> (Stable Diffusion). arXiv:2112.10752</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 18.6</span>
+        <h2>Vídeo e embodied AI</h2>
+<p>Sora, Veo 2/3, Runway Gen-3 — diffusion transformers com patches espaço-temporais.</p>
+        <p><strong>Embodied AI</strong> (robótica): PaLM-E, RT-2, Pi0 — LLMs condicionados em sensores.</p>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Brooks, T. et al. (2024). <em>"Video generation models as world simulators"</em> (Sora). OpenAI.</p>
+        <p>Driess, D. et al. (2023). <em>"PaLM-E"</em>. arXiv:2303.03378</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 18.7</span>
+        <h2>Aplicações práticas para devs</h2>
+<table>
+        <thead><tr><th>Caso de uso</th><th>Modelo típico</th></tr></thead>
+        <tbody>
+        <tr><td>Screenshot debugging</td><td>Claude Opus/Sonnet, GPT-5</td></tr>
+        <tr><td>OCR de documentos</td><td>Gemini, Claude</td></tr>
+        <tr><td>UI-to-code (mockup → React)</td><td>Claude, v0, Bolt</td></tr>
+        <tr><td>Code review visual</td><td>Claude, GPT-5</td></tr>
+        <tr><td>Análise de gráficos</td><td>Todos multimodais</td></tr>
+        <tr><td>Geração de ícones</td><td>Flux, DALL-E 3</td></tr>
+        <tr><td>Transcrição de reuniões</td><td>Whisper, Gemini Live</td></tr>
+        </tbody>
+        </table>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 18.8</span>
+        <h2>Benchmarks multimodais</h2>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Liu, Y. et al. (2023). <em>"MMBench"</em>. arXiv:2307.06281</p>
+        <p>Fu, C. et al. (2023). <em>"MME"</em>. arXiv:2306.13394</p>
+        <p>Fu, C. et al. (2024). <em>"Video-MME"</em>. arXiv:2405.21075</p>
+        <p>Yin, S. et al. (2023). <em>"A Survey on Multimodal Large Language Models"</em>. arXiv:2306.13549 — survey canônico.</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-llmops.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 19 — LLMOps</span>
+        </a>
+        <a href="modulo-custo.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 21 — Otimização de Custo</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; v3.0 &middot; Última atualização: 2026-04-15
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 18 — Tool Calling | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item active"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item"><span class="nav-number">&#127942;</span> Capstone</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Módulo 18 — Tool Calling</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">18</div>
+        <h1>Tool Calling e Structured Outputs</h1>
+        <p class="module-desc">Como agentes realmente chamam ferramentas. JSON schemas, parallel tool calls, constrained decoding, JSON mode. A mecânica que separa 'usar a API' de 'construir um agente'.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.1</span>
+        <h2>Anatomia de uma chamada com tools</h2>
+<p>O fluxo canônico, comum a Anthropic, OpenAI e Google:</p>
+        <pre><code>1. Cliente envia: mensagem do usuário + lista de tools (JSON schema)
+2. Modelo responde: texto OU tool_use block (nome + args JSON)
+3. Cliente executa a tool e envia tool_result
+4. Modelo integra e responde (ou chama mais tools em loop)</code></pre>
+        <p><strong>Exemplo (Anthropic Messages API):</strong></p>
+        <pre><code>tools = [{
+    "name": "get_weather",
+    "description": "Retorna tempo atual",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "location": {"type": "string"},
+            "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]}
+        },
+        "required": ["location"]
+    }
+}]
+
+response = client.messages.create(
+    model="claude-opus-4-6",
+    tools=tools,
+    messages=[{"role": "user", "content": "Tempo em Salvador?"}]
+)</code></pre>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Anthropic. <em>"Tool use with Claude"</em>. <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank">docs</a></p>
+        <p>OpenAI. <em>"Function calling"</em>. <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank">docs</a></p>
+        <p>Google. <em>"Function calling with Gemini"</em>. <a href="https://ai.google.dev/gemini-api/docs/function-calling" target="_blank">docs</a></p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.2</span>
+        <h2>Schemas: a linguagem que os modelos falam</h2>
+<p>JSON Schema (Draft 2020-12) é o denominador comum. Boas práticas:</p>
+        <ol>
+        <li><strong>Descrições importam mais que nomes.</strong> Escreva como doc para humano júnior.</li>
+        <li><strong>Use <code>enum</code> sempre que puder.</strong> Reduz alucinação de valores.</li>
+        <li><strong>Evite schemas profundos.</strong> &gt;3 níveis degrada qualidade.</li>
+        <li><strong><code>required</code> não é sugestão.</strong> Marque obrigatórios explicitamente.</li>
+        <li><strong>Exemplos no <code>description</code>.</strong> Few-shot dentro do schema melhora.</li>
+        </ol>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.3</span>
+        <h2>Parallel tool calls</h2>
+<p>Claude 3.5+, GPT-4+, Gemini 1.5+ retornam <strong>múltiplas tool calls na mesma resposta</strong> quando são independentes.</p>
+        <div class="analogy">
+        <div class="analogy-title">Sempre implemente execução paralela no cliente</div>
+        <p>Use <code>asyncio.gather()</code> ou equivalente. O modelo já fez o trabalho cognitivo de decidir a independência — cobre-lhe a dívida de latência.</p>
+        </div>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.4</span>
+        <h2>tool_choice: forçando comportamento</h2>
+<table>
+        <thead><tr><th>Valor</th><th>Efeito</th></tr></thead>
+        <tbody>
+        <tr><td><code>auto</code> (default)</td><td>Modelo decide se usa tool</td></tr>
+        <tr><td><code>none</code></td><td>Proíbe tools, apenas texto</td></tr>
+        <tr><td><code>required</code> / <code>any</code></td><td>Obriga alguma tool</td></tr>
+        <tr><td><code>{"type":"tool","name":"X"}</code></td><td>Força tool específica</td></tr>
+        </tbody>
+        </table>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.5</span>
+        <h2>Structured Outputs: além de tool calling</h2>
+<ul>
+        <li><strong>JSON mode</strong> (OpenAI <code>response_format: json_object</code>) — garante JSON válido.</li>
+        <li><strong>Strict schema</strong> (OpenAI <code>json_schema</code> strict) — conforme schema, 100% garantido.</li>
+        <li><strong>Anthropic:</strong> sem modo JSON dedicado; use tool com uma só tool como workaround.</li>
+        <li><strong>Gemini:</strong> <code>response_mime_type="application/json"</code> + <code>response_schema</code>.</li>
+        </ul>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.6</span>
+        <h2>Decodificação restrita (constrained decoding)</h2>
+<p>Como garantir <strong>100% de conformidade ao schema</strong>? Modificando a etapa de amostragem:</p>
+        <pre><code>A cada token, antes do softmax:
+  1. Computar quais tokens são válidos dado o parser state
+  2. Zerar probabilidade dos inválidos
+  3. Amostrar apenas dos válidos</code></pre>
+        <p><strong>Frameworks:</strong></p>
+        <ul>
+        <li><strong>Outlines</strong> (Willard &amp; Louf 2023) — regex, JSON Schema, Pydantic, CFG. <a href="https://github.com/dottxt-ai/outlines" target="_blank">github</a></li>
+        <li><strong>XGrammar</strong> (Dong 2024) — estado da arte em performance, integrado ao vLLM.</li>
+        <li><strong>GBNF</strong> (llama.cpp) — grammar-based Naur form.</li>
+        <li><strong>LMQL</strong> — linguagem de query para LLMs.</li>
+        <li><strong>BAML</strong> — schema-first DX focado em TS/Python.</li>
+        <li><strong>Instructor</strong> — wrapper Pydantic-first.</li>
+        </ul>        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Willard, B. T. &amp; Louf, R. (2023). <em>"Efficient Guided Generation for Large Language Models"</em>. arXiv:2307.09702</p>
+        <p>Dong, Y. et al. (2024). <em>"XGrammar: Flexible and Efficient Structured Generation Engine"</em>. arXiv:2411.15100</p>
+        <p>Scholak, T. et al. (2021). <em>"PICARD"</em>. EMNLP, arXiv:2109.05093</p>
+          </div>
+        </div>
+
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.7</span>
+        <h2>Padrões de erro e recuperação</h2>
+<ol>
+        <li><strong>Tool name alucinada</strong> — validação + mensagem de erro explícita ao modelo.</li>
+        <li><strong>Argumentos malformados</strong> — use structured outputs ou valide + pergunte novamente.</li>
+        <li><strong>Loop infinito</strong> — limite de iterações, timeout total, detecção de repetição.</li>
+        <li><strong>Tool timeout</strong> — retorne <code>tool_result</code> com <code>is_error: true</code>.</li>
+        <li><strong>Output muito grande</strong> — truncar + resumir antes de retornar.</li>
+        </ol>
+      </section>
+      <section class="fade-in">
+        <span class="section-badge">Seção 16.8</span>
+        <h2>Toolformer e evolução</h2>
+        <div class="callout callout-ref">
+          <span class="callout-icon">&#128218;</span>
+          <div class="callout-content">
+            <div class="callout-title">Referências</div>
+<p>Schick, T. et al. (2023). <em>"Toolformer: Language Models Can Teach Themselves to Use Tools"</em>. Meta AI. arXiv:2302.04761.</p>
+        <p>Qin, Y. et al. (2023). <em>"ToolLLM: Facilitating LLMs to Master 16000+ Real-world APIs"</em>. arXiv:2307.16789</p>
+        <p>Anthropic — <em>"Building effective agents"</em>. <a href="https://www.anthropic.com/research/building-effective-agents" target="_blank">blog</a></p>
+        <p>Huyen, C. (2025). <em>AI Engineering</em>. O'Reilly.</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-rag.html" class="prev">
+          <span class="nav-label">&larr; Anterior</span>
+          <span class="nav-title">Módulo 17 — RAG</span>
+        </a>
+        <a href="modulo-llmops.html" class="next">
+          <span class="nav-label">Próximo &rarr;</span>
+          <span class="nav-title">Módulo 19 — LLMOps</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; v3.0 &middot; Última atualização: 2026-04-15
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+</body>
+</html>

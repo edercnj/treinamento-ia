@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tokenizador Interativo | Treinamento IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .tok-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    @media (max-width: 820px) { .tok-layout { grid-template-columns: 1fr; } }
+    .tok-input textarea {
+      width: 100%;
+      min-height: 220px;
+      background: rgba(0,0,0,0.3);
+      color: #e5e7eb;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      resize: vertical;
+    }
+    .tok-output {
+      padding: 1rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      min-height: 220px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .tok {
+      display: inline-block;
+      padding: 0.1rem 0.3rem;
+      margin: 0.1rem;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .tok-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .stat-card {
+      padding: 1.25rem;
+      background: var(--color-surface, #1a1a2e);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #a5b4fc;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .tok-controls {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+    .tok-controls button {
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.4);
+      color: #c7d2fe;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+    .tok-controls button:hover { background: rgba(99,102,241,0.3); }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+  <div class="sidebar-overlay"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">
+        <span class="logo-icon">AI</span>
+        <span>Treinamento IA</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Opcional (pré-requisitos)</div>
+      <a href="modulo-00.html" class="nav-item"><span class="nav-number">00</span> História da IA</a>
+      <a href="modulo-matematica.html" class="nav-item"><span class="nav-number">M</span> Matemática Essencial</a>
+
+      <div class="nav-section-title">Fundamentos</div>
+      <a href="modulo-01.html" class="nav-item"><span class="nav-number">01</span> Como uma LLM Funciona</a>
+      <a href="modulo-02.html" class="nav-item"><span class="nav-number">02</span> Tokens</a>
+      <a href="modulo-03.html" class="nav-item"><span class="nav-number">03</span> Janela de Contexto</a>
+
+      <div class="nav-section-title">Técnicas</div>
+      <a href="modulo-04.html" class="nav-item"><span class="nav-number">04</span> Engenharia de Contexto</a>
+      <a href="modulo-05.html" class="nav-item"><span class="nav-number">05</span> Prompt Engineering</a>
+      <a href="modulo-06.html" class="nav-item"><span class="nav-number">06</span> Spec-Driven Design</a>
+
+      <div class="nav-section-title">Ferramentas</div>
+      <a href="modulo-07.html" class="nav-item"><span class="nav-number">07</span> Ferramentas de IA</a>
+
+      <div class="nav-section-title">Avançado</div>
+      <a href="modulo-08.html" class="nav-item"><span class="nav-number">08</span> Rules</a>
+      <a href="modulo-configuracoes.html" class="nav-item"><span class="nav-number">09</span> Configurações</a>
+      <a href="modulo-09.html" class="nav-item"><span class="nav-number">10</span> Skills</a>
+      <a href="modulo-hooks.html" class="nav-item"><span class="nav-number">11</span> Hooks</a>
+      <a href="modulo-10.html" class="nav-item"><span class="nav-number">12</span> MCP</a>
+      <a href="modulo-11.html" class="nav-item"><span class="nav-number">13</span> Agentes Autônomos</a>
+
+      <div class="nav-section-title">Trilha Avançada (v2.0)</div>
+      <a href="modulo-reasoning.html" class="nav-item"><span class="nav-number">14</span> Deep Thinking</a>
+      <a href="modulo-alinhamento.html" class="nav-item"><span class="nav-number">15</span> Alinhamento</a>
+      <a href="modulo-avaliacao.html" class="nav-item"><span class="nav-number">16</span> Avaliação</a>
+      <a href="modulo-rag.html" class="nav-item"><span class="nav-number">17</span> Embeddings &amp; RAG</a>
+
+      <div class="nav-section-title">Trilha de Engenharia (v3.0)</div>
+      <a href="modulo-tool-calling.html" class="nav-item"><span class="nav-number">18</span> Tool Calling</a>
+      <a href="modulo-llmops.html" class="nav-item"><span class="nav-number">19</span> LLMOps</a>
+      <a href="modulo-multimodal.html" class="nav-item"><span class="nav-number">20</span> Multimodalidade</a>
+      <a href="modulo-custo.html" class="nav-item"><span class="nav-number">21</span> Otimização de Custo</a>
+      <a href="modulo-finetuning.html" class="nav-item"><span class="nav-number">22</span> Fine-tuning &amp; LoRA</a>
+      <a href="modulo-ptbr.html" class="nav-item"><span class="nav-number">23</span> PT-BR</a>
+      <a href="modulo-capstone.html" class="nav-item"><span class="nav-number">&#127942;</span> Capstone</a>
+
+      <div class="nav-section-title">Ferramentas Interativas</div>
+      <a href="comparador.html" class="nav-item"><span class="nav-number">&#128202;</span> Comparador &amp; Custo</a>
+      <a href="tokenizer.html" class="nav-item active"><span class="nav-number">&#128221;</span> Tokenizador</a>
+      <a href="autoavaliacao.html" class="nav-item"><span class="nav-number">&#10067;</span> Autoavaliação</a>
+
+      <div class="nav-section-title">Apêndices</div>
+      <a href="ferramentas.html" class="nav-item"><span class="nav-number">A</span> Ferramentas Práticas</a>
+      <a href="referencias.html" class="nav-item"><span class="nav-number">B</span> Referências</a>
+      <a href="glossario.html" class="nav-item"><span class="nav-number">C</span> Glossário</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="content-header">
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div class="breadcrumb">
+        <a href="index.html">Treinamento IA</a>
+        <span>/</span>
+        <span>Tokenizador Interativo</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <div class="module-header fade-in">
+        <div class="module-number">&#128221;</div>
+        <h1>Tokenizador Interativo</h1>
+        <p class="module-desc">Digite qualquer texto e veja como ele é dividido em tokens. Aproximação educacional baseada em BPE — não substitui tokenizadores oficiais, mas mostra os princípios do Módulo 2.</p>
+      </div>
+
+      <section class="fade-in">
+        <span class="section-badge">Demo</span>
+        <h2>Experimente</h2>
+
+        <div class="tok-controls">
+          <button onclick="loadExample('en')">Exemplo EN</button>
+          <button onclick="loadExample('pt')">Exemplo PT-BR</button>
+          <button onclick="loadExample('code')">Exemplo Código</button>
+          <button onclick="loadExample('compare')">Comparar PT vs EN</button>
+        </div>
+
+        <div class="tok-layout">
+          <div class="tok-input">
+            <label style="font-size: 0.875rem; color: var(--color-text-muted); display: block; margin-bottom: 0.5rem;">Texto de entrada</label>
+            <textarea id="input" placeholder="Digite aqui..."></textarea>
+          </div>
+          <div>
+            <label style="font-size: 0.875rem; color: var(--color-text-muted); display: block; margin-bottom: 0.5rem;">Tokens visualizados</label>
+            <div class="tok-output" id="output"></div>
+          </div>
+        </div>
+
+        <div class="tok-stats">
+          <div class="stat-card">
+            <div class="stat-label">Caracteres</div>
+            <div class="stat-value" id="s-chars">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tokens</div>
+            <div class="stat-value" id="s-tokens">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Palavras</div>
+            <div class="stat-value" id="s-words">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Chars/Token</div>
+            <div class="stat-value" id="s-ratio">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Custo Sonnet 4.6 (in)</div>
+            <div class="stat-value" id="s-cost-sonnet">$0.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Custo Opus 4.6 (in)</div>
+            <div class="stat-value" id="s-cost-opus">$0.00</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fade-in">
+        <span class="section-badge">Importante</span>
+        <h2>Limitações desta demo</h2>
+        <p>Esta é uma <strong>aproximação educacional</strong> usando uma heurística BPE simples — útil para demonstrar como BPE quebra palavras, mas <strong>não é o tokenizador real</strong> dos modelos citados. Para contagem exata:</p>
+        <ul>
+          <li><a href="https://platform.openai.com/tokenizer" target="_blank" rel="noopener">OpenAI Tokenizer</a> — visualizador oficial GPT (cl100k_base, o200k_base).</li>
+          <li><a href="https://tiktokenizer.vercel.app" target="_blank" rel="noopener">Tiktokenizer</a> — inclui Claude, Llama, GPT.</li>
+          <li><a href="https://docs.anthropic.com/en/docs/build-with-claude/token-counting" target="_blank" rel="noopener">Anthropic Token Counting API</a> — contagem exata via API.</li>
+        </ul>
+        <div class="callout callout-info">
+          <span class="callout-icon">&#128161;</span>
+          <div class="callout-content">
+            <div class="callout-title">Observe o comportamento</div>
+            <ul>
+              <li>Palavras comuns em inglês → 1 token. "Programação" em português → 2-3 tokens.</li>
+              <li>Código com identificadores em camelCase ou snake_case é quebrado nos limites.</li>
+              <li>Cada espaço/tab/newline costuma consumir ao menos 1 token.</li>
+              <li>A <strong>razão chars/token</strong> é ~4 em inglês, ~3 em português — traduza este texto e compare.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+      <nav class="page-nav">
+        <a href="modulo-02.html" class="prev">
+          <span class="nav-label">&larr; Volte ao</span>
+          <span class="nav-title">Módulo 02 — Tokens</span>
+        </a>
+        <a href="comparador.html" class="next">
+          <span class="nav-label">Veja também &rarr;</span>
+          <span class="nav-title">Comparador de Modelos</span>
+        </a>
+      </nav>
+    </div>
+
+    <footer class="site-footer">
+      Treinamento: Programação com Agentes de IA &middot; v3.0 &middot; Aproximação BPE educacional
+    </footer>
+  </main>
+
+  <a href="#" class="back-to-top" aria-label="Voltar ao topo">&uarr;</a>
+  <script src="js/main.js"></script>
+  <script>
+    // BPE educacional: quebra heurística baseada em padrões.
+    // Regra: palavras comuns = 1 token; palavras longas = quebrar em sub-word; pontuação isolada; código por símbolo.
+    const COMMON_EN = new Set([
+      "the","of","to","and","a","in","is","it","you","that","he","was","for","on","are",
+      "with","as","i","his","they","be","at","one","have","this","from","or","had","by",
+      "not","word","but","what","some","we","can","out","other","were","all","there","when",
+      "up","use","your","how","said","an","each","she","which","do","their","time","if","will",
+      "way","about","many","then","them","these","so","would","him","into","has","more","no",
+      "function","const","let","var","if","else","for","while","return","class","import","export",
+      "true","false","null","undefined","async","await","new","this","try","catch","throw"
+    ]);
+    const COMMON_PT = new Set([
+      "de","a","o","que","e","do","da","em","um","para","é","com","não","uma","os","no","se",
+      "na","por","mais","as","dos","como","mas","foi","ao","ele","das","à","seu","sua","ou",
+      "quando","muito","nos","já","eu","também","só","pelo","pela","até","isso","ela","entre",
+      "depois","sem","mesmo","aos","ter","seus","suas","numa","nem","suas","meu","às","minha"
+    ]);
+    const COMMON = new Set([...COMMON_EN, ...COMMON_PT]);
+
+    // Simples paleta de cores pastel para tokens
+    const COLORS = [
+      "rgba(99,102,241,0.25)","rgba(34,211,238,0.25)","rgba(52,211,153,0.25)",
+      "rgba(251,191,36,0.25)","rgba(236,72,153,0.25)","rgba(248,113,113,0.25)",
+      "rgba(167,139,250,0.25)","rgba(253,186,116,0.25)",
+    ];
+
+    function tokenize(text) {
+      const tokens = [];
+      const re = /(\s+|[a-zA-ZÀ-ÿ]+|\d+|[^\w\s])/g;
+      let m;
+      while ((m = re.exec(text)) !== null) {
+        const chunk = m[0];
+        if (/^\s+$/.test(chunk)) {
+          // whitespace: cada bloco = 1 token (simplification; real tokenizers prefix space on following word)
+          tokens.push(chunk);
+          continue;
+        }
+        if (/^[^\w\s]$/.test(chunk)) {
+          tokens.push(chunk);
+          continue;
+        }
+        // palavra: decidir se é comum (1 token) ou longa (quebrar)
+        const lower = chunk.toLowerCase();
+        if (COMMON.has(lower) && chunk.length <= 8) {
+          tokens.push(chunk);
+        } else if (chunk.length <= 4) {
+          tokens.push(chunk);
+        } else {
+          // quebrar em pedaços de 3-5 chars (heurística)
+          let i = 0;
+          while (i < chunk.length) {
+            const size = chunk.length - i <= 5 ? chunk.length - i : (Math.random() > 0.4 ? 4 : 3);
+            tokens.push(chunk.slice(i, i + size));
+            i += size;
+          }
+        }
+      }
+      return tokens;
+    }
+
+    function render() {
+      const text = document.getElementById("input").value;
+      const tokens = tokenize(text);
+      const output = document.getElementById("output");
+      output.innerHTML = tokens.map((t, i) => {
+        const color = COLORS[i % COLORS.length];
+        const display = t.replace(/\n/g, "⏎\n").replace(/\t/g, "⇥").replace(/ /g, "·");
+        return `<span class="tok" style="background:${color}">${display}</span>`;
+      }).join("");
+
+      // Stats
+      const chars = text.length;
+      const tokenCount = tokens.length;
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const ratio = tokenCount > 0 ? (chars / tokenCount).toFixed(2) : "0";
+      document.getElementById("s-chars").textContent = chars.toLocaleString();
+      document.getElementById("s-tokens").textContent = tokenCount.toLocaleString();
+      document.getElementById("s-words").textContent = words.toLocaleString();
+      document.getElementById("s-ratio").textContent = ratio;
+
+      // Custo: Sonnet 4.6 $3/1M input, Opus 4.6 $15/1M
+      document.getElementById("s-cost-sonnet").textContent = "$" + (tokenCount / 1e6 * 3).toFixed(6);
+      document.getElementById("s-cost-opus").textContent = "$" + (tokenCount / 1e6 * 15).toFixed(6);
+    }
+
+    function loadExample(kind) {
+      const ex = {
+        en: "The quick brown fox jumps over the lazy dog. This is a simple English sentence demonstrating word tokenization.",
+        pt: "A rápida raposa marrom salta sobre o cão preguiçoso. Esta é uma frase simples em português brasileiro demonstrando como a tokenização trata palavras com acentuação e morfologia mais rica.",
+        code: "function calculateFactorial(n) {\n  if (n <= 1) return 1;\n  return n * calculateFactorial(n - 1);\n}\n\nconst result = calculateFactorial(10);",
+        compare: "English: Programming with AI is incredible!\nPortuguês: Programação com inteligência artificial é incrível!",
+      };
+      document.getElementById("input").value = ex[kind];
+      render();
+    }
+
+    document.getElementById("input").addEventListener("input", render);
+    loadExample("compare");
+  </script>
+</body>
+</html>
